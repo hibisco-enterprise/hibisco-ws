@@ -1,5 +1,4 @@
 package enterprise.hibisco.hibiscows.entities;
-
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import enterprise.hibisco.hibiscows.utils.UuidGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ public class Donator extends User{
     private String bloodType;
 
     public Donator() {
-        this.idDonator = UuidGenerator.wrapUuid();
+        this.idDonator = UuidGenerator.wrapUuid().longValue();
     }
 
     @Override
@@ -34,10 +33,6 @@ public class Donator extends User{
 
     public Long getIdDonator() {
         return idDonator;
-    }
-
-    public void setIdDonator(Long idDonator) {
-        this.idDonator = idDonator;
     }
 
     public String getNome() {

@@ -6,14 +6,10 @@ import java.util.UUID;
 public class UuidGenerator {
 
     private static UUID id;
-    private static Long returnedId;
 
-    private static void genId() {
+    public static Short wrapUuid() {
         id = UUID.randomUUID();
-    }
-
-    public static Long wrapUuid() {
-        genId();
-        return returnedId = ByteBuffer.wrap(id.toString().getBytes()).getLong();
+        short returnedId;
+        return returnedId = ByteBuffer.wrap(id.toString().getBytes()).getShort();
     }
 }
