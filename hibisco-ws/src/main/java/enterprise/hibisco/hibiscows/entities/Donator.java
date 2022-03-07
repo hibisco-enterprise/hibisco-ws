@@ -1,16 +1,22 @@
 package enterprise.hibisco.hibiscows.entities;
 
 import enterprise.hibisco.hibiscows.service.DonatorService;
+import enterprise.hibisco.hibiscows.utils.UuidGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class Donator extends User{
 
-    private DonatorService donatorService = new DonatorService();
+    @Autowired
+    private DonatorService donatorService;
 
     private Long idDonator;
     private String nome;
     private String cpf;
     private String bloodType;
 
+    public Donator() {
+        this.idDonator = UuidGenerator.wrapUuid();
+    }
 
     @Override
     public String doRegister(User donator) {
