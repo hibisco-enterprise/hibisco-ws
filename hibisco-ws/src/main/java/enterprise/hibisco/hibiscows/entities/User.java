@@ -8,6 +8,7 @@ public abstract class User {
     private String password;
     private String phone;
     private String address; // por enquanto está sendo gerado automaticamente
+    private boolean authenticated;
 
     public User() {
         this.address = new Faker(new Locale("pt-BR")).address().fullAddress();
@@ -38,15 +39,25 @@ public abstract class User {
     }
 
     public String getAddress() {
-        return "\t" + address;
+        return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
     }
 
+    public boolean isAuthenticated() {
+        return authenticated;
+    }
+
+    public void setAuthenticated(boolean authenticated) {
+        this.authenticated = authenticated;
+    }
+
     public abstract String doRegister(User user);
 
     public abstract String doLogin(String email, String password);
+
+    public abstract String doLogoff(String email);
 
 }

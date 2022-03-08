@@ -27,4 +27,28 @@ public class Hospital extends User{
         return hospitalService.doLogin(login, password);
     }
 
+    @Override
+    public String doLogoff(String login) {
+        return hospitalService.doLogoff(login);
+    }
+
+    public Long getIdHospital() {
+        return idHospital;
+    }
+
+    public String getNameHospital() {
+        return nameHospital;
+    }
+
+    public void setNameHospital(String nameHospital) {
+        this.nameHospital = nameHospital;
+    }
+
+    public String getCnpjHospital() {
+        return cnpjHospital;
+    }
+
+    public void setCnpjHospital(String cnpjHospital) {
+        this.cnpjHospital = cnpjHospital;
+    }
 }

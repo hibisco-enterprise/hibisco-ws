@@ -23,8 +23,13 @@ public class Donator extends User{
     }
 
     @Override
-    public String doLogin(String login, String password) {
-        return donatorService.doLogin(login, password);
+    public String doLogin(String email, String password) {
+        return donatorService.doLogin(email, password);
+    }
+
+    @Override
+    public String doLogoff(String email) {
+        return donatorService.doLogoff(email);
     }
 
     public DonatorService getDonatorService() {

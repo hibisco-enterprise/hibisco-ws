@@ -23,4 +23,8 @@ public class HospitalService {
     public String doLogin(String login, String password) {
         return "";
     }
+
+    public String doLogoff(String email) {
+        return "";
+    }
 }
