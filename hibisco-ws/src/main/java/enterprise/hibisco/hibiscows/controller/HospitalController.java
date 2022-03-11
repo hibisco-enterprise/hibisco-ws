@@ -16,9 +16,6 @@ public class HospitalController {
     @JsonIgnore
     private HospitalService hospitalService;
 
-    @Autowired(required = true)
-    private Hospital hospital;
-
     @PostMapping("/do-register")
     public ResponseEntity doRegister(@RequestBody Hospital hospital) {
         return hospitalService.doRegister(hospital);
