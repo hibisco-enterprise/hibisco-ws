@@ -29,6 +29,10 @@ public class DonatorService {
         return ResponseEntity.status(201).build();
     }
 
+    public List<User> getDonators() {
+        return donators;
+    }
+
     public String doLogin(String email, String password) {
         for (User user : donators) {
             if (

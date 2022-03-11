@@ -2,10 +2,13 @@ package enterprise.hibisco.hibiscows.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import enterprise.hibisco.hibiscows.entities.Donator;
+import enterprise.hibisco.hibiscows.entities.User;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/donators")
@@ -20,6 +23,11 @@ public class DonatorController {
         return donatorService.doRegister(donator);
     }
 
+    @GetMapping
+    public List<User> getDonators() {
+        return donatorService.getDonators();
+    }
+    
     @PostMapping("/do-login/{email}/{password}")
     public String doLogin(@PathVariable String email, @PathVariable String password) {
         return donatorService.doLogin(email, password);

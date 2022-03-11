@@ -30,6 +30,10 @@ public class HospitalService {
         return ResponseEntity.status(201).build();
     }
 
+    public List<User> getHospitals() {
+        return hospitals;
+    }
+
     public String doLogin(String email, String password) {
         for (User user : hospitals) {
             if (
