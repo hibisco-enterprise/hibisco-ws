@@ -24,9 +24,9 @@ public class HospitalController {
         return hospitalService.doRegister(hospital);
     }
 
-    @PostMapping("/do-login")
-    public Hospital doLogin(@RequestBody Hospital hospital) {
-        return hospital;
+    @PostMapping("/do-login/{email}/{password}")
+    public String doLogin(@PathVariable String email, @PathVariable String password) {
+        return hospitalService.doLogin(email, password);
     }
 
     @PostMapping("/do-logoff/{email}")

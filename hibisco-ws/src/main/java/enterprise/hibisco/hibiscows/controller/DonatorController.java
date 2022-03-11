@@ -20,9 +20,9 @@ public class DonatorController {
         return donatorService.doRegister(donator);
     }
 
-    @PostMapping("/do-login")
-    public String doLogin(@RequestBody Donator donator) {
-        return donatorService.doLogin(donator);
+    @PostMapping("/do-login/{email}/{password}")
+    public String doLogin(@PathVariable String email, @PathVariable String password) {
+        return donatorService.doLogin(email, password);
     }
 
     @PostMapping("/do-logoff/{email}")

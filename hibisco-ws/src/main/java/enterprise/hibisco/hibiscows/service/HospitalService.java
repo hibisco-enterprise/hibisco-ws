@@ -30,11 +30,11 @@ public class HospitalService {
         return ResponseEntity.status(201).build();
     }
 
-    public String doLogin(Hospital hospital) {
+    public String doLogin(String email, String password) {
         for (User user : hospitals) {
             if (
-                user.getEmail().equals(hospital.getEmail()) &&
-                user.recuperarPassword().equals(hospital.recuperarPassword())
+                user.getEmail().equals(email) &&
+                user.recuperarPassword().equals(password)
             ) {
                 user.setAuthenticated(true);
                 return "Login efetuado com sucesso!";

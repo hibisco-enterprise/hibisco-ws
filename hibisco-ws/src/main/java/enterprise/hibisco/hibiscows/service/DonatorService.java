@@ -29,11 +29,11 @@ public class DonatorService {
         return ResponseEntity.status(201).build();
     }
 
-    public String doLogin(Donator donator) {
+    public String doLogin(String email, String password) {
         for (User user : donators) {
             if (
-                user.getEmail().equals(donator.getEmail()) &&
-                user.recuperarPassword().equals(donator.recuperarPassword())
+                user.getEmail().equals(email) &&
+                user.recuperarPassword().equals(password)
             ) {
                 user.setAuthenticated(true);
                 return "Login efetuado com sucesso!";

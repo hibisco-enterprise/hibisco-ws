@@ -21,18 +21,14 @@ public class Donator extends User{
         this.idDonator = ThreadLocalRandom.current().nextLong(10000, 99999);
     }
 
-    public Donator(String email, String password) {
-        super(email, password);
-    }
-
     @Override
     public ResponseEntity doRegister(User donator) {
         return donatorService.doRegister(donator);
     }
 
     @Override
-    public String doLogin(User user) {
-        return donatorService.doLogin((Donator) user);
+    public String doLogin(String email, String passsword) {
+        return donatorService.doLogin(email, passsword);
     }
 
     @Override

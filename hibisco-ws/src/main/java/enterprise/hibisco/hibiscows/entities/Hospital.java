@@ -18,18 +18,14 @@ public class Hospital extends User{
         this.idHospital = ThreadLocalRandom.current().nextLong(10000, 99999);
     }
 
-    public Hospital(String email, String password) {
-        super(email, password);
-    }
-
     @Override
     public ResponseEntity doRegister(User hospital) {
         return hospitalService.doRegister(hospital);
     }
 
     @Override
-    public String doLogin(User hospital) {
-        return hospitalService.doLogin((Hospital) hospital);
+    public String doLogin(String email, String senha) {
+        return hospitalService.doLogin(email, senha);
     }
 
     @Override
