@@ -18,7 +18,7 @@ public class DonatorController {
     @JsonIgnore
     private DonatorService donatorService;
 
-    @PostMapping("/do-register")
+    @PostMapping("/register")
     public ResponseEntity doRegister(@RequestBody Donator donator) {
         return donatorService.doRegister(donator);
     }
@@ -28,12 +28,12 @@ public class DonatorController {
         return donatorService.getDonators();
     }
     
-    @PostMapping("/do-login/{email}/{password}")
-    public String doLogin(@PathVariable String email, @PathVariable String password) {
-        return donatorService.doLogin(email, password);
+    @PostMapping("/login")
+    public ResponseEntity doLogin(@RequestBody User user) {
+        return donatorService.doLogin(user);
     }
 
-    @PostMapping("/do-logoff/{email}")
+    @PostMapping("/logoff/{email}")
     public String doLogoff(@PathVariable String email) {
         return donatorService.doLogoff(email);
     }

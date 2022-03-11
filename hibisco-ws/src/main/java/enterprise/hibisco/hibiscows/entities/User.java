@@ -16,6 +16,17 @@ public abstract class User {
         this.address = new Faker(new Locale("pt-BR")).address().fullAddress();
     }
 
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public boolean autenticar(User user) {
+        return this.email.equals(user.getEmail()) &&
+               this.password.equals(user.recuperarPassword());
+    }
+
+
     public String getEmail() {
         return email;
     }
@@ -58,8 +69,9 @@ public abstract class User {
 
     public abstract ResponseEntity doRegister(User user);
 
-    public abstract String doLogin(String email, String password);
+    public abstract ResponseEntity doLogin(User user);
 
     public abstract String doLogoff(String email);
 
+    public abstract String getDocument();
 }

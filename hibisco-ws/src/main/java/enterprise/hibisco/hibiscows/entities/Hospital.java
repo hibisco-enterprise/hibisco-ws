@@ -24,13 +24,18 @@ public class Hospital extends User{
     }
 
     @Override
-    public String doLogin(String email, String senha) {
-        return hospitalService.doLogin(email, senha);
+    public ResponseEntity doLogin(User user) {
+        return hospitalService.doLogin(user);
     }
 
     @Override
     public String doLogoff(String login) {
         return hospitalService.doLogoff(login);
+    }
+
+    @Override
+    public String getDocument() {
+        return getCnpjHospital();
     }
 
     public Long getIdHospital() {

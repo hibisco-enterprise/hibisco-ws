@@ -27,13 +27,18 @@ public class Donator extends User{
     }
 
     @Override
-    public String doLogin(String email, String passsword) {
-        return donatorService.doLogin(email, passsword);
+    public ResponseEntity doLogin(User user) {
+        return donatorService.doLogin(user);
     }
 
     @Override
     public String doLogoff(String email) {
         return donatorService.doLogoff(email);
+    }
+
+    @Override
+    public String getDocument() {
+        return getCpf();
     }
 
     public Long getIdDonator() {

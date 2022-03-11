@@ -1,7 +1,5 @@
 package enterprise.hibisco.hibiscows.service;
 
-import enterprise.hibisco.hibiscows.entities.Donator;
-import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.entities.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,10 +17,8 @@ public class HospitalService {
     }
 
     public ResponseEntity doRegister(User hospital) {
-        for (User user : hospitals) {
-            Hospital bloodCenter = ((Hospital) hospital);
-            Hospital hosp = ((Hospital) user);
-            if (bloodCenter.getCnpjHospital().equals(hosp.getCnpjHospital())){
+        for (User bloodCenter : hospitals) {
+            if (bloodCenter.getDocument().equals(hospital.getDocument())){
                 return ResponseEntity.status(401).body("CNPJ já existe no sistema!");
             }
         }
@@ -34,17 +30,9 @@ public class HospitalService {
         return hospitals;
     }
 
-    public String doLogin(String email, String password) {
-        for (User user : hospitals) {
-            if (
-                user.getEmail().equals(email) &&
-                user.recuperarPassword().equals(password)
-            ) {
-                user.setAuthenticated(true);
-                return "Login efetuado com sucesso!";
-            }
-        }
-        return "Usuário não encontrado. Tente novamente";
+    public ResponseEntity doLogin(User hospital) {
+        hospital.setAuthenticated(hospital.autenticar(hospital));
+        return ResponseEntity.status(hospital.isAuthenticated() ? 200 : 401).build();
     }
 
     public String doLogoff(String email) {
