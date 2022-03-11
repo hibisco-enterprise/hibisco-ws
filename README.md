@@ -1,2 +1,14 @@
-# hibisco-ws
- a backend web service responsible for managing the users of our application
+# Hibisco-WS
+
+
+Um web service responsável por gerenciar usuários doadores de sangue e hemocentros.
+
+- Feito utilizando Spring Boot e Java
+- API Dinâmica para cadastro e login de usuários e hospitais
+
+## Features
+
+- Projeto organizado em pacotes com entidades utilizando boas práticas de Spring e Java
+- Endpoints para usuários doadores e hospitais
+- Padrão strategy nas entidades para facil implementação do projeto
+- Endpoints Retornando Status HTTP, profissionalizando a API
