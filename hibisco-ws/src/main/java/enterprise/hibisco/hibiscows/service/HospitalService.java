@@ -3,6 +3,7 @@ package enterprise.hibisco.hibiscows.service;
 import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.entities.User;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,21 +18,24 @@ public class HospitalService {
         this.hospitals = new ArrayList<>();
     }
 
-    public String doRegister(User hospital) {
+    public ResponseEntity doRegister(User hospital) {
         for (User user : hospitals) {
             Hospital bloodCenter = ((Hospital) hospital);
             Hospital hosp = ((Hospital) user);
             if (bloodCenter.getCnpjHospital().equals(hosp.getCnpjHospital())){
-                return "CNPJ já existe no sistema!";
+                return ResponseEntity.status(401).body("CNPJ já existe no sistema!");
             }
         }
         hospitals.add(hospital);
-        return "Usuário cadastrado com sucesso!";
+        return ResponseEntity.status(201).build();
     }
 
-    public String doLogin(String email, String password) {
+    public String doLogin(Hospital hospital) {
         for (User user : hospitals) {
-            if (user.getEmail().equals(email) && user.recuperarPassword().equals(password)) {
+            if (
+                user.getEmail().equals(hospital.getEmail()) &&
+                user.recuperarPassword().equals(hospital.recuperarPassword())
+            ) {
                 user.setAuthenticated(true);
                 return "Login efetuado com sucesso!";
             }

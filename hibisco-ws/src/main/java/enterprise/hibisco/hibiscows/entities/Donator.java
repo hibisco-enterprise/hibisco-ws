@@ -1,11 +1,15 @@
 package enterprise.hibisco.hibiscows.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import enterprise.hibisco.hibiscows.service.DonatorService;
-import enterprise.hibisco.hibiscows.utils.UuidGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Donator extends User{
 
     @Autowired
+    @JsonIgnore
     private DonatorService donatorService;
 
     private Long idDonator;
@@ -14,26 +18,26 @@ public class Donator extends User{
     private String bloodType;
 
     public Donator() {
-        this.idDonator = UuidGenerator.wrapUuid().longValue();
+        this.idDonator = ThreadLocalRandom.current().nextLong(10000, 99999);
+    }
+
+    public Donator(String email, String password) {
+        super(email, password);
     }
 
     @Override
-    public String doRegister(User donator) {
+    public ResponseEntity doRegister(User donator) {
         return donatorService.doRegister(donator);
     }
 
     @Override
-    public String doLogin(String email, String password) {
-        return donatorService.doLogin(email, password);
+    public String doLogin(User user) {
+        return donatorService.doLogin((Donator) user);
     }
 
     @Override
     public String doLogoff(String email) {
         return donatorService.doLogoff(email);
-    }
-
-    public DonatorService getDonatorService() {
-        return donatorService;
     }
 
     public Long getIdDonator() {

@@ -2,6 +2,7 @@ package enterprise.hibisco.hibiscows.service;
 
 import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.entities.User;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,21 +17,24 @@ public class DonatorService {
         this.donators = new ArrayList<>();
     }
 
-    public String doRegister(User donator) {
+    public ResponseEntity doRegister(User donator) {
         for (User user: donators) {
             Donator doador = ((Donator) donator);
             Donator usuario = ((Donator) user);
             if (doador.getCpf().equals(usuario.getCpf())){
-                return "CPF já existe no sistema!";
+                return ResponseEntity.status(401).body("CPF já existe no sistema!");
             }
         }
         donators.add(donator);
-        return "Usuário cadastrado com sucesso!";
+        return ResponseEntity.status(201).build();
     }
 
-    public String doLogin(String email, String password) {
+    public String doLogin(Donator donator) {
         for (User user : donators) {
-            if (user.getEmail().equals(email) && user.recuperarPassword().equals(password)) {
+            if (
+                user.getEmail().equals(donator.getEmail()) &&
+                user.recuperarPassword().equals(donator.recuperarPassword())
+            ) {
                 user.setAuthenticated(true);
                 return "Login efetuado com sucesso!";
             }

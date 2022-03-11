@@ -1,8 +1,9 @@
 package enterprise.hibisco.hibiscows.entities;
-import enterprise.hibisco.hibiscows.service.DonatorService;
 import enterprise.hibisco.hibiscows.service.HospitalService;
-import enterprise.hibisco.hibiscows.utils.UuidGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Hospital extends User{
 
@@ -14,17 +15,21 @@ public class Hospital extends User{
     private String cnpjHospital;
 
     public Hospital() {
-        this.idHospital = UuidGenerator.wrapUuid().longValue();
+        this.idHospital = ThreadLocalRandom.current().nextLong(10000, 99999);
+    }
+
+    public Hospital(String email, String password) {
+        super(email, password);
     }
 
     @Override
-    public String doRegister(User donator) {
-        return hospitalService.doRegister(donator);
+    public ResponseEntity doRegister(User hospital) {
+        return hospitalService.doRegister(hospital);
     }
 
     @Override
-    public String doLogin(String login, String password) {
-        return hospitalService.doLogin(login, password);
+    public String doLogin(User hospital) {
+        return hospitalService.doLogin((Hospital) hospital);
     }
 
     @Override

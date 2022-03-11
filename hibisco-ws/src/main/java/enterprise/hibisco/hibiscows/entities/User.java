@@ -1,5 +1,7 @@
 package enterprise.hibisco.hibiscows.entities;
 import com.github.javafaker.Faker;
+import org.springframework.http.ResponseEntity;
+
 import java.util.Locale;
 
 public abstract class User {
@@ -12,6 +14,11 @@ public abstract class User {
 
     public User() {
         this.address = new Faker(new Locale("pt-BR")).address().fullAddress();
+    }
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
     public String getEmail() {
@@ -54,9 +61,9 @@ public abstract class User {
         this.authenticated = authenticated;
     }
 
-    public abstract String doRegister(User user);
+    public abstract ResponseEntity doRegister(User user);
 
-    public abstract String doLogin(String email, String password);
+    public abstract String doLogin(User user);
 
     public abstract String doLogoff(String email);
 
