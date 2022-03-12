@@ -30,7 +30,7 @@ public abstract class User {
         if (password.equals(null) || password.length() < 6 || password.length() > 30) {
             return false;
         }
-        
+
         return true;
     }
 

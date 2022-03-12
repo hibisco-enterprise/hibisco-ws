@@ -31,7 +31,10 @@ public class DonatorService {
             return ResponseEntity.status(401).body("Formato de e-mail inválido.");
         }
 
-        donator.validatePassword();
+        if (!donator.validatePassword()) {
+            return ResponseEntity.status(401).body("Senha inválida.");
+        }
+
 
         donators.add(donator);
         return ResponseEntity.status(201).build();
