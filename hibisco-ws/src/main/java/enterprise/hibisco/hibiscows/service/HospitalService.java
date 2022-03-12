@@ -23,6 +23,10 @@ public class HospitalService {
             }
         }
 
+        if (hospital.getPhone().length() < 8 || hospital.getPhone().equals(null)) {
+            return ResponseEntity.status(401).body("Número de telefone inválido.");
+        }
+
         if (hospital.getDocument().length() != 14) {
             return ResponseEntity.status(401).body("Número de CPF inválido!");
         }
@@ -48,7 +52,7 @@ public class HospitalService {
     }
 
     public ResponseEntity getHospitals() {
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.status(hospitals.isEmpty() ? 204 : 200).body(hospitals);
     }
 
     public ResponseEntity doLogin(User hospital) {
