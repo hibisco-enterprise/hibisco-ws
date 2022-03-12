@@ -32,14 +32,19 @@ public class HospitalService {
     }
 
     public ResponseEntity doLogin(User hospital) {
-        hospital.setAuthenticated(hospital.autenticar(hospital));
-        return ResponseEntity.status(hospital.isAuthenticated() ? 200 : 401).build();
+        for (User u: hospitals) {
+            if (u.autenticar(hospital)) {
+                u.setAuthenticated(true);
+                return ResponseEntity.status(200).build();
+            }
+        }
+        return ResponseEntity.status(401).build();
     }
 
     public ResponseEntity doLogoff(String email) {
         for (User user : hospitals) {
             if (user.getEmail().equals(email)) {
-                user.setAuthenticated(true);
+                user.setAuthenticated(false);
                 return ResponseEntity.status(200).build();
             }
         }
