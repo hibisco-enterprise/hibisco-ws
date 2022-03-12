@@ -34,7 +34,7 @@ public class DonatorController {
     }
 
     @DeleteMapping("/logoff/{email}")
-    public String doLogoff(@PathVariable String email) {
+    public ResponseEntity doLogoff(@PathVariable String email) {
         return donatorService.doLogoff(email);
     }
 
