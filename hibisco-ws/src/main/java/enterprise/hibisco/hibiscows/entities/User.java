@@ -21,11 +21,18 @@ public abstract class User {
         this.password = password;
     }
 
-    public boolean autenticar(User user) {
+    public boolean authenticate(User user) {
         return this.email.equals(user.getEmail()) &&
                this.password.equals(user.recuperarPassword());
     }
 
+    public boolean validatePassword() {
+        if (password.equals(null) || password.length() < 6 || password.length() > 30) {
+            return false;
+        }
+        
+        return true;
+    }
 
     public String getEmail() {
         return email;

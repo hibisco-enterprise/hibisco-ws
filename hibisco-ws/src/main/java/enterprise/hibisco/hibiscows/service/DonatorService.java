@@ -1,6 +1,5 @@
 package enterprise.hibisco.hibiscows.service;
 
-import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.entities.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,9 @@ public class DonatorService {
         if (!donator.getEmail().contains("@") && !donator.getEmail().contains(".com") && donator.getEmail().length() < 5) {
             return ResponseEntity.status(401).body("Formato de e-mail inválido.");
         }
-        
+
+        donator.validatePassword();
+
         donators.add(donator);
         return ResponseEntity.status(201).build();
     }
@@ -42,7 +43,7 @@ public class DonatorService {
 
     public ResponseEntity doLogin(User donator) {
         for (User u: donators) {
-            if (u.autenticar(donator)) {
+            if (u.authenticate(donator)) {
                 u.setAuthenticated(true);
                 return ResponseEntity.status(200).build();
             }

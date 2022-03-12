@@ -1,6 +1,5 @@
 package enterprise.hibisco.hibiscows.service;
 
-import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.entities.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,7 @@ public class HospitalService {
 
     public ResponseEntity doLogin(User hospital) {
         for (User u: hospitals) {
-            if (u.autenticar(hospital)) {
+            if (u.authenticate(hospital)) {
                 u.setAuthenticated(true);
                 return ResponseEntity.status(200).build();
             }
