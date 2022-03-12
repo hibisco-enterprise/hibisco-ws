@@ -23,7 +23,7 @@ public class HospitalController {
         return hospitalService.doRegister(hospital);
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public List<User> getHospitals() {
         return hospitalService.getHospitals();
     }
