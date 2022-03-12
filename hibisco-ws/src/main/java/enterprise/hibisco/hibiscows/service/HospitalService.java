@@ -37,6 +37,7 @@ public class HospitalService {
 
         if (hospital.getEmail().length() < 6) {
             return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve ter mais de 6 caracteres.");
+        }
 
         if (!hospital.validatePassword()) {
             return ResponseEntity.status(401).body("Senha inválida.");
