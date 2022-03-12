@@ -33,7 +33,7 @@ public class DonatorController {
         return donatorService.doLogin(user);
     }
 
-    @PostMapping("/logoff/{email}")
+    @DeleteMapping("/logoff/{email}")
     public String doLogoff(@PathVariable String email) {
         return donatorService.doLogoff(email);
     }
