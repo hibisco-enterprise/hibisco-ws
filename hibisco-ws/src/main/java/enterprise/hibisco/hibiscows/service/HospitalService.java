@@ -22,6 +22,19 @@ public class HospitalService {
                 return ResponseEntity.status(401).body("CNPJ já existe no sistema!");
             }
         }
+
+        if (hospital.getDocument().length() != 11) {
+            return ResponseEntity.status(401).body("Número de CPF inválido!");
+        }
+
+        if (!hospital.getEmail().contains("@") && !hospital.getEmail().contains(".com") && hospital.getEmail().length() < 5) {
+            return ResponseEntity.status(401).body("Formato de e-mail inválido.");
+        }
+
+        if (!hospital.validatePassword()) {
+            return ResponseEntity.status(401).body("Senha inválida.");
+        }
+        
         hospitals.add(hospital);
         return ResponseEntity.status(201).build();
     }
