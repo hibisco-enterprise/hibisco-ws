@@ -23,7 +23,7 @@ public class HospitalService {
             }
         }
 
-        if (hospital.getDocument().length() != 11) {
+        if (hospital.getDocument().length() != 14) {
             return ResponseEntity.status(401).body("Número de CPF inválido!");
         }
 
