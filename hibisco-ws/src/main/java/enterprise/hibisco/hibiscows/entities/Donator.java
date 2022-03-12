@@ -13,7 +13,7 @@ public class Donator extends User{
     private DonatorService donatorService;
 
     private Long idDonator;
-    private String nome;
+    private String name;
     private String cpf;
     private String bloodType;
 

@@ -23,6 +23,12 @@ public class DonatorService {
                 return ResponseEntity.status(401).body("CPF já existe no sistema!");
             }
         }
+
+        if (donator.getDocument().length() != 11) {
+            return ResponseEntity.status(401).body("Número de CPF inválido!");
+        }
+
+
         donators.add(donator);
         return ResponseEntity.status(201).build();
     }
