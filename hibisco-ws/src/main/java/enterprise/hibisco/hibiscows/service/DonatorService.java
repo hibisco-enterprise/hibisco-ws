@@ -28,7 +28,10 @@ public class DonatorService {
             return ResponseEntity.status(401).body("Número de CPF inválido!");
         }
 
-
+        if (!donator.getEmail().contains("@") && !donator.getEmail().contains(".com") && donator.getEmail().length() < 5) {
+            return ResponseEntity.status(401).body("Formato de e-mail inválido.");
+        }
+        
         donators.add(donator);
         return ResponseEntity.status(201).build();
     }
