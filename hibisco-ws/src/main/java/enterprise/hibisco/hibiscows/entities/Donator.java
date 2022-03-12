@@ -38,7 +38,7 @@ public class Donator extends User{
 
     @Override
     public String getDocument() {
-        return getCpf();
+        return cpf;
     }
 
     public Long getIdDonator() {
@@ -51,10 +51,6 @@ public class Donator extends User{
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getCpf() {
-        return cpf;
     }
 
     public void setCpf(String cpf) {

@@ -35,7 +35,7 @@ public class Hospital extends User{
 
     @Override
     public String getDocument() {
-        return getCnpjHospital();
+        return cnpjHospital;
     }
 
     public Long getIdHospital() {
@@ -48,10 +48,6 @@ public class Hospital extends User{
 
     public void setNameHospital(String nameHospital) {
         this.nameHospital = nameHospital;
-    }
-
-    public String getCnpjHospital() {
-        return cnpjHospital;
     }
 
     public void setCnpjHospital(String cnpjHospital) {
