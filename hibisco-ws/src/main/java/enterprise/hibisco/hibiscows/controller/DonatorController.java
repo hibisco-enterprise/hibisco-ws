@@ -24,12 +24,12 @@ public class DonatorController {
     }
 
     @GetMapping
-    public List<User> getDonators() {
+    public ResponseEntity getDonators() {
         return donatorService.getDonators();
     }
     
     @PostMapping("/login")
-    public ResponseEntity doLogin(@RequestBody User user) {
+    public ResponseEntity doLogin(@RequestBody Donator user) {
         return donatorService.doLogin(user);
     }
 

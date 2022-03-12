@@ -29,7 +29,7 @@ public class HospitalController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity doLogin(@RequestBody User user) {
+    public ResponseEntity doLogin(@RequestBody Hospital user) {
         return hospitalService.doLogin(user);
     }
 

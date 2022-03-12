@@ -1,5 +1,6 @@
 package enterprise.hibisco.hibiscows.service;
 
+import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.entities.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

@@ -1,5 +1,6 @@
 package enterprise.hibisco.hibiscows.service;
 
+import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.entities.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,8 @@ public class DonatorService {
         return ResponseEntity.status(201).build();
     }
 
-    public List<User> getDonators() {
-        return donators;
+    public ResponseEntity getDonators() {
+        return ResponseEntity.status(donators.isEmpty() ? 204 : 200).body(donators);
     }
 
     public ResponseEntity doLogin(User donator) {
