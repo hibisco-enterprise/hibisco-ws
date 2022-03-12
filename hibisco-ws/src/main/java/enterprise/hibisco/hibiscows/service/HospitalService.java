@@ -26,7 +26,7 @@ public class HospitalService {
             return ResponseEntity.status(401).body("Número de telefone inválido.");
         }
         if (hospital.getDocument().length() != 14) {
-            return ResponseEntity.status(401).body("Número de CPF inválido!");
+            return ResponseEntity.status(401).body("Número de CNPJ inválido!");
         }
         if (!hospital.getEmail().contains("@")) {
             return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve possuir @");
@@ -40,7 +40,7 @@ public class HospitalService {
         if (!hospital.validatePassword()) {
             return ResponseEntity.status(401).body("Senha inválida.");
         }
-        
+
         hospitals.add(hospital);
         return ResponseEntity.status(201).build();
     }
