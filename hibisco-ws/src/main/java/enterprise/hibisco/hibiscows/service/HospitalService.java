@@ -22,31 +22,25 @@ public class HospitalService {
                 return ResponseEntity.status(401).body("CNPJ já existe no sistema!");
             }
         }
-
         if (hospital.getPhone().length() < 8 || hospital.getPhone().equals(null)) {
             return ResponseEntity.status(401).body("Número de telefone inválido.");
         }
-
         if (hospital.getDocument().length() != 14) {
             return ResponseEntity.status(401).body("Número de CPF inválido!");
         }
-
         if (!hospital.getEmail().contains("@")) {
             return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve possuir @");
         }
-
         if (!hospital.getEmail().contains(".com")) {
             return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve possuir .com");
         }
-
         if (hospital.getEmail().length() < 6) {
             return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve ter mais de 6 caracteres.");
         }
-
         if (!hospital.validatePassword()) {
             return ResponseEntity.status(401).body("Senha inválida.");
         }
-
+        
         hospitals.add(hospital);
         return ResponseEntity.status(201).build();
     }

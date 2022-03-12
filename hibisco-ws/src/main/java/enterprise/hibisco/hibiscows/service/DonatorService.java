@@ -25,23 +25,18 @@ public class DonatorService {
         if (donator.getPhone().length() < 8 || donator.getPhone().equals(null)) {
             return ResponseEntity.status(401).body("Número de telefone inválido.");
         }
-
         if (donator.getDocument().length() != 11) {
             return ResponseEntity.status(401).body("Número de CPF inválido!");
         }
-
         if (!donator.getEmail().contains("@")) {
             return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve possuir @");
         }
-
         if (!donator.getEmail().contains(".com")) {
             return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve possuir .com");
         }
-
         if (donator.getEmail().length() < 6) {
             return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve ter mais de 6 caracteres.");
         }
-
         if (!donator.validatePassword()) {
             return ResponseEntity.status(401).body("Senha inválida.");
         }
