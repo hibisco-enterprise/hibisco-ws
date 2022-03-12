@@ -53,15 +53,9 @@ public class Donator extends User{
         this.nome = nome;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
+    public void setCpf(String cpf) { this.cpf = cpf; }
 
-    public String getBloodType() {
-        return bloodType;
-    }
+    public String getBloodType() { return bloodType; }
 
-    public void setBloodType(String bloodType) {
-        this.bloodType = bloodType;
-    }
+    public void setBloodType(String bloodType) { this.bloodType = bloodType; }
 }
