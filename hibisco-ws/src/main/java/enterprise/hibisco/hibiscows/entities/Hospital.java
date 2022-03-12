@@ -29,7 +29,7 @@ public class Hospital extends User{
     }
 
     @Override
-    public String doLogoff(String login) {
+    public ResponseEntity doLogoff(String login) {
         return hospitalService.doLogoff(login);
     }
 

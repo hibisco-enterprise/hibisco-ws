@@ -34,7 +34,7 @@ public class HospitalController {
     }
 
     @DeleteMapping("/logoff/{email}")
-    public String doLogoff(@PathVariable String email) {
+    public ResponseEntity doLogoff(@PathVariable String email) {
         return hospitalService.doLogoff(email);
     }
 

@@ -71,7 +71,7 @@ public abstract class User {
 
     public abstract ResponseEntity doLogin(User user);
 
-    public abstract String doLogoff(String email);
+    public abstract ResponseEntity doLogoff(String email);
 
     public abstract String getDocument();
 }

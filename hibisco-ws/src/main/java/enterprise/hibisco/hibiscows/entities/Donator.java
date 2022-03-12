@@ -32,7 +32,7 @@ public class Donator extends User{
     }
 
     @Override
-    public String doLogoff(String email) {
+    public ResponseEntity doLogoff(String email) {
         return donatorService.doLogoff(email);
     }
 

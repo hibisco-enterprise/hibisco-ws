@@ -35,13 +35,13 @@ public class HospitalService {
         return ResponseEntity.status(hospital.isAuthenticated() ? 200 : 401).build();
     }
 
-    public String doLogoff(String email) {
+    public ResponseEntity doLogoff(String email) {
         for (User user : hospitals) {
             if (user.getEmail().equals(email)) {
                 user.setAuthenticated(false);
-                return "Logoff efetuado com sucesso!";
+                return ResponseEntity.status(200).build();
             }
         }
-        return "Usuário não encontrado. Tente novamente";
+        return ResponseEntity.status(404).build();
     }
 }

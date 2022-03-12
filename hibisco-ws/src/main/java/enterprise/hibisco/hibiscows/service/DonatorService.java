@@ -35,14 +35,14 @@ public class DonatorService {
         return ResponseEntity.status(donator.isAuthenticated() ? 200 : 401).build();
     }
 
-    public String doLogoff(String email) {
+    public ResponseEntity doLogoff(String email) {
         for (User user : donators) {
             if (user.getEmail().equals(email)) {
                 user.setAuthenticated(false);
-                return "Logoff efetuado com sucesso!";
+                return ResponseEntity.status(201).build();
             }
         }
-        return "Usuário não encontrado. Tente novamente";
+        return ResponseEntity.status(404).build();
     }
 
 }
