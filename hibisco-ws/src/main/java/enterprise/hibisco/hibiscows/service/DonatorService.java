@@ -32,8 +32,14 @@ public class DonatorService {
     }
 
     public ResponseEntity doLogin(User donator) {
-        donator.setAuthenticated(donator.autenticar(donator));
-        return ResponseEntity.status(donator.isAuthenticated() ? 200 : 401).build();
+        for (User u: donators) {
+            if (u.autenticar(donator)) {
+                u.setAuthenticated(true);
+                return ResponseEntity.status(200).build();
+            }
+        }
+
+        return ResponseEntity.status(401).build();
     }
 
     public ResponseEntity doLogoff(String email) {
