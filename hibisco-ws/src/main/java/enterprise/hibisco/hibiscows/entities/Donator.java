@@ -46,11 +46,11 @@ public class Donator extends User{
     }
 
     public String getNome() {
-        return nome;
+        return name;
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.name = nome;
     }
 
     public void setCpf(String cpf) { this.cpf = cpf; }
