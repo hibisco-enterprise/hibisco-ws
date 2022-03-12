@@ -26,8 +26,8 @@ public class HospitalService {
         return ResponseEntity.status(201).build();
     }
 
-    public List<User> getHospitals() {
-        return hospitals;
+    public ResponseEntity getHospitals() {
+        return ResponseEntity.status(200).build();
     }
 
     public ResponseEntity doLogin(User hospital) {

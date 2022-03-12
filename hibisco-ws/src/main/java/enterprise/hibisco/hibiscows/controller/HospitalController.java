@@ -24,7 +24,7 @@ public class HospitalController {
     }
 
     @GetMapping
-    public List<User> getHospitals() {
+    public ResponseEntity getHospitals() {
         return hospitalService.getHospitals();
     }
 
