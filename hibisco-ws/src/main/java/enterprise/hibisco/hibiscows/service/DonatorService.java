@@ -27,8 +27,16 @@ public class DonatorService {
             return ResponseEntity.status(401).body("Número de CPF inválido!");
         }
 
-        if (!donator.getEmail().contains("@") && !donator.getEmail().contains(".com") && donator.getEmail().length() < 5) {
-            return ResponseEntity.status(401).body("Formato de e-mail inválido.");
+        if (!donator.getEmail().contains("@")) {
+            return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve possuir @");
+        }
+
+        if (!donator.getEmail().contains(".com")) {
+            return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve possuir .com");
+        }
+
+        if (donator.getEmail().length() < 6) {
+            return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve ter mais de 6 caracteres.");
         }
 
         if (!donator.validatePassword()) {
