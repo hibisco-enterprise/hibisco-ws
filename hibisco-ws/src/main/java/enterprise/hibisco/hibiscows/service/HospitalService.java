@@ -39,7 +39,7 @@ public class HospitalService {
     public ResponseEntity doLogoff(String email) {
         for (User user : hospitals) {
             if (user.getEmail().equals(email)) {
-                user.setAuthenticated(false);
+                user.setAuthenticated(true);
                 return ResponseEntity.status(200).build();
             }
         }
