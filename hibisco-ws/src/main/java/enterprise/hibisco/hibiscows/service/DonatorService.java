@@ -25,7 +25,7 @@ public class DonatorService {
         if (donator.getPhone().length() < 8 || donator.getPhone() == null) {
             return ResponseEntity.status(401).body("Número de telefone inválido.");
         }
-        if (donator.getDocument().length() != 11) {
+        if (donator.getDocument().length() != 14) {
             return ResponseEntity.status(401).body("Número de CPF inválido!");
         }
         if (!donator.getEmail().contains("@")) {

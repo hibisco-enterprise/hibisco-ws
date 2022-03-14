@@ -25,7 +25,7 @@ public class HospitalService {
         if (hospital.getPhone().length() < 8 || hospital.getPhone() == null) {
             return ResponseEntity.status(401).body("Número de telefone inválido.");
         }
-        if (hospital.getDocument().length() != 14) {
+        if (hospital.getDocument().length() != 18) {
             return ResponseEntity.status(401).body("Número de CNPJ inválido!");
         }
         if (!hospital.getEmail().contains("@")) {
