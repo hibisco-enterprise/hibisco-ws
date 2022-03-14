@@ -15,7 +15,6 @@ import java.util.List;
 public class DonatorController {
 
     @Autowired
-    @JsonIgnore
     private DonatorService donatorService;
 
     @PostMapping("/register")
