@@ -27,11 +27,7 @@ public abstract class User {
     }
 
     public boolean validatePassword() {
-        if (password.equals(null) || password.length() < 6 || password.length() > 30) {
-            return false;
-        }
-
-        return true;
+        return password != null && password.length() >= 6 && password.length() <= 30;
     }
 
     public String getEmail() {
