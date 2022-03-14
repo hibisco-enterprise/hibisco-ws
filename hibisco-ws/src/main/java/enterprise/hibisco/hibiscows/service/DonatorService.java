@@ -22,7 +22,7 @@ public class DonatorService {
                 return ResponseEntity.status(401).body("CPF já existe no sistema!");
             }
         }
-        if (donator.getPhone().length() < 8 || donator.getPhone().equals(null)) {
+        if (donator.getPhone().length() < 8 || donator.getPhone() == null) {
             return ResponseEntity.status(401).body("Número de telefone inválido.");
         }
         if (donator.getDocument().length() != 11) {
