@@ -22,7 +22,7 @@ public class HospitalService {
                 return ResponseEntity.status(401).body("CNPJ já existe no sistema!");
             }
         }
-        if (hospital.getPhone().length() < 8 || hospital.getPhone().equals(null)) {
+        if (hospital.getPhone().length() < 8 || hospital.getPhone() == null) {
             return ResponseEntity.status(401).body("Número de telefone inválido.");
         }
         if (hospital.getDocument().length() != 14) {
