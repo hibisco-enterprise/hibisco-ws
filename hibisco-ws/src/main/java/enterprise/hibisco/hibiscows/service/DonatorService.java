@@ -31,8 +31,8 @@ public class DonatorService {
         if (!donator.getEmail().contains("@")) {
             return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve possuir @");
         }
-        if ((!donator.getEmail().contains(".com")) || (!donator.getEmail().contains(".school"))) {
-            return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve possuir seu sufixo de domínio");
+        if (!donator.getEmail().contains(".com")) {
+            return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve possuir .com");
         }
         if (donator.getEmail().length() < 6) {
             return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve ter mais de 6 caracteres.");
