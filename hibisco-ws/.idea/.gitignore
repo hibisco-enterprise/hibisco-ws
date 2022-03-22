@@ -1,4 +1,8 @@
 # Default ignored files
-/shelf/
+/compiler.xml
 /workspace.xml
-/runConfigurations/*.xml
+/encodings.xml
+/jarRepositories.xml
+/markdown.xml
+/misc.xml
+/vcs.xml
