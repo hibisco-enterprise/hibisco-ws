@@ -26,7 +26,6 @@ target/
 .idea/misc.xml
 .idea/vcs.xml
 .idea/dictionaries/*.xml
-!.idea/runConfigurations/*.xml
 
 ### NetBeans ###
 /nbproject/private/
