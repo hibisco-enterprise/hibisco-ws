@@ -17,14 +17,14 @@ target/
 *.iws
 *.iml
 *.ipr
-.idea/compiler.xml
-.idea/workspace.xml
-.idea/encodings.xml
-.idea/jarRepositories.xml
-.idea/markdown.xml
-.idea/misc.xml
-.idea/vcs.xml
-.idea/dictionaries/*.xml
+/.idea/compiler.xml
+/.idea/workspace.xml
+/.idea/encodings.xml
+/.idea/jarRepositories.xml
+/.idea/markdown.xml
+/.idea/misc.xml
+/.idea/vcs.xml
+/.idea/dictionaries/*.xml
 
 ### NetBeans ###
 /nbproject/private/
