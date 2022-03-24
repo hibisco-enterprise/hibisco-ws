@@ -1,22 +1,34 @@
 package enterprise.hibisco.hibiscows.entities;
 import enterprise.hibisco.hibiscows.service.HospitalService;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.br.CNPJ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Entity
+@SuppressWarnings("unused")
+@Table(name = "tb_hospital")
 public class Hospital extends User{
 
-    @Autowired
+    @Autowired @Transient
     private HospitalService hospitalService;
 
-    private Long idHospital;
-    private String nameHospital;
-    private String cnpjHospital;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter private Long idHospital;
 
-    public Hospital() {
-        this.idHospital = ThreadLocalRandom.current().nextLong(10000, 99999);
-    }
+    @NotBlank @NotNull @Min(8)
+    @Getter @Setter private String nameHospital;
+
+    @CNPJ
+    @Getter @Setter private String cnpjHospital;
 
     @Override
     public ResponseEntity doRegister(User hospital) {
@@ -38,19 +50,4 @@ public class Hospital extends User{
         return cnpjHospital;
     }
 
-    public Long getIdHospital() {
-        return idHospital;
-    }
-
-    public String getNameHospital() {
-        return nameHospital;
-    }
-
-    public void setNameHospital(String nameHospital) {
-        this.nameHospital = nameHospital;
-    }
-
-    public void setCnpjHospital(String cnpjHospital) {
-        this.cnpjHospital = cnpjHospital;
-    }
 }

@@ -22,24 +22,6 @@ public class DonatorService {
                 return ResponseEntity.status(401).body("CPF já existe no sistema!");
             }
         }
-        if (donator.getPhone().length() < 8 || donator.getPhone() == null) {
-            return ResponseEntity.status(401).body("Número de telefone inválido.");
-        }
-        if (donator.getDocument().length() != 14) {
-            return ResponseEntity.status(401).body("Número de CPF inválido!");
-        }
-        if (!donator.getEmail().contains("@")) {
-            return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve possuir @");
-        }
-        if (!donator.getEmail().contains(".com")) {
-            return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve possuir .com");
-        }
-        if (donator.getEmail().length() < 6) {
-            return ResponseEntity.status(401).body("Formato de e-mail inválido. O e-mail deve ter mais de 6 caracteres.");
-        }
-        if (!donator.validatePassword()) {
-            return ResponseEntity.status(401).body("Senha inválida.");
-        }
 
         donators.add(donator);
         return ResponseEntity.status(201).build();

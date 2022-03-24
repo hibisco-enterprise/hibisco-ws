@@ -1,25 +1,39 @@
 package enterprise.hibisco.hibiscows.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import enterprise.hibisco.hibiscows.service.DonatorService;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
+import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Entity
+@SuppressWarnings("unused")
+@Table(name = "tb_donator")
 public class Donator extends User{
 
-    @Autowired
-    @JsonIgnore
+    @Autowired @Transient
     private DonatorService donatorService;
 
-    private Long idDonator;
-    private String name;
-    private String cpf;
-    private String bloodType;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter private Long idDonator;
 
-    public Donator() {
-        this.idDonator = ThreadLocalRandom.current().nextLong(10000, 99999);
-    }
+    @NotNull @NotBlank
+    @Getter @Setter private String name;
+
+    @NotNull @NotBlank @CPF
+    @Getter @Setter private String cpf;
+
+    @NotNull @NotBlank @Min(2) @Max(3)
+    @Getter @Setter private String bloodType;
 
     @Override
     public ResponseEntity doRegister(User donator) {
@@ -41,21 +55,4 @@ public class Donator extends User{
         return cpf;
     }
 
-    public Long getIdDonator() {
-        return idDonator;
-    }
-
-    public String getNome() {
-        return name;
-    }
-
-    public void setNome(String nome) {
-        this.name = nome;
-    }
-
-    public void setCpf(String cpf) { this.cpf = cpf; }
-
-    public String getBloodType() { return bloodType; }
-
-    public void setBloodType(String bloodType) { this.bloodType = bloodType; }
 }
