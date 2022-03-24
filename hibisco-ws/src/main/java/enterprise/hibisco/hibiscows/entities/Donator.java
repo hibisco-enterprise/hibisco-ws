@@ -1,5 +1,4 @@
 package enterprise.hibisco.hibiscows.entities;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +11,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Entity
 @SuppressWarnings("unused")
@@ -22,12 +20,12 @@ public class Donator extends User{
     @Autowired @Transient
     private DonatorService donatorService;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter private Long idDonator;
+//    @Id //comentado, pois não há a possibilidade de manter o id nas subclasses
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Getter private Long idDonator;
 
-    @NotNull @NotBlank
-    @Getter @Setter private String name;
+    @NotNull @NotBlank @Min(3)
+    @Getter @Setter private String nameDonator;
 
     @NotNull @NotBlank @CPF
     @Getter @Setter private String cpf;

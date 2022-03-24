@@ -5,11 +5,18 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.http.ResponseEntity;
 
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Locale;
 
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @SuppressWarnings("unused")
 public abstract class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    private Long id_user;
 
     @NotNull @NotBlank @Email
     @Getter @Setter private String email;

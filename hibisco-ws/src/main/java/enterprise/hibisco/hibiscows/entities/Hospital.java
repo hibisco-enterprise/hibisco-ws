@@ -20,9 +20,9 @@ public class Hospital extends User{
     @Autowired @Transient
     private HospitalService hospitalService;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter private Long idHospital;
+//    @Id //comentado, pois não há a possibilidade de manter o id nas subclasses
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Getter private Long idHospital;
 
     @NotBlank @NotNull @Min(8)
     @Getter @Setter private String nameHospital;
