@@ -1,10 +1,10 @@
 package enterprise.hibisco.hibiscows.repositories;
 
-import enterprise.hibisco.hibiscows.entities.Donator;
+import enterprise.hibisco.hibiscows.entities.Hospital;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @SuppressWarnings("unused")
-public interface DonatorRepository extends JpaRepository<Donator, Long> {
+public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 }
