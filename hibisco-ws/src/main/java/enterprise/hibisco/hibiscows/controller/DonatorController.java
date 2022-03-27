@@ -3,6 +3,7 @@ package enterprise.hibisco.hibiscows.controller;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.entities.User;
+import enterprise.hibisco.hibiscows.responses.DonatorResponseDTO;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class DonatorController {
     private DonatorService donatorService;
 
     @PostMapping("/register")
-    public ResponseEntity doRegister(@RequestBody Donator donator) {
+    public ResponseEntity doRegister(@RequestBody DonatorResponseDTO donator) {
         return donatorService.doRegister(donator);
     }
 

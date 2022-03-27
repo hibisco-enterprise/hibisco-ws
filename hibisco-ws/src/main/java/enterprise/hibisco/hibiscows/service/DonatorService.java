@@ -1,6 +1,13 @@
 package enterprise.hibisco.hibiscows.service;
 
+import enterprise.hibisco.hibiscows.entities.AddressData;
+import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.entities.User;
+import enterprise.hibisco.hibiscows.repositories.AddressRepository;
+import enterprise.hibisco.hibiscows.repositories.DonatorRepository;
+import enterprise.hibisco.hibiscows.responses.DonatorResponseDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -10,21 +17,39 @@ import java.util.List;
 @Service
 public class DonatorService {
 
-    private List<User> donators;
+    @Autowired
+    private DonatorRepository repository;
 
-    public DonatorService() {
-        this.donators = new ArrayList<>();
-    }
+    @Autowired
+    private AddressRepository addressRepository;
 
-    public ResponseEntity doRegister(User donator) {
-        for (User user: donators) {
-            if (user.getDocument().equals(donator.getDocument())){
-                return ResponseEntity.status(401).body("CPF já existe no sistema!");
-            }
+    public ResponseEntity doRegister(DonatorResponseDTO donator) {
+        if (repository.existsByCpf(donator.getCpf())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF inválido, tente novamente com um cpf diferente");
         }
 
-        donators.add(donator);
-        return ResponseEntity.status(201).build();
+        Long fkAddress = addressRepository.saveAddressReturningId(
+            donator.getAddress(),
+            donator.getNeighborhood(),
+            donator.getCity(),
+            donator.getUf(),
+            donator.getCep(),
+            donator.getNumber()
+        );
+
+        Donator newDonator = new Donator(
+            donator.getEmail(),
+            donator.getPassword(),
+            donator.getPhone(),
+            donator.getNameDonator(),
+            donator.getCpf(),
+            donator.getBloodType(),
+            fkAddress
+        );
+
+        repository.save(newDonator);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     public ResponseEntity getDonators() {

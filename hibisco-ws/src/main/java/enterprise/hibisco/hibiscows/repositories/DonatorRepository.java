@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 @SuppressWarnings("unused")
 public interface DonatorRepository extends JpaRepository<Donator, Long> {
+
+    boolean existsByCpf(String cpf);
 }

@@ -28,7 +28,7 @@ public class Hospital extends User{
     @Getter @Setter private String nameHospital;
 
     @CNPJ
-    @Getter @Setter private String cnpjHospital;
+    @Setter private String cnpjHospital;
 
     @Override
     public ResponseEntity doRegister(User hospital) {

@@ -1,4 +1,5 @@
 package enterprise.hibisco.hibiscows.entities;
+import enterprise.hibisco.hibiscows.responses.DonatorResponseDTO;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,13 +29,30 @@ public class Donator extends User{
     @Getter @Setter private String nameDonator;
 
     @NotNull @NotBlank @CPF
-    @Getter @Setter private String cpf;
+    @Setter private String cpf;
 
     @NotNull @NotBlank @Min(2) @Max(3)
     @Getter @Setter private String bloodType;
 
+    @NotNull @NotBlank
+    @Getter @Setter private Long fkAddress;
+
+    public Donator(String email,
+                   String password,
+                   String phone,
+                   String nameDonator,
+                   String cpf,
+                   String bloodType,
+                   Long fkAddress) {
+        super(email, password, phone);
+        this.nameDonator = nameDonator;
+        this.cpf = cpf;
+        this.bloodType = bloodType;
+        this.fkAddress = fkAddress;
+    }
+
     @Override
-    public ResponseEntity doRegister(User donator) {
+    public ResponseEntity doRegister(DonatorResponseDTO donator) {
         return donatorService.doRegister(donator);
     }
 

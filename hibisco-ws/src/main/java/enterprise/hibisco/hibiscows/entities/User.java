@@ -1,5 +1,6 @@
 package enterprise.hibisco.hibiscows.entities;
 import com.github.javafaker.Faker;
+import enterprise.hibisco.hibiscows.responses.DonatorResponseDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
@@ -28,14 +29,13 @@ public abstract class User {
     @Size(max = 14)
     @Getter @Setter private String phone;
 
-    @NotNull @NotBlank
-    @Getter @Setter private String address; // por enquanto está sendo gerado automaticamente
-
     @NotNull
-    @Getter @Setter  private boolean authenticated;
+    @Getter @Setter private boolean authenticated;
 
-    public User() {
-        this.address = new Faker(new Locale("pt-BR")).address().fullAddress();
+    public User(String email, String password, String phone) {
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
     }
 
     public boolean authenticate(User user) {
@@ -51,7 +51,7 @@ public abstract class User {
         this.password = password;
     }
 
-    public abstract ResponseEntity doRegister(User user);
+    public abstract ResponseEntity doRegister(DonatorResponseDTO user);
 
     public abstract ResponseEntity doLogin(User user);
 
