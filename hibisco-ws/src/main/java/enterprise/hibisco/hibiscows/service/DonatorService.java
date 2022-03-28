@@ -64,12 +64,15 @@ public class DonatorService {
     public ResponseEntity doLogin(UserResponseDTO donator) {
         //TODO: criar objeto doador e efetuar login chamando authenticate
         var login = repository.findLoginAndPassword(donator.getEmail(), donator.recoverPassword());
-        return ResponseEntity.status(HttpStatus.OK).build();
-        //falta algumas coisas a implementar
+        if (login == 1) {
+            var idUser = repository.getIdUser(donator.getEmail(), donator.recoverPassword());
+            repository.authenticateUser(idUser);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     public ResponseEntity doLogoff(String email) {
-        //TODO: criar objeto doador e efetuar busca na base, caso exista, fazer logoff
         return ResponseEntity.status(404).build();
     }
 
