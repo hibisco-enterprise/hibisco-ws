@@ -1,18 +1,15 @@
 package enterprise.hibisco.hibiscows.service;
 
-import enterprise.hibisco.hibiscows.entities.AddressData;
+import com.sun.xml.bind.v2.TODO;
 import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.entities.User;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.DonatorRepository;
-import enterprise.hibisco.hibiscows.responses.DonatorResponseDTO;
+import enterprise.hibisco.hibiscows.responses.UserResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class DonatorService {
@@ -23,57 +20,54 @@ public class DonatorService {
     @Autowired
     private AddressRepository addressRepository;
 
-    public ResponseEntity doRegister(DonatorResponseDTO donator) {
-        if (repository.existsByCpf(donator.getCpf())) {
+    public ResponseEntity doRegister(UserResponseDTO donator) {
+        if (repository.existsByCpf(donator.getCpf().toString())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF inválido, tente novamente com um cpf diferente");
         }
 
-        Long fkAddress = addressRepository.saveAddressReturningId(
-            donator.getAddress(),
-            donator.getNeighborhood(),
-            donator.getCity(),
-            donator.getUf(),
-            donator.getCep(),
-            donator.getNumber()
-        );
+        try {
+            Long fkAddress = addressRepository.saveAddressReturningId(
+                    donator.getAddress(),
+                    donator.getNeighborhood(),
+                    donator.getCity(),
+                    donator.getUf(),
+                    donator.getCep(),
+                    donator.getNumber()
+            );
 
-        Donator newDonator = new Donator(
-            donator.getEmail(),
-            donator.getPassword(),
-            donator.getPhone(),
-            donator.getNameDonator(),
-            donator.getCpf(),
-            donator.getBloodType(),
-            fkAddress
-        );
+            Donator newDonator = new Donator(
+                    donator.getEmail(),
+                    donator.getPassword(),
+                    donator.getPhone(),
+                    donator.getNameDonator().toString(),
+                    donator.getCpf().toString(),
+                    donator.getBloodType().toString(),
+                    fkAddress
+            );
 
-        repository.save(newDonator);
+            repository.save(newDonator);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     public ResponseEntity getDonators() {
-        return ResponseEntity.status(donators.isEmpty() ? 204 : 200).body(donators);
+        if (repository.count() > 0) {
+            var donators = repository.findAll();
+            return ResponseEntity.status(HttpStatus.OK).body(donators);
+        }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    public ResponseEntity doLogin(User donator) {
-        for (User u: donators) {
-            if (u.authenticate(donator)) {
-                u.setAuthenticated(true);
-                return ResponseEntity.status(200).build();
-            }
-        }
-
+    public ResponseEntity doLogin(UserResponseDTO donator) {
+        //TODO: criar objeto doador e efetuar login chamando authenticate
         return ResponseEntity.status(401).build();
     }
 
     public ResponseEntity doLogoff(String email) {
-        for (User user : donators) {
-            if (user.getEmail().equals(email)) {
-                user.setAuthenticated(false);
-                return ResponseEntity.status(201).build();
-            }
-        }
+        //TODO: criar objeto doador e efetuar busca na base, caso exista, fazer logoff
         return ResponseEntity.status(404).build();
     }
 

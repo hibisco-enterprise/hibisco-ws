@@ -1,15 +1,11 @@
 package enterprise.hibisco.hibiscows.controller;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.entities.Hospital;
-import enterprise.hibisco.hibiscows.entities.User;
+import enterprise.hibisco.hibiscows.responses.UserResponseDTO;
 import enterprise.hibisco.hibiscows.service.HospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/hospitals")
@@ -19,7 +15,7 @@ public class HospitalController {
     private HospitalService hospitalService;
 
     @PostMapping("/register")
-    public ResponseEntity doRegister(@RequestBody Hospital hospital) {
+    public ResponseEntity doRegister(@RequestBody UserResponseDTO hospital) {
         return hospitalService.doRegister(hospital);
     }
 
@@ -29,7 +25,7 @@ public class HospitalController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity doLogin(@RequestBody Hospital user) {
+    public ResponseEntity doLogin(@RequestBody UserResponseDTO user) {
         return hospitalService.doLogin(user);
     }
 

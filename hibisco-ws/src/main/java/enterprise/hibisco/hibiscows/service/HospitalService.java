@@ -1,6 +1,7 @@
 package enterprise.hibisco.hibiscows.service;
 
 import enterprise.hibisco.hibiscows.entities.User;
+import enterprise.hibisco.hibiscows.responses.UserResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class HospitalService {
         this.hospitals = new ArrayList<>();
     }
 
-    public ResponseEntity doRegister(User hospital) {
+    public ResponseEntity doRegister(UserResponseDTO hospital) {
         for (User bloodCenter : hospitals) {
             if (bloodCenter.getDocument().equals(hospital.getDocument())){
                 return ResponseEntity.status(401).body("CNPJ já existe no sistema!");
@@ -30,7 +31,7 @@ public class HospitalService {
         return ResponseEntity.status(hospitals.isEmpty() ? 204 : 200).body(hospitals);
     }
 
-    public ResponseEntity doLogin(User hospital) {
+    public ResponseEntity doLogin(UserResponseDTO hospital) {
         for (User u: hospitals) {
             if (u.authenticate(hospital)) {
                 u.setAuthenticated(true);

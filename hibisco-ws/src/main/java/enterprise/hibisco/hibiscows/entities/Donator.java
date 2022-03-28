@@ -1,5 +1,5 @@
 package enterprise.hibisco.hibiscows.entities;
-import enterprise.hibisco.hibiscows.responses.DonatorResponseDTO;
+import enterprise.hibisco.hibiscows.responses.UserResponseDTO;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @SuppressWarnings("unused")
 @Table(name = "tb_donator")
-public class Donator extends User{
+public class Donator extends User {
 
     @Autowired @Transient
     private DonatorService donatorService;
@@ -52,12 +52,12 @@ public class Donator extends User{
     }
 
     @Override
-    public ResponseEntity doRegister(DonatorResponseDTO donator) {
+    public ResponseEntity doRegister(UserResponseDTO donator) {
         return donatorService.doRegister(donator);
     }
 
     @Override
-    public ResponseEntity doLogin(User user) {
+    public ResponseEntity doLogin(UserResponseDTO user) {
         return donatorService.doLogin(user);
     }
 

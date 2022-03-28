@@ -1,14 +1,13 @@
 package enterprise.hibisco.hibiscows.entities;
-import com.github.javafaker.Faker;
-import enterprise.hibisco.hibiscows.responses.DonatorResponseDTO;
+import enterprise.hibisco.hibiscows.responses.UserResponseDTO;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.http.ResponseEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.util.Locale;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -23,7 +22,7 @@ public abstract class User {
     @Getter @Setter private String email;
 
     @NotNull @NotBlank @Min(8)
-    @Pattern(regexp = "/^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/") // exige uma senha com no minimo 8 caracteres, cotendo maiúsculas e minúsculas, números e caracteres especiais
+    @Pattern(regexp = "/(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}/") // exige uma senha com no minimo 8 caracteres, cotendo maiúsculas e minúsculas, números e caracteres especiais
     private String password;
 
     @Size(max = 14)
@@ -51,9 +50,9 @@ public abstract class User {
         this.password = password;
     }
 
-    public abstract ResponseEntity doRegister(DonatorResponseDTO user);
+    public abstract ResponseEntity doRegister(UserResponseDTO user);
 
-    public abstract ResponseEntity doLogin(User user);
+    public abstract ResponseEntity doLogin(UserResponseDTO user);
 
     public abstract ResponseEntity doLogoff(String email);
 
