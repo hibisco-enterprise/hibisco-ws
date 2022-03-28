@@ -37,7 +37,7 @@ public class DonatorService {
 
             Donator newDonator = new Donator(
                     donator.getEmail(),
-                    donator.getPassword(),
+                    donator.recoverPassword(),
                     donator.getPhone(),
                     donator.getNameDonator().toString(),
                     donator.getCpf().toString(),
@@ -63,7 +63,9 @@ public class DonatorService {
 
     public ResponseEntity doLogin(UserResponseDTO donator) {
         //TODO: criar objeto doador e efetuar login chamando authenticate
-        return ResponseEntity.status(401).build();
+        var login = repository.findLoginAndPassword(donator.getEmail(), donator.recoverPassword());
+        return ResponseEntity.status(HttpStatus.OK).build();
+        //falta algumas coisas a implementar
     }
 
     public ResponseEntity doLogoff(String email) {

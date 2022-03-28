@@ -22,7 +22,8 @@ public abstract class User {
     @Getter @Setter private String email;
 
     @NotNull @NotBlank @Min(8)
-    @Pattern(regexp = "/(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}/") // exige uma senha com no minimo 8 caracteres, cotendo maiúsculas e minúsculas, números e caracteres especiais
+    // exige uma senha com no minimo 8 caracteres, cotendo maiúsculas e minúsculas, números e caracteres especiais
+    @Pattern(regexp = "/(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}/")
     private String password;
 
     @Size(max = 14)
@@ -37,12 +38,7 @@ public abstract class User {
         this.phone = phone;
     }
 
-    public boolean authenticate(User user) {
-        return this.email.equals(user.getEmail()) &&
-               this.password.equals(user.recuperarPassword());
-    }
-
-    public String recuperarPassword() {
+    public String recoverPassword() {
         return password;
     }
 

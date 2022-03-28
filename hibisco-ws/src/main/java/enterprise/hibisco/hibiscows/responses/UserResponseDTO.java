@@ -8,7 +8,7 @@ import java.util.Optional;
 public class UserResponseDTO {
 
     @Getter private String email;
-    @Getter private String password;
+    private String password;
     @Getter private String phone;
     @Getter private Optional<String> nameDonator;
     @Getter private Optional<String> cpf;
@@ -72,5 +72,15 @@ public class UserResponseDTO {
         this.uf = uf;
         this.cep = cep;
         this.number = number;
+    }
+
+    //Construtor Login
+    public UserResponseDTO(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public String recoverPassword() {
+        return password;
     }
 }
