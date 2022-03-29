@@ -1,8 +1,5 @@
 package enterprise.hibisco.hibiscows.entities;
-import enterprise.hibisco.hibiscows.responses.UserResponseDTO;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 
@@ -46,11 +43,11 @@ public abstract class User {
         this.password = password;
     }
 
-    public abstract ResponseEntity doRegister(UserResponseDTO user);
+    public abstract ResponseEntity doRegister(Object user);
 
-    public abstract ResponseEntity doLogin(UserResponseDTO user);
+    public abstract ResponseEntity doLogin(Object user);
 
-    public abstract ResponseEntity doLogoff(String email);
+    public abstract ResponseEntity doLogoff(Long IdUser);
 
     public abstract String getDocument();
 }

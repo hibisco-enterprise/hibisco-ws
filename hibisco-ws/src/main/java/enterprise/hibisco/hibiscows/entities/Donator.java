@@ -52,18 +52,18 @@ public class Donator extends User {
     }
 
     @Override
-    public ResponseEntity doRegister(UserResponseDTO donator) {
-        return donatorService.doRegister(donator);
+    public ResponseEntity doRegister(Object donator) {
+        return donatorService.doRegister((UserResponseDTO) donator);
     }
 
     @Override
-    public ResponseEntity doLogin(UserResponseDTO user) {
-        return donatorService.doLogin(user);
+    public ResponseEntity doLogin(Object user) {
+        return donatorService.doLogin((UserResponseDTO) user);
     }
 
     @Override
-    public ResponseEntity doLogoff(String email) {
-        return donatorService.doLogoff(email);
+    public ResponseEntity doLogoff(Long IdUser) {
+        return donatorService.doLogoff(IdUser);
     }
 
     @Override

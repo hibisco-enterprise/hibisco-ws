@@ -6,14 +6,13 @@ import lombok.Getter;
 import java.util.Optional;
 @AllArgsConstructor
 @SuppressWarnings("unused")
-public class UserResponseDTO {
+public class HospitalResponseDTO {
 
-    @Getter private String email;
-    private String password;
+    @Getter private final String email;
+    private final String password;
     @Getter private String phone;
-    @Getter private String nameDonator;
-    @Getter private String cpf;
-    @Getter private String bloodType;
+    @Getter private String nameHospital;
+    @Getter private String cnpjHospital;
     @Getter private String address;
     @Getter private String neighborhood;
     @Getter private String city;
@@ -21,8 +20,7 @@ public class UserResponseDTO {
     @Getter private String cep;
     @Getter private Integer number;
 
-    //Construtor Login
-    public UserResponseDTO(String email, String password) {
+    public HospitalResponseDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }

@@ -72,7 +72,7 @@ public class DonatorService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    public ResponseEntity doLogoff(String email) {
+    public ResponseEntity doLogoff(Long idUser) {
         return ResponseEntity.status(404).build();
     }
 

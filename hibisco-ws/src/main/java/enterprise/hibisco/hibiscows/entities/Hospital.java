@@ -1,5 +1,5 @@
 package enterprise.hibisco.hibiscows.entities;
-import enterprise.hibisco.hibiscows.responses.UserResponseDTO;
+import enterprise.hibisco.hibiscows.responses.HospitalResponseDTO;
 import enterprise.hibisco.hibiscows.service.HospitalService;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,17 +42,17 @@ public class Hospital extends User {
     }
 
     @Override
-    public ResponseEntity doRegister(UserResponseDTO hospital) {
-        return hospitalService.doRegister(hospital);
+    public ResponseEntity doRegister(Object hospital) {
+        return hospitalService.doRegister((HospitalResponseDTO) hospital);
     }
 
     @Override
-    public ResponseEntity doLogin(UserResponseDTO user) {
-        return hospitalService.doLogin(user);
+    public ResponseEntity doLogin(Object user) {
+        return hospitalService.doLogin((HospitalResponseDTO) user);
     }
 
     @Override
-    public ResponseEntity doLogoff(String login) {
+    public ResponseEntity doLogoff(Long login) {
         return hospitalService.doLogoff(login);
     }
 

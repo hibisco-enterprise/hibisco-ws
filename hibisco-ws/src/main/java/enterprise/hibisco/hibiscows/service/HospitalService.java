@@ -1,7 +1,7 @@
 package enterprise.hibisco.hibiscows.service;
 
 import enterprise.hibisco.hibiscows.entities.User;
-import enterprise.hibisco.hibiscows.responses.UserResponseDTO;
+import enterprise.hibisco.hibiscows.responses.HospitalResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +17,7 @@ public class HospitalService {
         this.hospitals = new ArrayList<>();
     }
 
-    public ResponseEntity doRegister(UserResponseDTO hospital) {
-        for (User bloodCenter : hospitals) {
-            if (bloodCenter.getDocument().equals(hospital.getDocument())){
-                return ResponseEntity.status(401).body("CNPJ já existe no sistema!");
-            }
-        }
-        hospitals.add(hospital);
+    public ResponseEntity doRegister(HospitalResponseDTO hospital) {
         return ResponseEntity.status(201).build();
     }
 
@@ -31,23 +25,13 @@ public class HospitalService {
         return ResponseEntity.status(hospitals.isEmpty() ? 204 : 200).body(hospitals);
     }
 
-    public ResponseEntity doLogin(UserResponseDTO hospital) {
-        for (User u: hospitals) {
-            if (u.authenticate(hospital)) {
-                u.setAuthenticated(true);
-                return ResponseEntity.status(200).build();
-            }
-        }
+    public ResponseEntity doLogin(HospitalResponseDTO hospital) {
+
         return ResponseEntity.status(401).build();
     }
 
-    public ResponseEntity doLogoff(String email) {
-        for (User user : hospitals) {
-            if (user.getEmail().equals(email)) {
-                user.setAuthenticated(false);
-                return ResponseEntity.status(200).build();
-            }
-        }
+    public ResponseEntity doLogoff(Long idUser) {
+
         return ResponseEntity.status(404).build();
     }
 }
