@@ -1,5 +1,6 @@
 package enterprise.hibisco.hibiscows.service;
 
+import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.DonatorRepository;
@@ -23,24 +24,26 @@ public class DonatorService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF inválido, tente novamente com um cpf diferente");
         }
 
+        AddressData address = new AddressData(
+            donator.getAddress(),
+            donator.getNeighborhood(),
+            donator.getCity(),
+            donator.getUf(),
+            donator.getCep(),
+            donator.getNumber()
+        );
+
         try {
-            Long fkAddress = addressRepository.saveAddressReturningId(
-                    donator.getAddress(),
-                    donator.getNeighborhood(),
-                    donator.getCity(),
-                    donator.getUf(),
-                    donator.getCep(),
-                    donator.getNumber()
-            );
+            var fkAddress = addressRepository.save(address);
 
             Donator newDonator = new Donator(
                     donator.getEmail(),
                     donator.recoverPassword(),
                     donator.getPhone(),
-                    donator.getNameDonator().toString(),
-                    donator.getCpf().toString(),
-                    donator.getBloodType().toString(),
-                    fkAddress
+                    donator.getNameDonator(),
+                    donator.getCpf(),
+                    donator.getBloodType(),
+                    fkAddress.getIdAddress()
             );
 
             repository.save(newDonator);
