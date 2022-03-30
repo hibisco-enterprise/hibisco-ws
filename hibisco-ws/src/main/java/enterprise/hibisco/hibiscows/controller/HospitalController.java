@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/hospitals")
+@SuppressWarnings("unused")
 public class HospitalController {
 
     @Autowired

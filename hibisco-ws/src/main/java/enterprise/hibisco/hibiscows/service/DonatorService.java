@@ -24,19 +24,20 @@ public class DonatorService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF inválido, tente novamente com um cpf diferente");
         }
 
-        AddressData address = new AddressData(
-            donator.getAddress(),
-            donator.getNeighborhood(),
-            donator.getCity(),
-            donator.getUf(),
-            donator.getCep(),
-            donator.getNumber()
-        );
-
         try {
-            var fkAddress = addressRepository.save(address);
+            AddressData fkAddress = addressRepository.save(
+                new AddressData(
+                    donator.getAddress(),
+                    donator.getNeighborhood(),
+                    donator.getCity(),
+                    donator.getUf(),
+                    donator.getCep(),
+                    donator.getNumber()
+                )
+            );
 
-            Donator newDonator = new Donator(
+            repository.save(
+                new Donator(
                     donator.getEmail(),
                     donator.recoverPassword(),
                     donator.getPhone(),
@@ -44,11 +45,11 @@ public class DonatorService {
                     donator.getCpf(),
                     donator.getBloodType(),
                     fkAddress.getIdAddress()
+                )
             );
 
-            repository.save(newDonator);
-
             return ResponseEntity.status(HttpStatus.CREATED).build();
+
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -64,9 +65,9 @@ public class DonatorService {
 
     public ResponseEntity doLogin(DonatorResponseDTO donator) {
         //TODO: criar objeto doador e efetuar login chamando authenticate
-        var login = repository.findLoginAndPassword(donator.getEmail(), donator.recoverPassword());
+        int login = repository.findLoginAndPassword(donator.getEmail(), donator.recoverPassword());
         if (login == 1) {
-            var idUser = repository.getIdUser(donator.getEmail(), donator.recoverPassword());
+            Long idUser = repository.getIdUser(donator.getEmail(), donator.recoverPassword());
             repository.authenticateUser(idUser);
             return ResponseEntity.status(HttpStatus.OK).build();
         }

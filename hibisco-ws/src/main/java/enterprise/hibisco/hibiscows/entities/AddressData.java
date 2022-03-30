@@ -11,7 +11,6 @@ import javax.validation.constraints.*;
 @SuppressWarnings("unused")
 @Entity
 @Table(name = "tb_address_data")
-
 public class AddressData {
 
     @Id
@@ -37,7 +36,12 @@ public class AddressData {
     @NotBlank @NotNull @Max(6)
     @Getter @Setter private Integer number;
 
-    public AddressData(String address, String neighborhood, String city, String uf, String cep, Integer number) {
+    public AddressData(String address,
+                       String neighborhood,
+                       String city,
+                       String uf,
+                       String cep,
+                       Integer number) {
         this.address = address;
         this.neighborhood = neighborhood;
         this.city = city;

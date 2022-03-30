@@ -6,15 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/donators")
+@SuppressWarnings("unused")
 public class DonatorController {
 
     @Autowired
     private DonatorService donatorService;
 
     @PostMapping("/register")
-    public ResponseEntity doRegister(@RequestBody DonatorResponseDTO donator) {
+    public ResponseEntity doRegister(@RequestBody @Valid DonatorResponseDTO donator) {
         return donatorService.doRegister(donator);
     }
 
@@ -24,7 +27,7 @@ public class DonatorController {
     }
     
     @PostMapping("/login")
-    public ResponseEntity doLogin(@RequestBody DonatorResponseDTO user) {
+    public ResponseEntity doLogin(@RequestBody @Valid DonatorResponseDTO user) {
         return donatorService.doLogin(user);
     }
 

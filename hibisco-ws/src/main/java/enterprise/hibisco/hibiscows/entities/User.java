@@ -15,18 +15,17 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id_user;
 
-    @NotNull @NotBlank @Email
+    @NotBlank @Email
     @Getter @Setter private String email;
 
-    @NotNull @NotBlank @Min(8)
+    @NotBlank @Min(8)
     // exige uma senha com no minimo 8 caracteres, cotendo maiúsculas e minúsculas, números e caracteres especiais
     @Pattern(regexp = "/(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}/")
     private String password;
 
-    @Size(max = 14)
+    @NotBlank @Size(max = 14)
     @Getter @Setter private String phone;
 
-    @NotNull
     @Getter @Setter private boolean authenticated;
 
     public User(String email, String password, String phone) {
