@@ -3,10 +3,9 @@ package enterprise.hibisco.hibiscows.responses;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Optional;
 @AllArgsConstructor
 @SuppressWarnings("unused")
-public class UserResponseDTO {
+public class DonatorResponseDTO {
 
     @Getter private String email;
     private String password;
@@ -22,7 +21,7 @@ public class UserResponseDTO {
     @Getter private Integer number;
 
     //Construtor Login
-    public UserResponseDTO(String email, String password) {
+    public DonatorResponseDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }

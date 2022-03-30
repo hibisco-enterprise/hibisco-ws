@@ -1,8 +1,6 @@
 package enterprise.hibisco.hibiscows.controller;
 
-import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.responses.HospitalResponseDTO;
-import enterprise.hibisco.hibiscows.responses.UserResponseDTO;
 import enterprise.hibisco.hibiscows.service.HospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

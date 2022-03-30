@@ -1,11 +1,9 @@
 package enterprise.hibisco.hibiscows.service;
 
-import com.sun.xml.bind.v2.TODO;
 import enterprise.hibisco.hibiscows.entities.Donator;
-import enterprise.hibisco.hibiscows.entities.User;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.DonatorRepository;
-import enterprise.hibisco.hibiscows.responses.UserResponseDTO;
+import enterprise.hibisco.hibiscows.responses.DonatorResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +18,7 @@ public class DonatorService {
     @Autowired
     private AddressRepository addressRepository;
 
-    public ResponseEntity doRegister(UserResponseDTO donator) {
+    public ResponseEntity doRegister(DonatorResponseDTO donator) {
         if (repository.existsByCpf(donator.getCpf().toString())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF inválido, tente novamente com um cpf diferente");
         }
@@ -61,7 +59,7 @@ public class DonatorService {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    public ResponseEntity doLogin(UserResponseDTO donator) {
+    public ResponseEntity doLogin(DonatorResponseDTO donator) {
         //TODO: criar objeto doador e efetuar login chamando authenticate
         var login = repository.findLoginAndPassword(donator.getEmail(), donator.recoverPassword());
         if (login == 1) {
