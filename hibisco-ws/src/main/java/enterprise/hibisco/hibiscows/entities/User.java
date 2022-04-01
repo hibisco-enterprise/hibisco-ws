@@ -13,7 +13,7 @@ public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long id_user;
+    @Getter @Setter private Long id_user;
 
     @NotBlank @Email
     @Getter @Setter private String email;
