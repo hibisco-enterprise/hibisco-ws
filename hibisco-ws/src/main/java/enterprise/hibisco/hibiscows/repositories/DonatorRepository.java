@@ -13,19 +13,19 @@ public interface DonatorRepository extends JpaRepository<Donator, Long> {
 
     boolean existsByCpf(String cpf);
 
-    @Query("select count(s.id_user) from Donator s where s.email = ?1 and s.password = ?2")
+    @Query("select count(d.id_user) from Donator d where d.email = ?1 and d.password = ?2")
     int findLoginAndPassword(String email, String password);
 
-    @Query("select s.id_user from Donator s where s.email = ?1 and s.password = ?2")
+    @Query("select d.id_user from Donator d where d.email = ?1 and d.password = ?2")
     Long getIdUser(String email, String password);
 
     @Transactional
     @Modifying
-    @Query("update Donator d set d.authenticated = 1 where id_user = ?1")
+    @Query("update Donator d set d.authenticated = 1 where d.id_user = ?1")
     void authenticateUser(Long idUser);
 
     @Transactional
     @Modifying
-    @Query("update Donator d set d.authenticated = 0 where id_user = ?1")
+    @Query("update Donator d set d.authenticated = 0 where d.id_user = ?1")
     void removeAuthenticationUser(Long idUser);
 }

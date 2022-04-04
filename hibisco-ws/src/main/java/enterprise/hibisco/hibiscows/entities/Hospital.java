@@ -31,14 +31,19 @@ public class Hospital extends User {
     @NotBlank @NotNull @CNPJ @Min(14) @Max(18)
     @Setter private String cnpjHospital;
 
+    @NotBlank
+    @Getter @Setter private Long fkAddress;
+
     public Hospital(String email,
                     String password,
                     String phone,
                     String nameHospital,
-                    String cnpjHospital) {
+                    String cnpjHospital,
+                    Long fkAddress) {
         super(email, password, phone);
         this.nameHospital = nameHospital;
         this.cnpjHospital = cnpjHospital;
+        this.fkAddress = fkAddress;
     }
 
     @Override

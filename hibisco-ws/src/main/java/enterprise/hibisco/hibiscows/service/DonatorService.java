@@ -20,8 +20,10 @@ public class DonatorService {
     private AddressRepository addressRepository;
 
     public ResponseEntity doRegister(DonatorResponseDTO donator) {
-        if (repository.existsByCpf(donator.getCpf().toString())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF inválido, tente novamente com um cpf diferente");
+        if (repository.existsByCpf(donator.getCpf())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                "CPF inválido, tente novamente com um cpf diferente"
+            );
         }
 
         try {
@@ -51,7 +53,7 @@ public class DonatorService {
             return ResponseEntity.status(HttpStatus.CREATED).build();
 
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
         }
     }
 
@@ -64,7 +66,6 @@ public class DonatorService {
     }
 
     public ResponseEntity doLogin(DonatorResponseDTO donator) {
-        //TODO: criar objeto doador e efetuar login chamando authenticate
         int login = repository.findLoginAndPassword(donator.getEmail(), donator.recoverPassword());
         if (login == 1) {
             Long idUser = repository.getIdUser(donator.getEmail(), donator.recoverPassword());
@@ -75,7 +76,8 @@ public class DonatorService {
     }
 
     public ResponseEntity doLogoff(Long idUser) {
-        return ResponseEntity.status(404).build();
+        repository.removeAuthenticationUser(idUser);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
