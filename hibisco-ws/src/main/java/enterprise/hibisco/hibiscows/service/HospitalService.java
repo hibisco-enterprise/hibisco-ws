@@ -1,9 +1,7 @@
 package enterprise.hibisco.hibiscows.service;
 
 import enterprise.hibisco.hibiscows.entities.AddressData;
-import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.entities.Hospital;
-import enterprise.hibisco.hibiscows.entities.User;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
 import enterprise.hibisco.hibiscows.responses.HospitalResponseDTO;
@@ -11,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class HospitalService {
@@ -25,7 +20,7 @@ public class HospitalService {
     private AddressRepository addressRepository;
 
     public ResponseEntity doRegister(HospitalResponseDTO hospital) {
-        if (repository.existsByCnpj(hospital.getCnpjHospital())) {
+        if (repository.existsByCnpjHospital(hospital.getCnpjHospital())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     "CPF inválido, tente novamente com um cpf diferente"
             );

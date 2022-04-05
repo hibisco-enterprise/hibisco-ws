@@ -31,7 +31,7 @@ public class Hospital extends User {
     @NotBlank @NotNull @CNPJ @Min(14) @Max(18)
     @Setter private String cnpjHospital;
 
-    @NotBlank
+    @NotBlank @NotNull
     @Getter @Setter private Long fkAddress;
 
     public Hospital(String email,

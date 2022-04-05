@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,15 +17,16 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter @Setter private Long idAppointment;
 
-    @NotBlank @FutureOrPresent
+    @NotBlank @NotNull @FutureOrPresent
     @Getter @Setter private LocalDateTime dhAppointment;
 
-    @Getter @Setter private boolean accepted;
+    @Getter @Setter @NotNull
+    private boolean accepted;
 
-    @NotBlank
+    @NotBlank @NotBlank
     @Getter @Setter private Long fkDonator;
 
-    @NotBlank
+    @NotBlank @NotBlank
     @Getter @Setter private Long fkHospital;
 
     public Appointment(Long idAppointment,

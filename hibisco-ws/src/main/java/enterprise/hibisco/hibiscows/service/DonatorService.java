@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.awt.geom.RectangularShape;
+
 @Service
 public class DonatorService {
 
@@ -63,6 +65,27 @@ public class DonatorService {
             return ResponseEntity.status(HttpStatus.OK).body(donators);
         }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    public ResponseEntity getDonatorById(Long idUser) {
+        var user = repository.findById(idUser);
+        if (user.stream().count() == 1) {
+            return ResponseEntity.status(HttpStatus.OK).body(user);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    public ResponseEntity updateDonator(Donator donator) {
+        repository.updateDonator(
+            donator.getIdUser(),
+            donator.getNameDonator(),
+            donator.getDocument(),
+            donator.getBloodType(),
+            donator.getEmail(),
+            donator.recoverPassword(),
+            donator.getPhone()
+        );
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     public ResponseEntity doLogin(DonatorResponseDTO donator) {

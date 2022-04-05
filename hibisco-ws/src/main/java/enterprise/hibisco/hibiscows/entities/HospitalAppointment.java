@@ -19,7 +19,6 @@ public class HospitalAppointment {
     @Getter @Setter private Long idHospitalAppointment;
 
     @NotBlank @FutureOrPresent
-    @Temporal(TemporalType.TIMESTAMP)
     @Getter @Setter private LocalDateTime dhAvaliable;
 
     @Getter @Setter private Long fkHospital;

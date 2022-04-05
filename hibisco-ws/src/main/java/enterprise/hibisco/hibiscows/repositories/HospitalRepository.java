@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SuppressWarnings("unused")
 public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
-    boolean existsByCnpj(String cnpj);
+    boolean existsByCnpjHospital(String cnpjHospital);
 
     @Query("select count(h.id_user) from Hospital h where h.email = ?1 and h.password = ?2")
     int findLoginAndPassword(String email, String password);
