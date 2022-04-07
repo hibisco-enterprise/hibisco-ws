@@ -21,7 +21,13 @@ public interface DonatorRepository extends JpaRepository<Donator, Long> {
 
     @Transactional
     @Modifying
-    @Query("update Donator d set ") //TODO: arrumar update
+    @Query("update Donator d set " +
+            "d.name_donator = ?2, " +
+            "d.cpf = ?3, " +
+            "d.blood_type = ?4, " +
+            "d.email = ?5, " +
+            "d.password = ?6, " +
+            "d.phone = ?7 WHERE id_user = ?1")
     void updateDonator(
             Long idUser,
             String nameDonator,
