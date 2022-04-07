@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.awt.geom.RectangularShape;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DonatorService {
@@ -59,7 +59,7 @@ public class DonatorService {
         }
     }
 
-    public ResponseEntity getDonators() {
+    public ResponseEntity<List<Donator>> getDonators() {
         if (repository.count() > 0) {
             var donators = repository.findAll();
             return ResponseEntity.status(HttpStatus.OK).body(donators);
@@ -67,9 +67,9 @@ public class DonatorService {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    public ResponseEntity getDonatorById(Long idUser) {
+    public ResponseEntity<Optional<Donator>> getDonatorById(Long idUser) {
         var user = repository.findById(idUser);
-        if (user.stream().count() == 1) {
+        if (user.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(user);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
