@@ -1,20 +1,17 @@
 package enterprise.hibisco.hibiscows.service;
 
 import enterprise.hibisco.hibiscows.entities.AddressData;
-import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.entities.Hospital;
-import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
-import enterprise.hibisco.hibiscows.repositories.HospitalAppointmentRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
-import enterprise.hibisco.hibiscows.responses.HospitalResponseDTO;
+import request.HospitalResponseDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
+
 import java.util.List;
 import java.util.Optional;
 

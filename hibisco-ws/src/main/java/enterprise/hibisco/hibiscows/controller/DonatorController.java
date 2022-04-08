@@ -1,7 +1,7 @@
 package enterprise.hibisco.hibiscows.controller;
 
 import enterprise.hibisco.hibiscows.entities.Donator;
-import enterprise.hibisco.hibiscows.responses.DonatorResponseDTO;
+import request.DonatorResponseDTO;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

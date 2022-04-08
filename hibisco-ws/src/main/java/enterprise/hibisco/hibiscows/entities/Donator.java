@@ -1,5 +1,5 @@
 package enterprise.hibisco.hibiscows.entities;
-import enterprise.hibisco.hibiscows.responses.DonatorResponseDTO;
+import request.DonatorResponseDTO;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

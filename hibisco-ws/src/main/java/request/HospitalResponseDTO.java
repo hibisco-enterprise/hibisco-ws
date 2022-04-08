@@ -1,18 +1,17 @@
-package enterprise.hibisco.hibiscows.responses;
+package request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @SuppressWarnings("unused")
-public class DonatorResponseDTO {
+public class HospitalResponseDTO {
 
-    @Getter private String email;
-    private String password;
+    @Getter private final String email;
+    private final String password;
     @Getter private String phone;
-    @Getter private String nameDonator;
-    @Getter private String cpf;
-    @Getter private String bloodType;
+    @Getter private String nameHospital;
+    @Getter private String cnpjHospital;
     @Getter private String address;
     @Getter private String neighborhood;
     @Getter private String city;
@@ -20,8 +19,7 @@ public class DonatorResponseDTO {
     @Getter private String cep;
     @Getter private Integer number;
 
-    //Construtor Login
-    public DonatorResponseDTO(String email, String password) {
+    public HospitalResponseDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }

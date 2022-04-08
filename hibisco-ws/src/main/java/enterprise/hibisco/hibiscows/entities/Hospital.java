@@ -1,5 +1,5 @@
 package enterprise.hibisco.hibiscows.entities;
-import enterprise.hibisco.hibiscows.responses.HospitalResponseDTO;
+import request.HospitalResponseDTO;
 import enterprise.hibisco.hibiscows.service.HospitalService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
