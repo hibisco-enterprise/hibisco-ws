@@ -13,19 +13,19 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
     boolean existsByCnpjHospital(String cnpjHospital);
 
-    @Query("select count(h.id_user) from Hospital h where h.email = ?1 and h.password = ?2")
+    @Query("select count(h.idUser) from Hospital h where h.email = ?1 and h.password = ?2")
     int findLoginAndPassword(String email, String password);
 
-    @Query("select h.id_user from Hospital h where h.email = ?1 and h.password = ?2")
+    @Query("select h.idUser from Hospital h where h.email = ?1 and h.password = ?2")
     Long getIdUser(String email, String password);
 
     @Transactional
     @Modifying
-    @Query("update Hospital h set h.authenticated = 1 where h.id_user = ?1")
+    @Query("update Hospital h set h.authenticated = 1 where h.idUser = ?1")
     void authenticateUser(Long idUser);
 
     @Transactional
     @Modifying
-    @Query("update Hospital h set h.authenticated = 0 where h.id_user = ?1")
+    @Query("update Hospital h set h.authenticated = 0 where h.idUser = ?1")
     void removeAuthenticationUser(Long idUser);
 }
