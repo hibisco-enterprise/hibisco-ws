@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tb_hospital_appointment")
-@AllArgsConstructor
 public class HospitalAppointment {
 
     @Id
@@ -23,4 +22,8 @@ public class HospitalAppointment {
 
     @Getter @Setter private Long fkHospital;
 
+    public HospitalAppointment(LocalDateTime dhAvaliable, Long fkHospital) {
+        this.dhAvaliable = dhAvaliable;
+        this.fkHospital = fkHospital;
+    }
 }

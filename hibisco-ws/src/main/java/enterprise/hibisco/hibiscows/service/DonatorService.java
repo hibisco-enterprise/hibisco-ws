@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@SuppressWarnings("unused")
 public class DonatorService {
 
     @Autowired
