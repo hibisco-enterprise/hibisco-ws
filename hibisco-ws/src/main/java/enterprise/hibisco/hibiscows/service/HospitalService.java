@@ -5,10 +5,15 @@ import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
 import enterprise.hibisco.hibiscows.responses.HospitalResponseDTO;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HospitalService {
@@ -19,10 +24,10 @@ public class HospitalService {
     @Autowired
     private AddressRepository addressRepository;
 
-    public ResponseEntity doRegister(HospitalResponseDTO hospital) {
+    public ResponseEntity<?> doRegister(HospitalResponseDTO hospital) {
         if (repository.existsByCnpjHospital(hospital.getCnpjHospital())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    "CPF inválido, tente novamente com um cpf diferente"
+                    "CNPJ inválido, tente novamente com um cnpj diferente"
             );
         }
 
@@ -56,15 +61,50 @@ public class HospitalService {
         }
     }
 
-    public ResponseEntity getHospitals() {
+    public ResponseEntity<List<Hospital>> getHospitals() {
         if (repository.count() > 0) {
-            var hospitals = repository.findAll();
+            List<Hospital> hospitals = repository.findAll();
             return ResponseEntity.status(HttpStatus.OK).body(hospitals);
         }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    public ResponseEntity doLogin(HospitalResponseDTO hospital) {
+    public ResponseEntity<Optional<Hospital>> getHospitalById(Long idUser) {
+        Optional<Hospital> hospital = repository.findById(idUser);
+        if (hospital.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(hospital);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    public ResponseEntity<?> updateHospital(Long idUser, Hospital hospital) {
+        Optional<Hospital> findHospital = repository.findById(idUser);
+        ModelMapper mapper = new ModelMapper();
+        Hospital newHospital = new Hospital();
+        if (findHospital.isPresent()) {
+
+            BeanUtils.copyProperties(findHospital, newHospital);
+
+            mapper.getConfiguration().setSkipNullEnabled(true);
+            mapper.map(hospital, newHospital);
+
+            newHospital.setIdUser(idUser);
+            repository.save(newHospital);
+
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    public ResponseEntity<?> deleteHospital(Long idUser) {
+        if (repository.existsById(idUser)) {
+            repository.deleteById(idUser);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    public ResponseEntity<?> doLogin(HospitalResponseDTO hospital) {
         int login = repository.findLoginAndPassword(hospital.getEmail(), hospital.recoverPassword());
         if (login == 1) {
             Long idUser = repository.getIdUser(hospital.getEmail(), hospital.recoverPassword());
@@ -74,7 +114,7 @@ public class HospitalService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    public ResponseEntity doLogoff(Long idUser) {
+    public ResponseEntity<?> doLogoff(Long idUser) {
         repository.removeAuthenticationUser(idUser);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

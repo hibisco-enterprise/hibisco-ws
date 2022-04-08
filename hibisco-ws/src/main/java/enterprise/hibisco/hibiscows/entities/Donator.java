@@ -2,6 +2,7 @@ package enterprise.hibisco.hibiscows.entities;
 import enterprise.hibisco.hibiscows.responses.DonatorResponseDTO;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @SuppressWarnings("unused")
 @Table(name = "tb_donator")
+@NoArgsConstructor
 public class Donator extends User {
 
     @Autowired @Transient
