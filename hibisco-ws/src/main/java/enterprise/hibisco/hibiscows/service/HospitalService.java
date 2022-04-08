@@ -1,6 +1,7 @@
 package enterprise.hibisco.hibiscows.service;
 
 import enterprise.hibisco.hibiscows.entities.AddressData;
+import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
@@ -74,6 +75,14 @@ public class HospitalService {
 
     public ResponseEntity<Optional<Hospital>> getHospitalById(Long idUser) {
         Optional<Hospital> hospital = repository.findById(idUser);
+        if (hospital.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(hospital);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    public ResponseEntity<Optional<Hospital>> getDonatorByCnpj(String cnpjHospital) {
+        Optional<Hospital> hospital = repository.findByCnpjHospital(cnpjHospital);
         if (hospital.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(hospital);
         }

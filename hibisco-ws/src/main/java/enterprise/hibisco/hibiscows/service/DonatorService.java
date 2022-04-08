@@ -78,6 +78,14 @@ public class DonatorService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    public ResponseEntity<Optional<Donator>> getDonatorByCpf(String cpf) {
+        Optional<Donator> user = repository.findByCpf(cpf);
+        if (user.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(user);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
     public ResponseEntity<?> updateDonator(Long idUser, Donator donator) {
         Optional<Donator> findDonator = repository.findById(idUser);
         ModelMapper mapper = new ModelMapper();

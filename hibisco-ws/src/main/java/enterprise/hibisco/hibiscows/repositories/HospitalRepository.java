@@ -7,11 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 @SuppressWarnings("unused")
 public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
     boolean existsByCnpjHospital(String cnpjHospital);
+
+    Optional<Hospital> findByCnpjHospital(String cnpjHospital);
 
     @Query("select count(h.idUser) from Hospital h where h.email = ?1 and h.password = ?2")
     int findLoginAndPassword(String email, String password);

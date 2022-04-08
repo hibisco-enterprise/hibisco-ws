@@ -7,11 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 @SuppressWarnings("unused")
 public interface DonatorRepository extends JpaRepository<Donator, Long> {
 
     boolean existsByCpf(String cpf);
+
+    Optional<Donator> findByCpf(String cpf);
 
     @Query("select count(d.idUser) from Donator d where d.email = ?1 and d.password = ?2")
     int findLoginAndPassword(String email, String password);
