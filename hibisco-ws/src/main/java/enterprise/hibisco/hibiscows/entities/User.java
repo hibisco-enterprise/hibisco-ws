@@ -1,5 +1,6 @@
 package enterprise.hibisco.hibiscows.entities;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 
@@ -8,6 +9,7 @@ import javax.validation.constraints.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@NoArgsConstructor
 @SuppressWarnings("unused")
 public abstract class User {
 

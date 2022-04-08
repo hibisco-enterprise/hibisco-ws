@@ -2,6 +2,7 @@ package enterprise.hibisco.hibiscows.entities;
 import enterprise.hibisco.hibiscows.responses.HospitalResponseDTO;
 import enterprise.hibisco.hibiscows.service.HospitalService;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @SuppressWarnings("unused")
 @Table(name = "tb_hospital")
+@NoArgsConstructor
 public class Hospital extends User {
 
     @Autowired @Transient
