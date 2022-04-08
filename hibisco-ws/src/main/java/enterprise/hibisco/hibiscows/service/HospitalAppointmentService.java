@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @SuppressWarnings("unused")
@@ -48,8 +49,20 @@ public class HospitalAppointmentService {
         Long idHospital,
         LocalDateTime avaliableDay
     ) {
-        //TODO: buscar data a remover e executar o delete
-        return null;
+        if (appointmentRepository.existsByFkHospital(idHospital)) {
+            Optional<HospitalAppointment> hospitalAppointment =
+                appointmentRepository.getAvaliableDateFromIdHospital(avaliableDay, idHospital);
+
+            if (hospitalAppointment.isPresent()) {
+                appointmentRepository.deleteById(hospitalAppointment.get().getIdHospitalAppointment());
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                "Data agendada não encontrada para este hospital."
+            );
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Agendamentos não encontrados para este hospital.");
     }
 
 }
