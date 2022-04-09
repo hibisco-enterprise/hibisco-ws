@@ -10,6 +10,7 @@ import javax.validation.constraints.*;
 
 @SuppressWarnings("unused")
 @Entity
+@NoArgsConstructor
 @Table(name = "tb_address_data")
 public class AddressData {
 

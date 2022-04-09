@@ -15,4 +15,17 @@ public class CsvDTO {
     @Getter @Setter private String uf;
     @Getter @Setter private String cep;
     @Getter @Setter private String number;
+
+    public CsvDTO(Enum<CsvType> type, String name, String email, String phoneNumber, String address, String neighborhood, String city, String uf, String cep, String number) {
+        this.type = type;
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.neighborhood = neighborhood;
+        this.city = city;
+        this.uf = uf;
+        this.cep = cep;
+        this.number = number;
+    }
 }
