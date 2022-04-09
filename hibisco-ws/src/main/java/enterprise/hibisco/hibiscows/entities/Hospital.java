@@ -27,13 +27,13 @@ public class Hospital extends User {
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Getter private Long idHospital;
 
-    @NotBlank @NotNull @Min(8)
+    @NotBlank
     @Getter @Setter private String nameHospital;
 
-    @NotBlank @NotNull @CNPJ @Min(14) @Max(18)
+    @NotBlank @CNPJ
     @Setter private String cnpjHospital;
 
-    @NotBlank @NotNull
+    @NotNull
     @Getter @Setter private Long fkAddress;
 
     public Hospital(String email,

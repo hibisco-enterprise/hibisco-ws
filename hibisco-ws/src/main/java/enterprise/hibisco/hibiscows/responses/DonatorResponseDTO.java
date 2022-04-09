@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuppressWarnings("unused")
-@JsonDeserialize(contentAs = DonatorResponseDTO.class)
+
 public class DonatorResponseDTO {
 
     @Getter private String email;

@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,6 +21,7 @@ public class HospitalAppointment {
     @NotBlank @FutureOrPresent
     @Getter @Setter private LocalDateTime dhAvaliable;
 
+    @NotNull
     @Getter @Setter private Long fkHospital;
 
     public HospitalAppointment(LocalDateTime dhAvaliable, Long fkHospital) {

@@ -35,16 +35,26 @@ public class HospitalService {
             );
         }
 
+        System.out.println(new AddressData(
+                hospital.getAddress(),
+                hospital.getCep(),
+                hospital.getCity(),
+                hospital.getNeighborhood(),
+                hospital.getNumber(),
+                hospital.getUf()
+        ));
+
         try {
             AddressData fkAddress = addressRepository.save(
                 new AddressData(
                     hospital.getAddress(),
-                    hospital.getNeighborhood(),
-                    hospital.getCity(),
-                    hospital.getUf(),
                     hospital.getCep(),
-                    hospital.getNumber()
+                    hospital.getCity(),
+                    hospital.getNeighborhood(),
+                    hospital.getNumber(),
+                    hospital.getUf()
                 )
+
             );
 
             repository.save(

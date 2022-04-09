@@ -17,16 +17,16 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter @Setter private Long idAppointment;
 
-    @NotBlank @NotNull @FutureOrPresent
+    @NotBlank @FutureOrPresent
     @Getter @Setter private LocalDateTime dhAppointment;
 
     @Getter @Setter @NotNull
     private boolean accepted;
 
-    @NotBlank @NotBlank
+    @NotBlank
     @Getter @Setter private Long fkDonator;
 
-    @NotBlank @NotBlank
+    @NotBlank
     @Getter @Setter private Long fkHospital;
 
     public Appointment(Long idAppointment,
