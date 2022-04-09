@@ -12,6 +12,7 @@ import javax.validation.constraints.*;
 @Entity
 @NoArgsConstructor
 @Table(name = "tb_address_data")
+@NoArgsConstructor
 public class AddressData {
 
     @Id
@@ -19,35 +20,35 @@ public class AddressData {
     @Column(name = "id_address")
     @Getter @Setter private Long idAddress;
 
-    @NotBlank @NotNull
+    @NotBlank
     @Getter @Setter private String address;
 
-    @NotBlank @NotNull
+    @NotBlank
     @Getter @Setter private String neighborhood;
 
-    @NotBlank @NotNull
+    @NotBlank
     @Getter @Setter private String city;
 
-    @NotBlank @NotNull @Max(2)
+    @NotBlank
     @Getter @Setter private String uf;
 
-    @NotBlank @NotNull @Min(8) @Max(9)
+    @NotBlank
     @Getter @Setter private String cep;
 
-    @NotBlank @NotNull @Max(6)
+    @NotNull
     @Getter @Setter private Integer number;
 
     public AddressData(String address,
-                       String neighborhood,
-                       String city,
-                       String uf,
                        String cep,
-                       Integer number) {
+                       String city,
+                       String neighborhood,
+                       Integer number,
+                       String uf) {
         this.address = address;
-        this.neighborhood = neighborhood;
-        this.city = city;
-        this.uf = uf;
         this.cep = cep;
+        this.city = city;
+        this.neighborhood = neighborhood;
         this.number = number;
+        this.uf = uf;
     }
 }

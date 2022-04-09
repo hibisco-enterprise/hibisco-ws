@@ -1,13 +1,19 @@
 package request;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.Email;
 
-// @AllArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @SuppressWarnings("unused")
+
 public class DonatorResponseDTO {
 
     @Email
@@ -18,7 +24,7 @@ public class DonatorResponseDTO {
     @Getter private String phone;
 
     @Getter private String nameDonator;
-    
+
     @CPF
     @Getter private String cpf;
     @Getter private String bloodType;
@@ -33,7 +39,7 @@ public class DonatorResponseDTO {
         this.email = email;
         this.password = password;
     }
-    
+
     public String recoverPassword() {
         return password;
     }

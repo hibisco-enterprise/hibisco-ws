@@ -38,11 +38,11 @@ public class HospitalService {
             AddressData fkAddress = addressRepository.save(
                 new AddressData(
                     hospital.getAddress(),
-                    hospital.getNeighborhood(),
-                    hospital.getCity(),
-                    hospital.getUf(),
                     hospital.getCep(),
-                    hospital.getNumber()
+                    hospital.getCity(),
+                    hospital.getNeighborhood(),
+                    hospital.getNumber(),
+                    hospital.getUf()
                 )
             );
 

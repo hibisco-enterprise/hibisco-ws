@@ -1,4 +1,5 @@
 package enterprise.hibisco.hibiscows.entities;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import javax.validation.constraints.*;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @NoArgsConstructor
+@JsonDeserialize(as = Donator.class)
 @SuppressWarnings("unused")
 public abstract class User {
 
@@ -17,15 +19,15 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.TABLE)
     @Getter @Setter private Long idUser;
 
-    @NotBlank @Email @NotNull
+    @NotBlank @Email
     @Getter @Setter private String email;
 
-    @NotBlank @NotNull @Min(8)
+    @NotBlank
     // exige uma senha com no minimo 8 caracteres, cotendo maiúsculas e minúsculas, números e caracteres especiais
-    @Pattern(regexp = "/(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}/")
+    //@Pattern(regexp = "/(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}/")
     private String password;
 
-    @NotBlank @NotNull @Size(max = 14)
+    @NotBlank
     @Getter @Setter private String phone;
 
     @Getter @Setter @NotNull

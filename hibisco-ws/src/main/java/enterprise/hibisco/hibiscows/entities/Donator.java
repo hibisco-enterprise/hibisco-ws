@@ -24,16 +24,16 @@ public class Donator extends User {
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Getter private Long idDonator;
 
-    @NotBlank @Min(3)
+    @NotBlank
     @Getter @Setter private String nameDonator;
 
     @NotBlank @CPF
     @Setter private String cpf;
 
-    @NotBlank @Size(min = 2, max = 3)
+    @NotBlank
     @Getter @Setter private String bloodType;
 
-    @NotBlank
+    @NotNull
     @Getter @Setter private Long fkAddress;
 
     public Donator(String email,

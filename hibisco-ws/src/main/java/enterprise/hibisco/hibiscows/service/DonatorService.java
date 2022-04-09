@@ -42,11 +42,11 @@ public class DonatorService {
             AddressData fkAddress = addressRepository.save(
                 new AddressData(
                     donator.getAddress(),
-                    donator.getNeighborhood(),
-                    donator.getCity(),
-                    donator.getUf(),
                     donator.getCep(),
-                    donator.getNumber()
+                    donator.getCity(),
+                    donator.getNeighborhood(),
+                    donator.getNumber(),
+                    donator.getUf()
                 )
             );
 
