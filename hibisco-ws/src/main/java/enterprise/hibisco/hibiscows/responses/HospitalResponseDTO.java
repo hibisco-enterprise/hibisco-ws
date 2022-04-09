@@ -1,8 +1,10 @@
 package enterprise.hibisco.hibiscows.responses;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 
+@Data
 @AllArgsConstructor
 @SuppressWarnings("unused")
 public class HospitalResponseDTO {

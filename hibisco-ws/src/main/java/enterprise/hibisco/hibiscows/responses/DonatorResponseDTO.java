@@ -1,10 +1,16 @@
 package enterprise.hibisco.hibiscows.responses;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
 @SuppressWarnings("unused")
+@JsonDeserialize(contentAs = DonatorResponseDTO.class)
 public class DonatorResponseDTO {
 
     @Getter private String email;

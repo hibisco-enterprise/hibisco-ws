@@ -36,7 +36,7 @@ public class Donator extends User {
     @NotBlank @NotNull @Min(2) @Max(3)
     @Getter @Setter private String bloodType;
 
-    @NotBlank @NotNull
+    @NotNull
     @Getter @Setter private Long fkAddress;
 
     public Donator(String email,

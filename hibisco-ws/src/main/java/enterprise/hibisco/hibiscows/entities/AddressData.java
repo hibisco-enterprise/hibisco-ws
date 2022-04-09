@@ -11,6 +11,7 @@ import javax.validation.constraints.*;
 @SuppressWarnings("unused")
 @Entity
 @Table(name = "tb_address_data")
+@NoArgsConstructor
 public class AddressData {
 
     @Id
@@ -33,7 +34,7 @@ public class AddressData {
     @NotBlank @NotNull @Min(8) @Max(9)
     @Getter @Setter private String cep;
 
-    @NotBlank @NotNull @Max(6)
+    @NotNull @Max(6)
     @Getter @Setter private Integer number;
 
     public AddressData(String address,
