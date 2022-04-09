@@ -3,14 +3,16 @@ package enterprise.hibisco.hibiscows.responses;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @SuppressWarnings("unused")
 public class HospitalResponseDTO {
 
-    @Getter private final String email;
-    private final String password;
+    @Getter private String email;
+    private String password;
     @Getter private String phone;
     @Getter private String nameHospital;
     @Getter private String cnpjHospital;

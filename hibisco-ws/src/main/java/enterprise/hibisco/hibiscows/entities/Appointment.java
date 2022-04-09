@@ -23,10 +23,10 @@ public class Appointment {
     @Getter @Setter @NotNull
     private boolean accepted;
 
-    @NotBlank
+    @NotNull
     @Getter @Setter private Long fkDonator;
 
-    @NotBlank
+    @NotNull
     @Getter @Setter private Long fkHospital;
 
     public Appointment(Long idAppointment,

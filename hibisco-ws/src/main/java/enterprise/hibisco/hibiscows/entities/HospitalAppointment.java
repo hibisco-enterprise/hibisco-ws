@@ -18,7 +18,7 @@ public class HospitalAppointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter @Setter private Long idHospitalAppointment;
 
-    @NotBlank @FutureOrPresent
+    @NotNull @FutureOrPresent
     @Getter @Setter private LocalDateTime dhAvaliable;
 
     @NotNull

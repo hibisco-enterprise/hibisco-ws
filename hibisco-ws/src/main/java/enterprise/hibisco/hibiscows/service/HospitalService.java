@@ -35,15 +35,6 @@ public class HospitalService {
             );
         }
 
-        System.out.println(new AddressData(
-                hospital.getAddress(),
-                hospital.getCep(),
-                hospital.getCity(),
-                hospital.getNeighborhood(),
-                hospital.getNumber(),
-                hospital.getUf()
-        ));
-
         try {
             AddressData fkAddress = addressRepository.save(
                 new AddressData(
@@ -54,7 +45,6 @@ public class HospitalService {
                     hospital.getNumber(),
                     hospital.getUf()
                 )
-
             );
 
             repository.save(
