@@ -53,5 +53,4 @@ public class HospitalController {
     public ResponseEntity doLogoff(@PathVariable Long idUser) {
         return hospitalService.doLogoff(idUser);
     }
-
 }

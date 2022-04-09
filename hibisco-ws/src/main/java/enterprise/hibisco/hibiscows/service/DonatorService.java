@@ -2,8 +2,12 @@ package enterprise.hibisco.hibiscows.service;
 
 import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Donator;
+import enterprise.hibisco.hibiscows.entities.Hospital;
+import enterprise.hibisco.hibiscows.manager.CsvType;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.DonatorRepository;
+import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
+import request.CsvDTO;
 import request.DonatorResponseDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +24,9 @@ public class DonatorService {
 
     @Autowired
     private DonatorRepository repository;
+
+    @Autowired
+    private HospitalRepository hospitalRepository;
 
     @Autowired
     private AddressRepository addressRepository;
@@ -128,4 +135,22 @@ public class DonatorService {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    public ResponseEntity relatorio(Long id) {
+        Optional<Hospital> h1 = hospitalRepository.findById(id);
+        if (h1.isPresent()) {
+            Optional<AddressData> data = addressRepository.findById(h1.get().getFkAddress());
+            CsvDTO csv = new CsvDTO(CsvType.Hospital, h1.get().getNameHospital(), h1.get().getEmail(), h1.get().getPhone(),
+                    data.get().getAddress(), data.get().getNeighborhood(), data.get().getCity(), data.get().getUf(),
+                    data.get().getCep(), data.get().getNumber().toString());
+            String relatorio = String.join(", ", csv.getType().name(), csv.getName(), csv.getEmail(), csv.getPhoneNumber(),
+                    csv.getAddress(), csv.getNeighborhood(), csv.getCity(), csv.getUf(), csv.getCep(), csv.getNumber());
+            relatorio += "\r\n";
+            return ResponseEntity
+                    .status(200)
+                    .header("content-type", "text/csv")
+                    .header("content-disposition", "filename=\"hospital.csv\"")
+                    .body(relatorio);
+        }
+            return ResponseEntity.status(404).build();
+    }
 }

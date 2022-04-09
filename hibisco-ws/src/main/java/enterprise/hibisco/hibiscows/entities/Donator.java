@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 @Entity
 @SuppressWarnings("unused")
@@ -27,16 +24,16 @@ public class Donator extends User {
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Getter private Long idDonator;
 
-    @NotBlank @Min(3) @NotNull
+    @NotBlank @Min(3)
     @Getter @Setter private String nameDonator;
 
-    @NotBlank @CPF @NotNull
+    @NotBlank @CPF
     @Setter private String cpf;
 
-    @NotBlank @NotNull @Min(2) @Max(3)
+    @NotBlank @Size(min = 2, max = 3)
     @Getter @Setter private String bloodType;
 
-    @NotBlank @NotNull
+    @NotBlank
     @Getter @Setter private Long fkAddress;
 
     public Donator(String email,
