@@ -1,5 +1,6 @@
 package enterprise.hibisco.hibiscows.entities;
-import request.HospitalRequestDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import enterprise.hibisco.hibiscows.request.HospitalRequestDTO;
 import enterprise.hibisco.hibiscows.service.HospitalService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,10 +29,10 @@ public class Hospital extends User {
     @NotBlank
     @Getter @Setter private String nameHospital;
 
+    @JsonIgnore
     @NotBlank @CNPJ
-    @Setter private String cnpjHospital;
+    @Getter @Setter private String cnpjHospital;
 
-    @NotNull
     @Getter @Setter private Long fkAddress;
 
     public Hospital(String email,
@@ -66,4 +67,12 @@ public class Hospital extends User {
         return cnpjHospital;
     }
 
+    @Override
+    public String toString() {
+        return  super.toString() +
+                ", nameHospital='" + nameHospital + '\'' +
+                ", cnpjHospital='" + getDocument() + '\'' +
+                ", fkAddress=" + fkAddress +
+                "} " + super.toString();
+    }
 }

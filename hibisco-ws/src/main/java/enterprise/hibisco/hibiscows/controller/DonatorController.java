@@ -1,7 +1,8 @@
 package enterprise.hibisco.hibiscows.controller;
 
+import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Donator;
-import request.DonatorRequestDTO;
+import enterprise.hibisco.hibiscows.request.DonatorRequestDTO;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,17 @@ public class DonatorController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteDonator(@PathVariable Long id) {
         return donatorService.deleteDonator(id);
+    }
+
+    @GetMapping("/address/{idAddress}")
+    public ResponseEntity<Optional<AddressData>> getAddressById(@PathVariable Long idAddress) {
+        return donatorService.getAddressById(idAddress);
+    }
+
+    @PutMapping("/address/{idAddress}")
+    public ResponseEntity<Optional<AddressData>> updateAddress(@PathVariable Long idAddress,
+                                                               @RequestBody @Valid AddressData address) {
+        return donatorService.updateAddressById(idAddress, address);
     }
 
     @PostMapping("/login")

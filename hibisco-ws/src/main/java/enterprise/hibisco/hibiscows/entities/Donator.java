@@ -1,5 +1,5 @@
 package enterprise.hibisco.hibiscows.entities;
-import request.DonatorRequestDTO;
+import enterprise.hibisco.hibiscows.request.DonatorRequestDTO;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,12 +28,11 @@ public class Donator extends User {
     @Getter @Setter private String nameDonator;
 
     @NotBlank @CPF
-    @Setter private String cpf;
+    @Getter @Setter private String cpf;
 
     @NotBlank
     @Getter @Setter private String bloodType;
 
-    @NotNull
     @Getter @Setter private Long fkAddress;
 
     public Donator(String email,
@@ -70,4 +69,13 @@ public class Donator extends User {
         return cpf;
     }
 
+    @Override
+    public String toString() {
+        return  super.toString() +
+                ", nameDonator='" + nameDonator + '\'' +
+                ", cpf='" + getDocument() + '\'' +
+                ", bloodType='" + bloodType + '\'' +
+                ", fkAddress=" + fkAddress +
+                "} ";
+    }
 }

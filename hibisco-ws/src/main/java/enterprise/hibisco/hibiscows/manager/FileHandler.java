@@ -1,6 +1,6 @@
 package enterprise.hibisco.hibiscows.manager;
 
-import request.CsvRequestDTO;
+import enterprise.hibisco.hibiscows.request.CsvRequestDTO;
 
 import java.io.FileWriter;
 import java.io.IOException;

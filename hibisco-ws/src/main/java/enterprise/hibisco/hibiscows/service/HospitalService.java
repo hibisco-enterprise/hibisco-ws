@@ -4,8 +4,11 @@ import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
-import request.HospitalRequestDTO;
+import enterprise.hibisco.hibiscows.request.HospitalRequestDTO;
+import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 @SuppressWarnings("unused")
@@ -24,6 +28,11 @@ public class HospitalService {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private AddressDataService addressDataService;
+
+    private static final Logger logger = LoggerFactory.getLogger(HospitalService.class);
 
     public ResponseEntity<?> doRegister(HospitalRequestDTO hospital) {
         if (repository.existsByCnpjHospital(hospital.getCnpjHospital())) {
@@ -111,6 +120,22 @@ public class HospitalService {
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    public ResponseEntity<Optional<AddressData>> getAddressById(Long idAddress) {
+        AddressResponseDTO address = addressDataService.getAddressById(idAddress);
+        if (address.getAddressData().isPresent()) {
+            return ResponseEntity.status(address.getStatusCode()).body(address.getAddressData());
+        }
+        return ResponseEntity.status(address.getStatusCode()).build();
+    }
+
+    public ResponseEntity<Optional<AddressData>> updateAddressById(Long idAddress, AddressData newAddress) {
+        AddressResponseDTO address = addressDataService.updateAddress(idAddress, newAddress);
+        if (address.getAddressData().isPresent()) {
+            return ResponseEntity.status(address.getStatusCode()).body(address.getAddressData());
+        }
+        return ResponseEntity.status(address.getStatusCode()).build();
     }
 
     public ResponseEntity<?> doLogin(HospitalRequestDTO hospital) {

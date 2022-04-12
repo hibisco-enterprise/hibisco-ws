@@ -1,4 +1,4 @@
-package request;
+package enterprise.hibisco.hibiscows.request;
 
 import enterprise.hibisco.hibiscows.manager.CsvType;
 import lombok.Getter;

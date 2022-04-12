@@ -8,14 +8,16 @@ import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.DonatorRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
-import request.CsvRequestDTO;
-import request.DonatorRequestDTO;
+import enterprise.hibisco.hibiscows.request.CsvRequestDTO;
+import enterprise.hibisco.hibiscows.request.DonatorRequestDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,6 +99,7 @@ public class DonatorService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    @Transactional
     public ResponseEntity<?> updateDonator(Long idUser, Donator donator) {
         Optional<Donator> findDonator = repository.findById(idUser);
         ModelMapper mapper = new ModelMapper();

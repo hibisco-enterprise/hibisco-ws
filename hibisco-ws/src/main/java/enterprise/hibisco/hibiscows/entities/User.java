@@ -1,4 +1,5 @@
 package enterprise.hibisco.hibiscows.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,6 @@ import javax.validation.constraints.*;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @NoArgsConstructor
-@JsonDeserialize(as = Donator.class)
 @SuppressWarnings("unused")
 public abstract class User {
 
@@ -22,10 +22,11 @@ public abstract class User {
     @NotBlank @Email
     @Getter @Setter private String email;
 
+    @JsonIgnore
     @NotBlank
     // exige uma senha com no minimo 8 caracteres, cotendo maiúsculas e minúsculas, números e caracteres especiais
     //@Pattern(regexp = "/(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}/")
-    private String password;
+    @Getter @Setter private String password;
 
     @NotBlank
     @Getter @Setter private String phone;
@@ -54,4 +55,12 @@ public abstract class User {
     public abstract ResponseEntity doLogoff(Long IdUser);
 
     public abstract String getDocument();
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "idUser=" + idUser +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'';
+    }
 }
