@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuppressWarnings("unused")
-public class HospitalResponseDTO {
+public class HospitalRequestDTO {
 
     @Getter private String email;
     private String password;
@@ -23,7 +23,7 @@ public class HospitalResponseDTO {
     @Getter private String cep;
     @Getter private Integer number;
 
-    public HospitalResponseDTO(String email, String password) {
+    public HospitalRequestDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }

@@ -1,5 +1,5 @@
 package enterprise.hibisco.hibiscows.entities;
-import request.DonatorResponseDTO;
+import request.DonatorRequestDTO;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,12 +52,12 @@ public class Donator extends User {
 
     @Override
     public ResponseEntity doRegister(Object donator) {
-        return donatorService.doRegister((DonatorResponseDTO) donator);
+        return donatorService.doRegister((DonatorRequestDTO) donator);
     }
 
     @Override
     public ResponseEntity doLogin(Object user) {
-        return donatorService.doLogin((DonatorResponseDTO) user);
+        return donatorService.doLogin((DonatorRequestDTO) user);
     }
 
     @Override

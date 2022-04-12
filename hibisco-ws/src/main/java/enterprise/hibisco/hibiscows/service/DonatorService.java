@@ -7,8 +7,9 @@ import enterprise.hibisco.hibiscows.manager.CsvType;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.DonatorRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
-import request.CsvDTO;
-import request.DonatorResponseDTO;
+import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
+import request.CsvRequestDTO;
+import request.DonatorRequestDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,10 @@ public class DonatorService {
     @Autowired
     private AddressRepository addressRepository;
 
-    public ResponseEntity<?> doRegister(DonatorResponseDTO donator) {
+    @Autowired
+    private AddressDataService addressDataService;
+
+    public ResponseEntity<?> doRegister(DonatorRequestDTO donator) {
         if (repository.existsByCpf(donator.getCpf())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 "CPF inválido, tente novamente com um cpf diferente"
@@ -120,7 +124,23 @@ public class DonatorService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    public ResponseEntity<?> doLogin(DonatorResponseDTO donator) {
+    public ResponseEntity<Optional<AddressData>> getAddressById(Long idAddress) {
+        AddressResponseDTO address = addressDataService.getAddressById(idAddress);
+        if (address.getAddressData().isPresent()) {
+            return ResponseEntity.status(address.getStatusCode()).body(address.getAddressData());
+        }
+        return ResponseEntity.status(address.getStatusCode()).build();
+    }
+
+    public ResponseEntity<Optional<AddressData>> updateAddressById(Long idAddress, AddressData newAddress) {
+        AddressResponseDTO address = addressDataService.updateAddress(idAddress, newAddress);
+        if (address.getAddressData().isPresent()) {
+            return ResponseEntity.status(address.getStatusCode()).body(address.getAddressData());
+        }
+        return ResponseEntity.status(address.getStatusCode()).build();
+    }
+
+    public ResponseEntity<?> doLogin(DonatorRequestDTO donator) {
         int login = repository.findLoginAndPassword(donator.getEmail(), donator.recoverPassword());
         if (login == 1) {
             Long idUser = repository.getIdUser(donator.getEmail(), donator.recoverPassword());
@@ -139,7 +159,7 @@ public class DonatorService {
         Optional<Hospital> h1 = hospitalRepository.findById(id);
         if (h1.isPresent()) {
             Optional<AddressData> data = addressRepository.findById(h1.get().getFkAddress());
-            CsvDTO csv = new CsvDTO(CsvType.Hospital, h1.get().getNameHospital(), h1.get().getEmail(), h1.get().getPhone(),
+            CsvRequestDTO csv = new CsvRequestDTO(CsvType.Hospital, h1.get().getNameHospital(), h1.get().getEmail(), h1.get().getPhone(),
                     data.get().getAddress(), data.get().getNeighborhood(), data.get().getCity(), data.get().getUf(),
                     data.get().getCep(), data.get().getNumber().toString());
             String relatorio = String.join(", ", csv.getType().name(), csv.getName(), csv.getEmail(), csv.getPhoneNumber(),

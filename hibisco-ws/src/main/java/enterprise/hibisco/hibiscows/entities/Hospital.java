@@ -1,5 +1,5 @@
 package enterprise.hibisco.hibiscows.entities;
-import request.HospitalResponseDTO;
+import request.HospitalRequestDTO;
 import enterprise.hibisco.hibiscows.service.HospitalService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -50,12 +48,12 @@ public class Hospital extends User {
 
     @Override
     public ResponseEntity doRegister(Object hospital) {
-        return hospitalService.doRegister((HospitalResponseDTO) hospital);
+        return hospitalService.doRegister((HospitalRequestDTO) hospital);
     }
 
     @Override
     public ResponseEntity doLogin(Object user) {
-        return hospitalService.doLogin((HospitalResponseDTO) user);
+        return hospitalService.doLogin((HospitalRequestDTO) user);
     }
 
     @Override

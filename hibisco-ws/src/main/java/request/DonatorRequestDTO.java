@@ -1,6 +1,5 @@
 package request;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -14,7 +13,7 @@ import javax.validation.constraints.Email;
 @AllArgsConstructor
 @SuppressWarnings("unused")
 
-public class DonatorResponseDTO {
+public class DonatorRequestDTO {
 
     @Email
     @Getter private String email;
@@ -35,7 +34,7 @@ public class DonatorResponseDTO {
     @Getter private String cep;
     @Getter private Integer number;
 
-    public DonatorResponseDTO(String email, String password) {
+    public DonatorRequestDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }

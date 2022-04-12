@@ -4,9 +4,7 @@ import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import request.CsvDTO;
-import request.HospitalResponseDTO;
+import request.HospitalRequestDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +25,7 @@ public class HospitalService {
     @Autowired
     private AddressRepository addressRepository;
 
-    public ResponseEntity<?> doRegister(HospitalResponseDTO hospital) {
+    public ResponseEntity<?> doRegister(HospitalRequestDTO hospital) {
         if (repository.existsByCnpjHospital(hospital.getCnpjHospital())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     "CNPJ inválido, tente novamente com um cnpj diferente"
@@ -115,7 +113,7 @@ public class HospitalService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    public ResponseEntity<?> doLogin(HospitalResponseDTO hospital) {
+    public ResponseEntity<?> doLogin(HospitalRequestDTO hospital) {
         int login = repository.findLoginAndPassword(hospital.getEmail(), hospital.recoverPassword());
         if (login == 1) {
             Long idUser = repository.getIdUser(hospital.getEmail(), hospital.recoverPassword());

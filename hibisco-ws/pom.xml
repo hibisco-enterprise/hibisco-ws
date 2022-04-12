@@ -36,12 +36,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Criando endereços mocados, depois será removido!!! -->
-		<dependency>
-			<groupId>com.github.javafaker</groupId>
-			<artifactId>javafaker</artifactId>
-			<version>1.0.2</version>
-		</dependency>
 
 		<!-- Tentando adicionar jpa com conexão ao MS SQL (Azure)-->
 		<dependency>

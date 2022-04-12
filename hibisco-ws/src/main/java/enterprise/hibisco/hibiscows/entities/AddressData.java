@@ -12,7 +12,6 @@ import javax.validation.constraints.*;
 @Entity
 @NoArgsConstructor
 @Table(name = "tb_address_data")
-@NoArgsConstructor
 public class AddressData {
 
     @Id

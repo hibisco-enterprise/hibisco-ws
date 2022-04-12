@@ -1,7 +1,7 @@
 package enterprise.hibisco.hibiscows.controller;
 
 import enterprise.hibisco.hibiscows.entities.Donator;
-import request.DonatorResponseDTO;
+import request.DonatorRequestDTO;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class DonatorController {
     private DonatorService donatorService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> doRegister(@RequestBody @Valid DonatorResponseDTO donator) {
+    public ResponseEntity<?> doRegister(@RequestBody @Valid DonatorRequestDTO donator) {
         return donatorService.doRegister(donator);
     }
 
@@ -45,7 +45,7 @@ public class DonatorController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> doLogin(@RequestBody @Valid DonatorResponseDTO user) {
+    public ResponseEntity<?> doLogin(@RequestBody @Valid DonatorRequestDTO user) {
         return donatorService.doLogin(user);
     }
 

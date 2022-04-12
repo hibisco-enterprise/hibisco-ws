@@ -1,7 +1,7 @@
 package enterprise.hibisco.hibiscows.controller;
 
 import enterprise.hibisco.hibiscows.entities.Hospital;
-import request.HospitalResponseDTO;
+import request.HospitalRequestDTO;
 import enterprise.hibisco.hibiscows.service.HospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class HospitalController {
     private HospitalService hospitalService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> doRegister(@RequestBody @Valid HospitalResponseDTO hospital) {
+    public ResponseEntity<?> doRegister(@RequestBody @Valid HospitalRequestDTO hospital) {
         return hospitalService.doRegister(hospital);
     }
 
@@ -45,7 +45,7 @@ public class HospitalController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity doLogin(@RequestBody @Valid HospitalResponseDTO user) {
+    public ResponseEntity doLogin(@RequestBody @Valid HospitalRequestDTO user) {
         return hospitalService.doLogin(user);
     }
 
