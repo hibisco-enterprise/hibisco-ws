@@ -158,16 +158,39 @@ public class DonatorService {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    public ResponseEntity relatorio(Long id) {
+    public ResponseEntity getReport(Long id) {
         Optional<Hospital> h1 = hospitalRepository.findById(id);
         if (h1.isPresent()) {
             Optional<AddressData> data = addressRepository.findById(h1.get().getFkAddress());
-            CsvRequestDTO csv = new CsvRequestDTO(CsvType.Hospital, h1.get().getNameHospital(), h1.get().getEmail(), h1.get().getPhone(),
-                    data.get().getAddress(), data.get().getNeighborhood(), data.get().getCity(), data.get().getUf(),
-                    data.get().getCep(), data.get().getNumber().toString());
-            String relatorio = String.join(", ", csv.getType().name(), csv.getName(), csv.getEmail(), csv.getPhoneNumber(),
-                    csv.getAddress(), csv.getNeighborhood(), csv.getCity(), csv.getUf(), csv.getCep(), csv.getNumber());
+
+            CsvRequestDTO csv = new CsvRequestDTO(
+                CsvType.Hospital,
+                h1.get().getNameHospital(),
+                h1.get().getEmail(),
+                h1.get().getPhone(),
+                data.get().getAddress(),
+                data.get().getNeighborhood(),
+                data.get().getCity(),
+                data.get().getUf(),
+                data.get().getCep(),
+                data.get().getNumber().toString()
+            );
+
+            String relatorio = String.join(", ",
+                csv.getType().name(),
+                csv.getName(),
+                csv.getEmail(),
+                csv.getPhoneNumber(),
+                csv.getAddress(),
+                csv.getNeighborhood(),
+                csv.getCity(),
+                csv.getUf(),
+                csv.getCep(),
+                csv.getNumber()
+            );
+
             relatorio += "\r\n";
+
             return ResponseEntity
                     .status(200)
                     .header("content-type", "text/csv")

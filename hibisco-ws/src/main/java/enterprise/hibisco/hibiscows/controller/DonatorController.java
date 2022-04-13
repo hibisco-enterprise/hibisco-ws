@@ -66,8 +66,8 @@ public class DonatorController {
         return donatorService.doLogoff(idUser);
     }
 
-    @GetMapping("/relatorio/{id}")
-    public ResponseEntity relatorio(@PathVariable Long id){
-        return donatorService.relatorio(id);
+    @GetMapping("/report/{id}")
+    public ResponseEntity getReport(@PathVariable Long id){
+        return donatorService.getReport(id);
     }
 }
