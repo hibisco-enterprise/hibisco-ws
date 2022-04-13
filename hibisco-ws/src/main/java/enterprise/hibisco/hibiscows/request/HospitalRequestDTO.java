@@ -1,33 +1,21 @@
-package request;
+package enterprise.hibisco.hibiscows.request;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.br.CPF;
-
-import javax.validation.constraints.Email;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @SuppressWarnings("unused")
+public class HospitalRequestDTO {
 
-public class DonatorResponseDTO {
-
-    @Email
     @Getter private String email;
-
     private String password;
-
     @Getter private String phone;
-
-    @Getter private String nameDonator;
-
-    @CPF
-    @Getter private String cpf;
-    @Getter private String bloodType;
+    @Getter private String nameHospital;
+    @Getter private String cnpjHospital;
     @Getter private String address;
     @Getter private String neighborhood;
     @Getter private String city;
@@ -35,7 +23,7 @@ public class DonatorResponseDTO {
     @Getter private String cep;
     @Getter private Integer number;
 
-    public DonatorResponseDTO(String email, String password) {
+    public HospitalRequestDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }

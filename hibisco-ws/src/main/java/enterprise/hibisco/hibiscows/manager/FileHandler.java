@@ -1,19 +1,14 @@
 package enterprise.hibisco.hibiscows.manager;
 
-import enterprise.hibisco.hibiscows.entities.Hospital;
-import request.CsvDTO;
+import enterprise.hibisco.hibiscows.request.CsvRequestDTO;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 public class FileHandler {
-    public static void gravaArquivoCsv(ListaObj<CsvDTO> lista, String nomeArq) {
+    public static void gravaArquivoCsv(ListaObj<CsvRequestDTO> lista, String nomeArq) {
         FileWriter arq = null;
         Formatter saida = null;
         Boolean deuRuim = false;
@@ -30,7 +25,7 @@ public class FileHandler {
 
         try {
             for (int i = 0; i < lista.getTamanho(); i++) {
-                CsvDTO csv = lista.getElemento(i);
+                CsvRequestDTO csv = lista.getElemento(i);
                 saida.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;\n", csv.getType(), csv.getName(), csv.getEmail(), csv.getPhoneNumber(),
                 csv.getAddress(), csv.getNeighborhood(), csv.getCity(), csv.getUf(), csv.getCep(), csv.getNumber());
             }

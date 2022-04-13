@@ -1,7 +1,8 @@
 package enterprise.hibisco.hibiscows.controller;
 
+import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Hospital;
-import request.HospitalResponseDTO;
+import enterprise.hibisco.hibiscows.request.HospitalRequestDTO;
 import enterprise.hibisco.hibiscows.service.HospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class HospitalController {
     private HospitalService hospitalService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> doRegister(@RequestBody @Valid HospitalResponseDTO hospital) {
+    public ResponseEntity<?> doRegister(@RequestBody @Valid HospitalRequestDTO hospital) {
         return hospitalService.doRegister(hospital);
     }
 
@@ -44,8 +45,19 @@ public class HospitalController {
         return hospitalService.deleteHospital(id);
     }
 
+    @GetMapping("/address/{idAddress}")
+    public ResponseEntity<Optional<AddressData>> getAddressById(@PathVariable Long idAddress) {
+        return hospitalService.getAddressById(idAddress);
+    }
+
+    @PutMapping("/address/{idAddress}")
+    public ResponseEntity<Optional<AddressData>> updateAddress(@PathVariable Long idAddress,
+                                                               @RequestBody @Valid AddressData address) {
+        return hospitalService.updateAddressById(idAddress, address);
+    }
+
     @PostMapping("/login")
-    public ResponseEntity doLogin(@RequestBody @Valid HospitalResponseDTO user) {
+    public ResponseEntity doLogin(@RequestBody @Valid HospitalRequestDTO user) {
         return hospitalService.doLogin(user);
     }
 

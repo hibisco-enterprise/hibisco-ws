@@ -1,7 +1,8 @@
 package enterprise.hibisco.hibiscows.controller;
 
+import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Donator;
-import request.DonatorResponseDTO;
+import enterprise.hibisco.hibiscows.request.DonatorRequestDTO;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class DonatorController {
     private DonatorService donatorService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> doRegister(@RequestBody @Valid DonatorResponseDTO donator) {
+    public ResponseEntity<?> doRegister(@RequestBody @Valid DonatorRequestDTO donator) {
         return donatorService.doRegister(donator);
     }
 
@@ -44,8 +45,19 @@ public class DonatorController {
         return donatorService.deleteDonator(id);
     }
 
+    @GetMapping("/address/{idAddress}")
+    public ResponseEntity<Optional<AddressData>> getAddressById(@PathVariable Long idAddress) {
+        return donatorService.getAddressById(idAddress);
+    }
+
+    @PutMapping("/address/{idAddress}")
+    public ResponseEntity<Optional<AddressData>> updateAddress(@PathVariable Long idAddress,
+                                                               @RequestBody @Valid AddressData address) {
+        return donatorService.updateAddressById(idAddress, address);
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<?> doLogin(@RequestBody @Valid DonatorResponseDTO user) {
+    public ResponseEntity<?> doLogin(@RequestBody @Valid DonatorRequestDTO user) {
         return donatorService.doLogin(user);
     }
 
@@ -54,8 +66,8 @@ public class DonatorController {
         return donatorService.doLogoff(idUser);
     }
 
-    @GetMapping("/relatorio/{id}")
-    public ResponseEntity relatorio(@PathVariable Long id){
-        return donatorService.relatorio(id);
+    @GetMapping("/report/{id}")
+    public ResponseEntity getReport(@PathVariable Long id){
+        return donatorService.getReport(id);
     }
 }
