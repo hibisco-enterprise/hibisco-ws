@@ -1,5 +1,6 @@
 package enterprise.hibisco.hibiscows.service;
 
+import com.google.gson.Gson;
 import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
@@ -23,6 +24,9 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 public class HospitalService {
 
+    private static final Logger logger = LoggerFactory.getLogger(HospitalService.class);
+    private static final Gson gson = new Gson();
+
     @Autowired
     private HospitalRepository repository;
 
@@ -32,7 +36,6 @@ public class HospitalService {
     @Autowired
     private AddressDataService addressDataService;
 
-    private static final Logger logger = LoggerFactory.getLogger(HospitalService.class);
 
     public ResponseEntity<?> doRegister(HospitalRequestDTO hospital) {
         if (repository.existsByCnpjHospital(hospital.getCnpjHospital())) {
@@ -67,6 +70,9 @@ public class HospitalService {
             return ResponseEntity.status(HttpStatus.CREATED).build();
 
         }catch (Exception e) {
+            logger.error("Erro de criação de usuário: \n\t{} \nErro: \n\t{}",
+                gson.toJson(hospital), gson.toJson(e.getMessage())
+            );
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
         }
     }
@@ -101,11 +107,10 @@ public class HospitalService {
         Hospital newHospital = new Hospital();
         if (findHospital.isPresent()) {
 
-            BeanUtils.copyProperties(findHospital, newHospital);
-
             mapper.getConfiguration().setSkipNullEnabled(true);
             mapper.map(hospital, newHospital);
 
+            newHospital.setFkAddress(findHospital.get().getFkAddress());
             newHospital.setIdUser(idHospital);
             repository.save(newHospital);
 
@@ -139,10 +144,12 @@ public class HospitalService {
     }
 
     public ResponseEntity<?> doLogin(HospitalRequestDTO hospital) {
-        int login = repository.findLoginAndPassword(hospital.getEmail(), hospital.recoverPassword());
-        if (login == 1) {
-            Long idUser = repository.getIdUser(hospital.getEmail(), hospital.recoverPassword());
-            repository.authenticateUser(idUser);
+        Optional<Hospital> findHospital = repository.findByEmailAndPassword(
+            hospital.getEmail(),
+            hospital.recoverPassword()
+        );
+        if (findHospital.isPresent()) {
+            repository.authenticateUser(findHospital.get().getIdUser());
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

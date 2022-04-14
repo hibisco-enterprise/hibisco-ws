@@ -1,5 +1,6 @@
 package enterprise.hibisco.hibiscows.service;
 
+import com.google.gson.Gson;
 import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.entities.Hospital;
@@ -11,6 +12,8 @@ import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
 import enterprise.hibisco.hibiscows.request.CsvRequestDTO;
 import enterprise.hibisco.hibiscows.request.DonatorRequestDTO;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +28,8 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 public class DonatorService {
 
+    private static final Logger logger = LoggerFactory.getLogger(HospitalService.class);
+    private static final Gson gson = new Gson();
     @Autowired
     private DonatorRepository repository;
 
@@ -71,6 +76,9 @@ public class DonatorService {
             return ResponseEntity.status(HttpStatus.CREATED).build();
 
         }catch (Exception e) {
+            logger.error("Erro de criação de usuário: \n\t{} \nErro: \n\t{}",
+                gson.toJson(donator), gson.toJson(e.getMessage())
+            );
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
         }
     }
@@ -99,19 +107,18 @@ public class DonatorService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @Transactional
     public ResponseEntity<?> updateDonator(Long idUser, Donator donator) {
         Optional<Donator> findDonator = repository.findById(idUser);
         ModelMapper mapper = new ModelMapper();
         Donator newDonator = new Donator();
 
         if (findDonator.isPresent()) {
-            BeanUtils.copyProperties(findDonator, newDonator);
-
             mapper.getConfiguration().setSkipNullEnabled(true);
             mapper.map(donator, newDonator);
 
+            newDonator.setFkAddress(findDonator.get().getFkAddress());
             newDonator.setIdUser(idUser);
+            logger.info(gson.toJson(newDonator));
             repository.save(newDonator);
 
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -144,10 +151,12 @@ public class DonatorService {
     }
 
     public ResponseEntity<?> doLogin(DonatorRequestDTO donator) {
-        int login = repository.findLoginAndPassword(donator.getEmail(), donator.recoverPassword());
-        if (login == 1) {
-            Long idUser = repository.getIdUser(donator.getEmail(), donator.recoverPassword());
-            repository.authenticateUser(idUser);
+        Optional<Donator>findDonator = repository.findByEmailAndPassword(
+            donator.getEmail(),
+            donator.recoverPassword()
+        );
+        if (findDonator.isPresent()) {
+            repository.authenticateUser(findDonator.get().getIdUser());
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

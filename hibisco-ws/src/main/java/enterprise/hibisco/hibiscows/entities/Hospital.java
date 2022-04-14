@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @SuppressWarnings("unused")
@@ -63,16 +62,8 @@ public class Hospital extends User {
     }
 
     @Override
-    public String getDocument() {
+    public String recoverDocument() {
         return cnpjHospital;
     }
 
-    @Override
-    public String toString() {
-        return  super.toString() +
-                ", nameHospital='" + nameHospital + '\'' +
-                ", cnpjHospital='" + getDocument() + '\'' +
-                ", fkAddress=" + fkAddress +
-                "} " + super.toString();
-    }
 }

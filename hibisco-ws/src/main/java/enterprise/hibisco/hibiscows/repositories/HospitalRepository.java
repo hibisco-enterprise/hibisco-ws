@@ -17,11 +17,8 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
     Optional<Hospital> findByCnpjHospital(String cnpjHospital);
 
-    @Query("select count(h.idUser) from Hospital h where h.email = ?1 and h.password = ?2")
-    int findLoginAndPassword(String email, String password);
+    Optional<Hospital> findByEmailAndPassword(String email, String password);
 
-    @Query("select h.idUser from Hospital h where h.email = ?1 and h.password = ?2")
-    Long getIdUser(String email, String password);
 
     @Transactional
     @Modifying

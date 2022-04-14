@@ -21,7 +21,7 @@ public class HospitalAppointmentService {
     public ResponseEntity<List<HospitalAppointment>> getAvaliableDays(Long idHospital) {
         if (appointmentRepository.findById(idHospital).stream().findAny().isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(
-                appointmentRepository.getAppointmentDaysByIdHospital(idHospital)
+                appointmentRepository.findByFkHospital(idHospital)
             );
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -51,7 +51,7 @@ public class HospitalAppointmentService {
     ) {
         if (appointmentRepository.existsByFkHospital(idHospital)) {
             Optional<HospitalAppointment> hospitalAppointment =
-                appointmentRepository.getAvaliableDateFromIdHospital(avaliableDay, idHospital);
+                appointmentRepository.findByDhAvaliableAndFkHospital(avaliableDay, idHospital);
 
             if (hospitalAppointment.isPresent()) {
                 appointmentRepository.deleteById(hospitalAppointment.get().getIdHospitalAppointment());

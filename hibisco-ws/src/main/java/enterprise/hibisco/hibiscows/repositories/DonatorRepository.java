@@ -17,11 +17,7 @@ public interface DonatorRepository extends JpaRepository<Donator, Long> {
 
     Optional<Donator> findByCpf(String cpf);
 
-    @Query("select count(d.idUser) from Donator d where d.email = ?1 and d.password = ?2")
-    int findLoginAndPassword(String email, String password);
-
-    @Query("select d.idUser from Donator d where d.email = ?1 and d.password = ?2")
-    Long getIdUser(String email, String password);
+    Optional<Donator> findByEmailAndPassword(String email, String password);
 
     @Transactional
     @Modifying

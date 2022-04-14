@@ -1,4 +1,5 @@
 package enterprise.hibisco.hibiscows.entities;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import enterprise.hibisco.hibiscows.request.DonatorRequestDTO;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class Donator extends User {
     @NotBlank
     @Getter @Setter private String nameDonator;
 
-    @NotBlank @CPF
+    @NotBlank @CPF @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Getter @Setter private String cpf;
 
     @NotBlank
@@ -65,17 +66,8 @@ public class Donator extends User {
     }
 
     @Override
-    public String getDocument() {
+    public String recoverDocument() {
         return cpf;
     }
 
-    @Override
-    public String toString() {
-        return  super.toString() +
-                ", nameDonator='" + nameDonator + '\'' +
-                ", cpf='" + getDocument() + '\'' +
-                ", bloodType='" + bloodType + '\'' +
-                ", fkAddress=" + fkAddress +
-                "} ";
-    }
 }
