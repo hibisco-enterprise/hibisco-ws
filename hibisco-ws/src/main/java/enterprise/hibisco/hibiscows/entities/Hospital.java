@@ -1,5 +1,6 @@
 package enterprise.hibisco.hibiscows.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import enterprise.hibisco.hibiscows.request.HospitalRequestDTO;
 import enterprise.hibisco.hibiscows.service.HospitalService;
 import lombok.Getter;
@@ -11,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @SuppressWarnings("unused")
@@ -29,7 +29,6 @@ public class Hospital extends User {
     @NotBlank
     @Getter @Setter private String nameHospital;
 
-    @JsonIgnore
     @NotBlank @CNPJ
     @Getter @Setter private String cnpjHospital;
 
@@ -48,31 +47,23 @@ public class Hospital extends User {
     }
 
     @Override
-    public ResponseEntity doRegister(Object hospital) {
+    public ResponseEntity<?> doRegister(Object hospital) {
         return hospitalService.doRegister((HospitalRequestDTO) hospital);
     }
 
     @Override
-    public ResponseEntity doLogin(Object user) {
+    public ResponseEntity<?> doLogin(Object user) {
         return hospitalService.doLogin((HospitalRequestDTO) user);
     }
 
     @Override
-    public ResponseEntity doLogoff(Long login) {
+    public ResponseEntity<?> doLogoff(Long login) {
         return hospitalService.doLogoff(login);
     }
 
     @Override
-    public String getDocument() {
+    public String recoverDocument() {
         return cnpjHospital;
     }
 
-    @Override
-    public String toString() {
-        return  super.toString() +
-                ", nameHospital='" + nameHospital + '\'' +
-                ", cnpjHospital='" + getDocument() + '\'' +
-                ", fkAddress=" + fkAddress +
-                "} " + super.toString();
-    }
 }

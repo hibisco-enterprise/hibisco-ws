@@ -1,4 +1,5 @@
 package enterprise.hibisco.hibiscows.entities;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import enterprise.hibisco.hibiscows.request.DonatorRequestDTO;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import lombok.Getter;
@@ -50,32 +51,23 @@ public class Donator extends User {
     }
 
     @Override
-    public ResponseEntity doRegister(Object donator) {
+    public ResponseEntity<?> doRegister(Object donator) {
         return donatorService.doRegister((DonatorRequestDTO) donator);
     }
 
     @Override
-    public ResponseEntity doLogin(Object user) {
+    public ResponseEntity<?> doLogin(Object user) {
         return donatorService.doLogin((DonatorRequestDTO) user);
     }
 
     @Override
-    public ResponseEntity doLogoff(Long IdUser) {
+    public ResponseEntity<?> doLogoff(Long IdUser) {
         return donatorService.doLogoff(IdUser);
     }
 
     @Override
-    public String getDocument() {
+    public String recoverDocument() {
         return cpf;
     }
 
-    @Override
-    public String toString() {
-        return  super.toString() +
-                ", nameDonator='" + nameDonator + '\'' +
-                ", cpf='" + getDocument() + '\'' +
-                ", bloodType='" + bloodType + '\'' +
-                ", fkAddress=" + fkAddress +
-                "} ";
-    }
 }

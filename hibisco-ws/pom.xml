@@ -69,10 +69,18 @@
 			<version>3.0.0</version>
 		</dependency>
 
+		<!-- Adicionando Swagger para documentar api e seus endpoints -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.6.4</version>
+		</dependency>
+
+		<!-- Adicionando Gson para poder salvar logs, utilizando a estrutura json -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.9.0</version>
 		</dependency>
 
 	</dependencies>
