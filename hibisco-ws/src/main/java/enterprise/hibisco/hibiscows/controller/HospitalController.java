@@ -80,7 +80,7 @@ public class HospitalController {
 
     @PostMapping("/appointment/{idHospital}")
     public ResponseEntity<?> setAvaliableDays(@PathVariable Long idHospital,
-                                              @RequestBody AvaliableDaysWrapperRequestDTO avaliableDays) {
+                                              @RequestBody @Valid AvaliableDaysWrapperRequestDTO avaliableDays) {
         return appointmentService.setAvaliableDays(idHospital, avaliableDays);
     }
 
