@@ -28,7 +28,7 @@ public class Donator extends User {
     @NotBlank
     @Getter @Setter private String nameDonator;
 
-    @NotBlank @CPF @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotBlank @CPF
     @Getter @Setter private String cpf;
 
     @NotBlank
@@ -51,17 +51,17 @@ public class Donator extends User {
     }
 
     @Override
-    public ResponseEntity doRegister(Object donator) {
+    public ResponseEntity<?> doRegister(Object donator) {
         return donatorService.doRegister((DonatorRequestDTO) donator);
     }
 
     @Override
-    public ResponseEntity doLogin(Object user) {
+    public ResponseEntity<?> doLogin(Object user) {
         return donatorService.doLogin((DonatorRequestDTO) user);
     }
 
     @Override
-    public ResponseEntity doLogoff(Long IdUser) {
+    public ResponseEntity<?> doLogoff(Long IdUser) {
         return donatorService.doLogoff(IdUser);
     }
 

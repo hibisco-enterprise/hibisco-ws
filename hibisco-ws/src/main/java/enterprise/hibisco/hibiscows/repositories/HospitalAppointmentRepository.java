@@ -13,6 +13,6 @@ public interface HospitalAppointmentRepository extends JpaRepository<HospitalApp
 
     List<HospitalAppointment> findByFkHospital(Long idHospital);
 
-    Optional<HospitalAppointment> findByDhAvaliableAndFkHospital(LocalDateTime dhAvaliable, Long idHospital);
+//    Optional<HospitalAppointment> findByDhAvaliableAndFkHospital(LocalDateTime dhAvaliable, Long idHospital);
 
 }

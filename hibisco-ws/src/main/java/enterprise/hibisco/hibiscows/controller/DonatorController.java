@@ -20,11 +20,6 @@ public class DonatorController {
     @Autowired
     private DonatorService donatorService;
 
-    @PostMapping("/register")
-    public ResponseEntity<?> doRegister(@RequestBody @Valid DonatorRequestDTO donator) {
-        return donatorService.doRegister(donator);
-    }
-
     @GetMapping
     public ResponseEntity<List<Donator>> getDonators() {
         return donatorService.getDonators();
@@ -56,6 +51,11 @@ public class DonatorController {
         return donatorService.updateAddressById(idAddress, address);
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<?> doRegister(@RequestBody @Valid DonatorRequestDTO donator) {
+        return donatorService.doRegister(donator);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> doLogin(@RequestBody @Valid DonatorRequestDTO user) {
         return donatorService.doLogin(user);
@@ -67,7 +67,7 @@ public class DonatorController {
     }
 
     @GetMapping("/report/{id}")
-    public ResponseEntity getReport(@PathVariable Long id){
+    public ResponseEntity<?> getReport(@PathVariable Long id){
         return donatorService.getReport(id);
     }
 }

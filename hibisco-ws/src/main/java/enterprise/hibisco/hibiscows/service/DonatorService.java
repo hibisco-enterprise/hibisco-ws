@@ -118,7 +118,7 @@ public class DonatorService {
 
             newDonator.setFkAddress(findDonator.get().getFkAddress());
             newDonator.setIdUser(idUser);
-            logger.info(gson.toJson(newDonator));
+
             repository.save(newDonator);
 
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -167,10 +167,10 @@ public class DonatorService {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    public ResponseEntity getReport(Long id) {
+    public ResponseEntity<?> getReport(Long id) {
         Optional<Hospital> h1 = hospitalRepository.findById(id);
-        if (h1.isPresent()) {
-            Optional<AddressData> data = addressRepository.findById(h1.get().getFkAddress());
+        Optional<AddressData> data = addressRepository.findById(h1.get().getFkAddress());
+        if (data.isPresent()) {
 
             CsvRequestDTO csv = new CsvRequestDTO(
                 CsvType.Hospital,
