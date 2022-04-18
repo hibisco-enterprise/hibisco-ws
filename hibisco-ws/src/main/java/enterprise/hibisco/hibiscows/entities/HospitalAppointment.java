@@ -1,6 +1,7 @@
 package enterprise.hibisco.hibiscows.entities;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tb_hospital_appointment")
+@NoArgsConstructor
 public class HospitalAppointment {
 
     @Id
