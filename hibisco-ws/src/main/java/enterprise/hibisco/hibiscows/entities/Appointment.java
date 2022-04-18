@@ -1,7 +1,6 @@
 package enterprise.hibisco.hibiscows.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
@@ -11,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tb_appointment")
+@NoArgsConstructor
 public class Appointment {
 
     @Id
@@ -29,13 +29,16 @@ public class Appointment {
     @NotNull
     @Getter @Setter private Long fkHospital;
 
-    public Appointment(Long idAppointment,
-                       LocalDateTime dhAppointment,
+    @NotNull
+    @Getter @Setter private Long fkAppointmentHospital;
+
+    public Appointment(LocalDateTime dhAppointment,
                        Long fkDonator,
-                       Long fkHospital) {
-        this.idAppointment = idAppointment;
+                       Long fkHospital,
+                       Long fkAppointmentHospital) {
         this.dhAppointment = dhAppointment;
         this.fkDonator = fkDonator;
         this.fkHospital = fkHospital;
+        this.fkAppointmentHospital = fkAppointmentHospital;
     }
 }
