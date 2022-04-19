@@ -19,6 +19,10 @@ public interface DonatorRepository extends JpaRepository<Donator, Long> {
 
     Optional<Donator> findByEmailAndPassword(String email, String password);
 
+
+    @Query("select d.fkAddress from Donator d where d.idUser = ?1")
+    Optional<Long> findFkAddressByIdDonator(Long idUser);
+
     @Transactional
     @Modifying
     @Query("update Donator d set d.authenticated = 1 where d.idUser = ?1")

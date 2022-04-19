@@ -32,7 +32,6 @@ public class AddressDataService {
         AddressData newAddress = new AddressData();
 
         if (findAddress.isPresent()) {
-            BeanUtils.copyProperties(findAddress, newAddress);
 
             mapper.getConfiguration().setSkipNullEnabled(true);
             mapper.map(address, newAddress);
