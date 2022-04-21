@@ -20,6 +20,10 @@ target/
 *.ipr
 /.idea/*.xml
 /.idea/libraries/
+/.idea/libraries/*.xml
+/.idea/shelf/
+/.idea/inspectionProfiles/
+/.idea/runConfigurations/
 
 ### NetBeans ###
 /nbproject/private/
