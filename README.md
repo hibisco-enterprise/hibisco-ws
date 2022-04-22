@@ -14,3 +14,4 @@ Um web service responsável por gerenciar usuários doadores de sangue e hemocen
 - Endpoints Retornando Status HTTP, profissionalizando a API
 - API conectando com banco de dados AZURE, trabalhando com JPA em suas classes
 - Modelo Objeto-Relacional consistente e robusto com filtros precisos de doadores e agendamentos
+- Senhas ocultas para utilização de credenciais de banco de dados
