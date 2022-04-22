@@ -41,4 +41,12 @@ public class Appointment {
         this.fkHospital = fkHospital;
         this.fkAppointmentHospital = fkAppointmentHospital;
     }
+
+   //  {
+   //     "dhAppointment": "2022-05-16T10:00:00",
+   //         "accepted": false,
+   //         "fkDonator": 5,
+   //         "fkHospital": 1,
+   //         "fkAppointmentHospital": 2
+    // }
 }
