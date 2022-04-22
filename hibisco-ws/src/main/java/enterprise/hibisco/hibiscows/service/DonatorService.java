@@ -127,7 +127,11 @@ public class DonatorService {
     }
 
     public ResponseEntity<?> deleteDonator(Long idUser) {
-        if (repository.existsById(idUser)) {
+        Long idAddress;
+        Optional<Long> findIdAddress = repository.findFkAddressByIdDonator(idUser);
+        if (repository.existsById(idUser) && findIdAddress.isPresent()) {
+            idAddress = findIdAddress.get();
+            addressRepository.deleteById(idAddress);
             repository.deleteById(idUser);
             return ResponseEntity.status(HttpStatus.OK).build();
         }

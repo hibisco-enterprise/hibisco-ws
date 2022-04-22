@@ -1,0 +1,15 @@
+version: '3'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hibisco-ws:1.0
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      AZURE_URL: ${AZURE_URL}
+      AZURE_USERNAME: ${AZURE_USERNAME}
+      AZURE_PASSWORD: ${AZURE_PASSWORD}
