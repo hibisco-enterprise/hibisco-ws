@@ -39,14 +39,14 @@ public class AppointmentService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    public ResponseEntity<?> getAppointmentDays(Long idDonator, Long idHospital) {
+    public ResponseEntity<List<Appointment>> getAppointmentDays(Long idDonator, Long idHospital) {
 
-        Optional<List<Appointment>> appointmentDays = repository.findByFkDonatorAndFkHospital(
+        List<Appointment> appointmentDays = repository.findByFkDonatorAndFkHospital(
             idDonator,
             idHospital
         );
 
-        if (appointmentDays.isPresent()) {
+        if (!appointmentDays.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(appointmentDays);
         }
 

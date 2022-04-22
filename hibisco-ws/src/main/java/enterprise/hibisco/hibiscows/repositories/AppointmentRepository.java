@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    Optional<List<Appointment>> findByFkDonatorAndFkHospital(Long fkDonator, Long fkHospital);
+    List<Appointment> findByFkDonatorAndFkHospital(Long fkDonator, Long fkHospital);
 
 }

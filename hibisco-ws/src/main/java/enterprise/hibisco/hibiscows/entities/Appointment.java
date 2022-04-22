@@ -17,7 +17,7 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter @Setter private Long idAppointment;
 
-    @NotBlank @FutureOrPresent
+    @NotNull @FutureOrPresent
     @Getter @Setter private LocalDateTime dhAppointment;
 
     @Getter @Setter @NotNull

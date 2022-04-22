@@ -1,8 +1,10 @@
 package enterprise.hibisco.hibiscows.controller;
 
 import enterprise.hibisco.hibiscows.entities.AddressData;
+import enterprise.hibisco.hibiscows.entities.Appointment;
 import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.request.DonatorRequestDTO;
+import enterprise.hibisco.hibiscows.service.AppointmentService;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,9 @@ public class DonatorController {
 
     @Autowired
     private DonatorService donatorService;
+
+    @Autowired
+    private AppointmentService appointmentService;
 
     @GetMapping
     public ResponseEntity<List<Donator>> getDonators() {
@@ -70,4 +75,12 @@ public class DonatorController {
     public ResponseEntity<?> getReport(@PathVariable Long id){
         return donatorService.getReport(id);
     }
+
+    @GetMapping("/appointment/{idDonator}/{idHospital}")
+    public ResponseEntity<List<Appointment>> getAppointmentDays(@PathVariable Long idDonator, @PathVariable Long idHospital) {
+        return appointmentService.getAppointmentDays(idDonator, idHospital);}
+
+    @PostMapping("/appointment")
+    public ResponseEntity<?> setAppointment(@RequestBody Appointment appointment) {
+        return appointmentService.setAppointmentDay(appointment); }
 }
