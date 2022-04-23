@@ -86,4 +86,10 @@ public class HospitalController {
     public ResponseEntity<?> deleteAvaliableDay(@PathVariable Long idHospitalAppointment) {
         return appointmentService.deleteAvaliableDay(idHospitalAppointment);
     }
+
+    @PostMapping("/appointment/accept/{idAppointment}")
+    public ResponseEntity<?> acceptAvailableDay(@PathVariable Long idAppointment) {
+        return appointmentService.acceptAppointmentDay(idAppointment);
+    }
+
 }

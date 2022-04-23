@@ -2,6 +2,9 @@ package enterprise.hibisco.hibiscows.repositories;
 
 import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +16,9 @@ public interface HospitalAppointmentRepository extends JpaRepository<HospitalApp
 
     List<HospitalAppointment> findByFkHospital(Long idHospital);
 
-//    Optional<HospitalAppointment> findByDhAvaliableAndFkHospital(LocalDateTime dhAvaliable, Long idHospital);
+    @Query("update Appointment a set a.accepted = true where a.idAppointment = ?1")
+    @Transactional
+    @Modifying
+    void acceptAppointmentDay(Long idAppointment);
 
 }

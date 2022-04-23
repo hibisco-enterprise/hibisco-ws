@@ -77,10 +77,11 @@ public class DonatorController {
     }
 
     @GetMapping("/appointment/{idDonator}/{idHospital}")
-    public ResponseEntity<List<Appointment>> getAppointmentDays(@PathVariable Long idDonator, @PathVariable Long idHospital) {
+    public ResponseEntity<List<Appointment>> getAppointmentDays(@PathVariable Long idDonator,
+                                                                @PathVariable Long idHospital) {
         return appointmentService.getAppointmentDays(idDonator, idHospital);}
 
-    @PostMapping("/appointment")
-    public ResponseEntity<?> setAppointment(@RequestBody Appointment appointment) {
-        return appointmentService.setAppointmentDay(appointment); }
+    @PostMapping("/appointment/{idDonator}/{fkAppointment}")
+    public ResponseEntity<?> setAppointment(@PathVariable Long idDonator, @PathVariable Long fkAppointment) {
+        return appointmentService.setAppointmentDay(fkAppointment, idDonator); }
 }

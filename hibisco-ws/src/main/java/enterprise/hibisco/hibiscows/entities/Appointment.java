@@ -1,5 +1,7 @@
 package enterprise.hibisco.hibiscows.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,7 +18,8 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter @Setter private Long idAppointment;
-
+    
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     @NotNull @FutureOrPresent
     @Getter @Setter private LocalDateTime dhAppointment;
 

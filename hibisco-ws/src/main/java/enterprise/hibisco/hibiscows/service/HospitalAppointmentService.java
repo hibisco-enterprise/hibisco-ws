@@ -1,5 +1,6 @@
 package enterprise.hibisco.hibiscows.service;
 
+import enterprise.hibisco.hibiscows.entities.Appointment;
 import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
 import enterprise.hibisco.hibiscows.repositories.HospitalAppointmentRepository;
 import enterprise.hibisco.hibiscows.request.AvaliableDaysWrapperRequestDTO;
@@ -47,6 +48,22 @@ public class HospitalAppointmentService {
         Optional<HospitalAppointment> appointment = repository.findById(idHospitalAppointment);
         if (appointment.isPresent()) {
             repository.deleteById(appointment.get().getIdHospitalAppointment());
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    public ResponseEntity<Appointment> acceptAppointmentDay(Long idAppointment) {
+        if (repository.existsById(idAppointment)) {
+            repository.acceptAppointmentDay(idAppointment);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    public ResponseEntity<?> deleteAppointmentDay(Long idAppointment) {
+        if (repository.existsById(idAppointment)) {
+            repository.deleteById(idAppointment);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

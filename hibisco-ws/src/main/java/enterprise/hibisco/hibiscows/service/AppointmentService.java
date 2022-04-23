@@ -3,12 +3,14 @@ package enterprise.hibisco.hibiscows.service;
 import enterprise.hibisco.hibiscows.entities.Appointment;
 import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
 import enterprise.hibisco.hibiscows.repositories.AppointmentRepository;
+import enterprise.hibisco.hibiscows.repositories.DonatorRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalAppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,19 +21,25 @@ public class AppointmentService {
     private AppointmentRepository repository;
 
     @Autowired
+    private DonatorRepository donatorRepository;
+
+    @Autowired
     private HospitalAppointmentRepository hospitalAppointmentRepository;
 
-    public ResponseEntity<?> setAppointmentDay(Appointment appointment) {
+    public ResponseEntity<?> setAppointmentDay(Long fkAppointmentHospital, Long idDonator) {
         Optional<HospitalAppointment> appointmentDay = hospitalAppointmentRepository.findById(
-            appointment.getFkAppointmentHospital()
+                fkAppointmentHospital
         );
-        if (appointmentDay.isPresent()) {
-            repository.save(
+
+
+
+        if (appointmentDay.isPresent() && donatorRepository.existsById(idDonator)) {
+            Appointment appointment = repository.save(
                 new Appointment(
                     appointmentDay.get().getDhAvaliable(),
-                    appointment.getFkDonator(),
-                    appointment.getFkHospital(),
-                    appointment.getFkAppointmentHospital()
+                    idDonator,
+                    appointmentDay.get().getFkHospital(),
+                    fkAppointmentHospital
                 )
             );
             return ResponseEntity.status(HttpStatus.CREATED).body(appointment);
@@ -52,5 +60,4 @@ public class AppointmentService {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
-
 }
