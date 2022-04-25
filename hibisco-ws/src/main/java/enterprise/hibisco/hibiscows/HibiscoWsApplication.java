@@ -7,6 +7,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
+@SuppressWarnings("unused")
 public class HibiscoWsApplication {
 
 	public static void main(String[] args) {
@@ -20,7 +21,7 @@ public class HibiscoWsApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
 						.allowedOrigins("*")
-						.allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE");
+						.allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS");
 			}
 		};
 	}
