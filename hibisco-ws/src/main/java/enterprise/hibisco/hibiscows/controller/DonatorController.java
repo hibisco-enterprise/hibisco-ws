@@ -4,6 +4,7 @@ import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Appointment;
 import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.request.DonatorRequestDTO;
+import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
 import enterprise.hibisco.hibiscows.service.AppointmentService;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,12 @@ public class DonatorController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateDonator(@PathVariable Long id, @RequestBody @Valid Donator donator) {
         return donatorService.updateDonator(id, donator);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updatePassword(@PathVariable Long id,
+                                            @RequestBody @Valid PasswordRequestDTO password) {
+        return donatorService.updatePassword(id, password.getPassword());
     }
 
     @DeleteMapping("/{id}")

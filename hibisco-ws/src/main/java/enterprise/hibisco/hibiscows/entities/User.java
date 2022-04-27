@@ -1,5 +1,6 @@
 package enterprise.hibisco.hibiscows.entities;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +22,6 @@ public abstract class User {
     @NotBlank @Email
     @Getter @Setter private String email;
 
-
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     // exige uma senha com no minimo 8 caracteres, cotendo maiúsculas e minúsculas, números e caracteres especiais
@@ -42,10 +42,6 @@ public abstract class User {
 
     public String recoverPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public abstract ResponseEntity doRegister(Object user);

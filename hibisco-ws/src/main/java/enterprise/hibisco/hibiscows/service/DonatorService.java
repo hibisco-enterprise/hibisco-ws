@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -120,6 +121,16 @@ public class DonatorService {
             newDonator.setIdUser(idUser);
 
             repository.save(newDonator);
+
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    public ResponseEntity<?> updatePassword(Long idDonator, String password) {
+        Optional<Donator> findDonator = repository.findById(idDonator);
+
+        if (findDonator.isPresent()) {
 
             return ResponseEntity.status(HttpStatus.OK).build();
         }
