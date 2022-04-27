@@ -2,6 +2,7 @@ package enterprise.hibisco.hibiscows.service;
 
 import com.google.gson.Gson;
 import enterprise.hibisco.hibiscows.entities.AddressData;
+import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
@@ -114,6 +115,16 @@ public class HospitalService {
             newHospital.setIdUser(idHospital);
             repository.save(newHospital);
 
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    public ResponseEntity<?> updatePassword(Long idDonator, String password) {
+        Optional<Hospital> findHospital = repository.findById(idDonator);
+
+        if (findHospital.isPresent()) {
+            repository.updatePassword(idDonator, password);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

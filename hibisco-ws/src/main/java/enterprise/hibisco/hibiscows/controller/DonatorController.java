@@ -42,7 +42,7 @@ public class DonatorController {
         return donatorService.updateDonator(id, donator);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("password/{id}")
     public ResponseEntity<?> updatePassword(@PathVariable Long id,
                                             @RequestBody @Valid PasswordRequestDTO password) {
         return donatorService.updatePassword(id, password.getPassword());

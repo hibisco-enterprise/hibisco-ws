@@ -131,7 +131,7 @@ public class DonatorService {
         Optional<Donator> findDonator = repository.findById(idDonator);
 
         if (findDonator.isPresent()) {
-
+            repository.updatePassword(idDonator, password);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
