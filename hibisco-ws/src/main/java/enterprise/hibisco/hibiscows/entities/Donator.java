@@ -2,9 +2,7 @@ package enterprise.hibisco.hibiscows.entities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import enterprise.hibisco.hibiscows.request.DonatorRequestDTO;
 import enterprise.hibisco.hibiscows.service.DonatorService;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +18,6 @@ public class Donator extends User {
 
     @Autowired @Transient
     private DonatorService donatorService;
-
-//    @Id //comentado, pois não há a possibilidade de manter o id nas subclasses
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Getter private Long idDonator;
 
     @NotBlank
     @Getter @Setter private String nameDonator;
@@ -56,18 +50,13 @@ public class Donator extends User {
     }
 
     @Override
-    public ResponseEntity<?> doLogin(Object user) {
-        return donatorService.doLogin((DonatorRequestDTO) user);
+    public ResponseEntity<?> doLogin(Object donator) {
+        return donatorService.doLogin((DonatorRequestDTO) donator);
     }
 
     @Override
     public ResponseEntity<?> doLogoff(Long IdUser) {
         return donatorService.doLogoff(IdUser);
-    }
-
-    @Override
-    public String recoverDocument() {
-        return cpf;
     }
 
 }

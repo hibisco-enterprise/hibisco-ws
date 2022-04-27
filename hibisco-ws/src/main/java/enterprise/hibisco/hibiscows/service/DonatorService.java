@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -113,6 +114,11 @@ public class DonatorService {
         Donator newDonator = new Donator();
 
         if (findDonator.isPresent()) {
+
+            if (!donator.getCpf().equals(findDonator.get().getCpf())) {
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+            }
+
             mapper.getConfiguration().setSkipNullEnabled(true);
             mapper.map(donator, newDonator);
 
@@ -121,6 +127,16 @@ public class DonatorService {
 
             repository.save(newDonator);
 
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    public ResponseEntity<?> updatePassword(Long idDonator, String password) {
+        Optional<Donator> findDonator = repository.findById(idDonator);
+
+        if (findDonator.isPresent()) {
+            repository.updatePassword(idDonator, password);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

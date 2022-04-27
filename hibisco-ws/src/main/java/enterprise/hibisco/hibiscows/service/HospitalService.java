@@ -10,7 +10,6 @@ import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -105,7 +104,12 @@ public class HospitalService {
         Optional<Hospital> findHospital = repository.findById(idHospital);
         ModelMapper mapper = new ModelMapper();
         Hospital newHospital = new Hospital();
+
         if (findHospital.isPresent()) {
+
+            if (!hospital.getCnpjHospital().equals(findHospital.get().getCnpjHospital())) {
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+            }
 
             mapper.getConfiguration().setSkipNullEnabled(true);
             mapper.map(hospital, newHospital);
@@ -114,6 +118,16 @@ public class HospitalService {
             newHospital.setIdUser(idHospital);
             repository.save(newHospital);
 
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    public ResponseEntity<?> updatePassword(Long idDonator, String password) {
+        Optional<Hospital> findHospital = repository.findById(idDonator);
+
+        if (findHospital.isPresent()) {
+            repository.updatePassword(idDonator, password);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

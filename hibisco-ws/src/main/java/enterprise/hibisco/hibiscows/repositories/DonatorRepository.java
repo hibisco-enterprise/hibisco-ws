@@ -25,6 +25,11 @@ public interface DonatorRepository extends JpaRepository<Donator, Long> {
 
     @Transactional
     @Modifying
+    @Query("update Donator d set d.password = ?2 where d.idUser = ?1")
+    void updatePassword(Long idUser, String password);
+
+    @Transactional
+    @Modifying
     @Query("update Donator d set d.authenticated = 1 where d.idUser = ?1")
     void authenticateUser(Long idUser);
 

@@ -5,11 +5,14 @@ import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
 import enterprise.hibisco.hibiscows.request.AvaliableDaysWrapperRequestDTO;
 import enterprise.hibisco.hibiscows.request.HospitalRequestDTO;
+import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
 import enterprise.hibisco.hibiscows.service.HospitalAppointmentService;
 import enterprise.hibisco.hibiscows.service.HospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.Basic;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +42,12 @@ public class HospitalController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateHospital(@PathVariable Long id, @RequestBody @Valid Hospital hospital) {
         return hospitalService.updateHospital(id, hospital);
+    }
+
+    @PatchMapping("password/{id}")
+    public ResponseEntity<?> updatePassword(@PathVariable Long id,
+                                            @RequestBody @Valid PasswordRequestDTO password) {
+        return hospitalService.updatePassword(id, password.getPassword());
     }
 
     @DeleteMapping("/{id}")

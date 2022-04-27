@@ -24,6 +24,11 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
     @Transactional
     @Modifying
+    @Query("update Hospital h set h.password = ?2 where h.idUser = ?1")
+    void updatePassword(Long idUser, String password);
+
+    @Transactional
+    @Modifying
     @Query("update Hospital h set h.authenticated = 1 where h.idUser = ?1")
     void authenticateUser(Long idUser);
 

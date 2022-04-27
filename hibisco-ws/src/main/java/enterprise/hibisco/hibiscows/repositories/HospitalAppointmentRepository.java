@@ -16,9 +16,9 @@ public interface HospitalAppointmentRepository extends JpaRepository<HospitalApp
 
     List<HospitalAppointment> findByFkHospital(Long idHospital);
 
-    @Query("update Appointment a set a.accepted = true where a.idAppointment = ?1")
     @Transactional
     @Modifying
+    @Query("update Appointment a set a.accepted = true where a.idAppointment = ?1")
     void acceptAppointmentDay(Long idAppointment);
 
 }
