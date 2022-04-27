@@ -25,7 +25,10 @@ public abstract class User {
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     // exige uma senha com no minimo 8 caracteres, cotendo maiúsculas e minúsculas, números e caracteres especiais
-    //@Pattern(regexp = "/(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}/")
+    @Pattern(regexp = "/(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}/",
+             message = "Senha fraca! A senha deve possuir 8 caracteres, letras maiúsculas" +
+                     " e minúsculas, números e caracteres especiais."
+    )
     @Getter @Setter private String password;
 
     @NotBlank
@@ -40,16 +43,10 @@ public abstract class User {
         this.phone = phone;
     }
 
-    public String recoverPassword() {
-        return password;
-    }
+    public abstract ResponseEntity<?> doRegister(Object user);
 
-    public abstract ResponseEntity doRegister(Object user);
+    public abstract ResponseEntity<?> doLogin(Object user);
 
-    public abstract ResponseEntity doLogin(Object user);
-
-    public abstract ResponseEntity doLogoff(Long IdUser);
-
-    public abstract String recoverDocument();
+    public abstract ResponseEntity<?> doLogoff(Long IdUser);
 
 }

@@ -19,10 +19,6 @@ public class Donator extends User {
     @Autowired @Transient
     private DonatorService donatorService;
 
-//    @Id //comentado, pois não há a possibilidade de manter o id nas subclasses
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Getter private Long idDonator;
-
     @NotBlank
     @Getter @Setter private String nameDonator;
 
@@ -54,18 +50,13 @@ public class Donator extends User {
     }
 
     @Override
-    public ResponseEntity<?> doLogin(Object user) {
-        return donatorService.doLogin((DonatorRequestDTO) user);
+    public ResponseEntity<?> doLogin(Object donator) {
+        return donatorService.doLogin((DonatorRequestDTO) donator);
     }
 
     @Override
     public ResponseEntity<?> doLogoff(Long IdUser) {
         return donatorService.doLogoff(IdUser);
-    }
-
-    @Override
-    public String recoverDocument() {
-        return cpf;
     }
 
 }

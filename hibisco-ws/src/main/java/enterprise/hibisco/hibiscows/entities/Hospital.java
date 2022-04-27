@@ -22,10 +22,6 @@ public class Hospital extends User {
     @Autowired @Transient
     private HospitalService hospitalService;
 
-//    @Id //comentado, pois não há a possibilidade de manter o id nas subclasses
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Getter private Long idHospital;
-
     @NotBlank
     @Getter @Setter private String nameHospital;
 
@@ -52,8 +48,8 @@ public class Hospital extends User {
     }
 
     @Override
-    public ResponseEntity<?> doLogin(Object user) {
-        return hospitalService.doLogin((HospitalRequestDTO) user);
+    public ResponseEntity<?> doLogin(Object hospital) {
+        return hospitalService.doLogin((HospitalRequestDTO) hospital);
     }
 
     @Override
@@ -61,9 +57,5 @@ public class Hospital extends User {
         return hospitalService.doLogoff(login);
     }
 
-    @Override
-    public String recoverDocument() {
-        return cnpjHospital;
-    }
 
 }

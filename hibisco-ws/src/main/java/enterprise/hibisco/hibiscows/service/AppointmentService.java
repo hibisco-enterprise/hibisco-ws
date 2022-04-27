@@ -26,12 +26,10 @@ public class AppointmentService {
     @Autowired
     private HospitalAppointmentRepository hospitalAppointmentRepository;
 
-    public ResponseEntity<?> setAppointmentDay(Long fkAppointmentHospital, Long idDonator) {
+    public ResponseEntity<Appointment> setAppointmentDay(Long fkAppointmentHospital, Long idDonator) {
         Optional<HospitalAppointment> appointmentDay = hospitalAppointmentRepository.findById(
                 fkAppointmentHospital
         );
-
-
 
         if (appointmentDay.isPresent() && donatorRepository.existsById(idDonator)) {
             Appointment appointment = repository.save(
@@ -58,6 +56,14 @@ public class AppointmentService {
             return ResponseEntity.status(HttpStatus.OK).body(appointmentDays);
         }
 
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    public ResponseEntity<?> cancelAppointmentDay(Long idAppointment) {
+        if (repository.existsById(idAppointment)) {
+            repository.deleteById(idAppointment);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
