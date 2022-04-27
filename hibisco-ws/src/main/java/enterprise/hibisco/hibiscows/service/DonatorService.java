@@ -114,6 +114,11 @@ public class DonatorService {
         Donator newDonator = new Donator();
 
         if (findDonator.isPresent()) {
+
+            if (!donator.getCpf().equals(findDonator.get().getCpf())) {
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+            }
+
             mapper.getConfiguration().setSkipNullEnabled(true);
             mapper.map(donator, newDonator);
 

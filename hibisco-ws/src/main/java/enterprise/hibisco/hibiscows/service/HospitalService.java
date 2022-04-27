@@ -104,7 +104,12 @@ public class HospitalService {
         Optional<Hospital> findHospital = repository.findById(idHospital);
         ModelMapper mapper = new ModelMapper();
         Hospital newHospital = new Hospital();
+
         if (findHospital.isPresent()) {
+
+            if (!hospital.getCnpjHospital().equals(findHospital.get().getCnpjHospital())) {
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+            }
 
             mapper.getConfiguration().setSkipNullEnabled(true);
             mapper.map(hospital, newHospital);
