@@ -28,23 +28,20 @@ public class Hospital extends User {
     @NotBlank @CNPJ
     @Getter @Setter private String cnpjHospital;
 
-    @Getter @Setter private Long fkAddress;
-
     public Hospital(String email,
                     String password,
                     String phone,
+                    AddressData address,
                     String nameHospital,
-                    String cnpjHospital,
-                    Long fkAddress) {
-        super(email, password, phone);
+                    String cnpjHospital) {
+        super(email, password, phone, address);
         this.nameHospital = nameHospital;
         this.cnpjHospital = cnpjHospital;
-        this.fkAddress = fkAddress;
     }
 
     @Override
     public ResponseEntity<?> doRegister(Object hospital) {
-        return hospitalService.doRegister((HospitalRequestDTO) hospital);
+        return hospitalService.doRegister((Hospital) hospital);
     }
 
     @Override

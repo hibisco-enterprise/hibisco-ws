@@ -1,5 +1,6 @@
 package enterprise.hibisco.hibiscows.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -17,21 +18,27 @@ public class DonatorRequestDTO {
 
     @Email
     @Getter private String email;
-
-    private String password;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Getter private String password;
 
     @Getter private String phone;
 
     @Getter private String nameDonator;
 
-    @CPF
-    @Getter private String cpf;
+    @CPF @Getter private String cpf;
+
     @Getter private String bloodType;
+
     @Getter private String address;
+
     @Getter private String neighborhood;
+
     @Getter private String city;
+
     @Getter private String uf;
+
     @Getter private String cep;
+
     @Getter private Integer number;
 
     public DonatorRequestDTO(String email, String password) {

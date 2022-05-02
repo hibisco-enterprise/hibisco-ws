@@ -37,10 +37,18 @@ public abstract class User {
     @Getter @Setter @NotNull
     private boolean authenticated;
 
-    public User(String email, String password, String phone) {
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="id_address")
+    @Getter @Setter private AddressData address;
+
+    public User(String email,
+                String password,
+                String phone,
+                AddressData address) {
         this.email = email;
         this.password = password;
         this.phone = phone;
+        this.address = address;
     }
 
     public abstract ResponseEntity<?> doRegister(Object user);

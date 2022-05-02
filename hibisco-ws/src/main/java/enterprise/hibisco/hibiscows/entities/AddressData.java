@@ -37,6 +37,9 @@ public class AddressData {
     @NotNull
     @Getter @Setter private Integer number;
 
+    @OneToOne(mappedBy = "address")
+    @Getter @Setter private User user;
+
     public AddressData(String address,
                        String cep,
                        String city,

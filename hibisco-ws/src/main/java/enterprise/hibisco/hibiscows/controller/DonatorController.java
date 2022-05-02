@@ -65,7 +65,7 @@ public class DonatorController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> doRegister(@RequestBody @Valid DonatorRequestDTO donator) {
+    public ResponseEntity<?> doRegister(@RequestBody @Valid Donator donator) {
         return donatorService.doRegister(donator);
     }
 

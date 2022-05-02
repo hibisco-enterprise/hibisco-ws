@@ -43,34 +43,22 @@ public class DonatorService {
     @Autowired
     private AddressDataService addressDataService;
 
-    public ResponseEntity<?> doRegister(DonatorRequestDTO donator) {
+    public ResponseEntity<?> doRegister(Donator donator) {
         if (repository.existsByCpf(donator.getCpf())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 "CPF inválido, tente novamente com um cpf diferente"
             );
         }
-
         try {
-            AddressData fkAddress = addressRepository.save(
-                new AddressData(
-                    donator.getAddress(),
-                    donator.getCep(),
-                    donator.getCity(),
-                    donator.getNeighborhood(),
-                    donator.getNumber(),
-                    donator.getUf()
-                )
-            );
-
             repository.save(
                 new Donator(
                     donator.getEmail(),
-                    donator.recoverPassword(),
+                    donator.getPassword(),
                     donator.getPhone(),
+                    donator.getAddress(),
                     donator.getNameDonator(),
                     donator.getCpf(),
-                    donator.getBloodType(),
-                    fkAddress.getIdAddress()
+                    donator.getBloodType()
                 )
             );
 
@@ -122,7 +110,6 @@ public class DonatorService {
             mapper.getConfiguration().setSkipNullEnabled(true);
             mapper.map(donator, newDonator);
 
-            newDonator.setFkAddress(findDonator.get().getFkAddress());
             newDonator.setIdUser(idUser);
 
             repository.save(newDonator);
@@ -189,20 +176,19 @@ public class DonatorService {
 
     public ResponseEntity<?> getReport(Long id) {
         Optional<Hospital> h1 = hospitalRepository.findById(id);
-        Optional<AddressData> data = addressRepository.findById(h1.get().getFkAddress());
-        if (data.isPresent()) {
+        if (h1.isPresent()) {
 
             CsvRequestDTO csv = new CsvRequestDTO(
                 CsvType.Hospital,
                 h1.get().getNameHospital(),
                 h1.get().getEmail(),
                 h1.get().getPhone(),
-                data.get().getAddress(),
-                data.get().getNeighborhood(),
-                data.get().getCity(),
-                data.get().getUf(),
-                data.get().getCep(),
-                data.get().getNumber().toString()
+                h1.get().getAddress().getAddress(),
+                h1.get().getAddress().getNeighborhood(),
+                h1.get().getAddress().getCity(),
+                h1.get().getAddress().getUf(),
+                h1.get().getAddress().getCep(),
+                h1.get().getAddress().getNumber().toString()
             );
 
             String relatorio = String.join(", ",

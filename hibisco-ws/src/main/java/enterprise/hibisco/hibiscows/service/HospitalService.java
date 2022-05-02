@@ -36,7 +36,7 @@ public class HospitalService {
     private AddressDataService addressDataService;
 
 
-    public ResponseEntity<?> doRegister(HospitalRequestDTO hospital) {
+    public ResponseEntity<?> doRegister(Hospital hospital) {
         if (repository.existsByCnpjHospital(hospital.getCnpjHospital())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     "CNPJ inválido, tente novamente com um cnpj diferente"
@@ -44,25 +44,14 @@ public class HospitalService {
         }
 
         try {
-            AddressData fkAddress = addressRepository.save(
-                new AddressData(
-                    hospital.getAddress(),
-                    hospital.getCep(),
-                    hospital.getCity(),
-                    hospital.getNeighborhood(),
-                    hospital.getNumber(),
-                    hospital.getUf()
-                )
-            );
-
             repository.save(
                 new Hospital(
                     hospital.getEmail(),
-                    hospital.recoverPassword(),
+                    hospital.getPassword(),
                     hospital.getPhone(),
+                    hospital.getAddress(),
                     hospital.getNameHospital(),
-                    hospital.getCnpjHospital(),
-                    fkAddress.getIdAddress()
+                    hospital.getCnpjHospital()
                 )
             );
 
@@ -114,7 +103,6 @@ public class HospitalService {
             mapper.getConfiguration().setSkipNullEnabled(true);
             mapper.map(hospital, newHospital);
 
-            newHospital.setFkAddress(findHospital.get().getFkAddress());
             newHospital.setIdUser(idHospital);
             repository.save(newHospital);
 

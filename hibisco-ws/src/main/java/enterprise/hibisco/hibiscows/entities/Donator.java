@@ -28,25 +28,22 @@ public class Donator extends User {
     @NotBlank
     @Getter @Setter private String bloodType;
 
-    @Getter @Setter private Long fkAddress;
-
     public Donator(String email,
                    String password,
                    String phone,
+                   AddressData address,
                    String nameDonator,
                    String cpf,
-                   String bloodType,
-                   Long fkAddress) {
-        super(email, password, phone);
+                   String bloodType) {
+        super(email, password, phone, address);
         this.nameDonator = nameDonator;
         this.cpf = cpf;
         this.bloodType = bloodType;
-        this.fkAddress = fkAddress;
     }
 
     @Override
     public ResponseEntity<?> doRegister(Object donator) {
-        return donatorService.doRegister((DonatorRequestDTO) donator);
+        return donatorService.doRegister((Donator) donator);
     }
 
     @Override
