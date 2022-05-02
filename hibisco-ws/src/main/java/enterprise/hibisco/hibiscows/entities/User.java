@@ -38,7 +38,8 @@ public abstract class User {
     private boolean authenticated;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="id_address")
+    @JoinColumn(name="fk_address")
+    @NotBlank @NotNull
     @Getter @Setter private AddressData address;
 
     public User(String email,

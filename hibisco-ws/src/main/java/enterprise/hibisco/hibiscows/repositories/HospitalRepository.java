@@ -19,9 +19,6 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
     Optional<Hospital> findByEmailAndPassword(String email, String password);
 
-    @Query("select h.fkAddress from Hospital h where h.idUser = ?1")
-    Optional<Long> findFkAddressByIdHospital(Long idUser);
-
     @Transactional
     @Modifying
     @Query("update Hospital h set h.password = ?2 where h.idUser = ?1")

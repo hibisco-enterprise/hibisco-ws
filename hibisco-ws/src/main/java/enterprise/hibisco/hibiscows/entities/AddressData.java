@@ -38,6 +38,7 @@ public class AddressData {
     @Getter @Setter private Integer number;
 
     @OneToOne(mappedBy = "address")
+    @NotBlank
     @Getter @Setter private User user;
 
     public AddressData(String address,

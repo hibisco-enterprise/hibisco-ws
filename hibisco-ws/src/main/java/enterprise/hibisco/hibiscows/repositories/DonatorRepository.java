@@ -1,5 +1,6 @@
 package enterprise.hibisco.hibiscows.repositories;
 
+import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Donator;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,10 +19,6 @@ public interface DonatorRepository extends JpaRepository<Donator, Long> {
     Optional<Donator> findByCpf(String cpf);
 
     Optional<Donator> findByEmailAndPassword(String email, String password);
-
-
-    @Query("select d.fkAddress from Donator d where d.idUser = ?1")
-    Optional<Long> findFkAddressByIdDonator(Long idUser);
 
     @Transactional
     @Modifying
