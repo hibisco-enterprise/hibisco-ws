@@ -10,10 +10,9 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @NoArgsConstructor
 @SuppressWarnings("unused")
-public abstract class User {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
@@ -51,11 +50,5 @@ public abstract class User {
         this.phone = phone;
         this.address = address;
     }
-
-    public abstract ResponseEntity<?> doRegister(Object user);
-
-    public abstract ResponseEntity<?> doLogin(Object user);
-
-    public abstract ResponseEntity<?> doLogoff(Long IdUser);
 
 }

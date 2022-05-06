@@ -39,17 +39,14 @@ public class Hospital extends User {
         this.cnpjHospital = cnpjHospital;
     }
 
-    @Override
     public ResponseEntity<?> doRegister(Object hospital) {
         return hospitalService.doRegister((Hospital) hospital);
     }
 
-    @Override
     public ResponseEntity<?> doLogin(Object hospital) {
         return hospitalService.doLogin((HospitalRequestDTO) hospital);
     }
 
-    @Override
     public ResponseEntity<?> doLogoff(Long login) {
         return hospitalService.doLogoff(login);
     }

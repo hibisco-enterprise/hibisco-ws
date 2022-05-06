@@ -54,4 +54,17 @@ public class AddressData {
         this.number = number;
         this.uf = uf;
     }
+
+    @Override
+    public String toString() {
+        return "AddressData{" +
+                "idAddress=" + idAddress +
+                ", address='" + address + '\'' +
+                ", neighborhood='" + neighborhood + '\'' +
+                ", city='" + city + '\'' +
+                ", uf='" + uf + '\'' +
+                ", cep='" + cep + '\'' +
+                ", number=" + number +
+                '}';
+    }
 }

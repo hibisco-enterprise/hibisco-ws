@@ -41,17 +41,14 @@ public class Donator extends User {
         this.bloodType = bloodType;
     }
 
-    @Override
     public ResponseEntity<?> doRegister(Object donator) {
         return donatorService.doRegister((Donator) donator);
     }
 
-    @Override
     public ResponseEntity<?> doLogin(Object donator) {
         return donatorService.doLogin((DonatorRequestDTO) donator);
     }
 
-    @Override
     public ResponseEntity<?> doLogoff(Long IdUser) {
         return donatorService.doLogoff(IdUser);
     }
