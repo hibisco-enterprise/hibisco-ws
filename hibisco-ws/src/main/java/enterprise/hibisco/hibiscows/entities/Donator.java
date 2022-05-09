@@ -23,10 +23,10 @@ public class Donator {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_user")
-    @Getter @Setter private User fkUser;
+    @Getter @Setter private User user;
 
-    public Donator(String bloodType, User fkUser) {
+    public Donator(String bloodType, User user) {
         this.bloodType = bloodType;
-        this.fkUser = fkUser;
+        this.user = user;
     }
 }

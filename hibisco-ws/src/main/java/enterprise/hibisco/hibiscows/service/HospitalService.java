@@ -41,7 +41,7 @@ public class HospitalService {
 
 
     public ResponseEntity<?> doRegister(Hospital hospital) {
-        if (userRepository.existsByDocumentNumber(hospital.getFkUser().getDocumentNumber())) {
+        if (userRepository.existsByDocumentNumber(hospital.getUser().getDocumentNumber())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     "CNPJ inválido, tente novamente com um cnpj diferente"
             );
@@ -50,7 +50,7 @@ public class HospitalService {
         try {
             repository.save(
                 new Hospital(
-                    hospital.getFkUser()
+                    hospital.getUser()
                 )
             );
 
@@ -96,8 +96,8 @@ public class HospitalService {
         if (findHospital.isPresent()) {
 
             if (
-                !hospital.getFkUser().getDocumentNumber().equals(
-                    findHospital.get().getFkUser().getDocumentNumber())) {
+                !hospital.getUser().getDocumentNumber().equals(
+                    findHospital.get().getUser().getDocumentNumber())) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
             }
 
@@ -117,7 +117,7 @@ public class HospitalService {
 
         if (findHospital.isPresent()) {
             userRepository.updatePassword(
-                    findHospital.get().getFkUser().getIdUser(),
+                    findHospital.get().getUser().getIdUser(),
                     password
             );
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -155,7 +155,7 @@ public class HospitalService {
             hospital.recoverPassword()
         );
         if (findHospital.isPresent()) {
-            userRepository.authenticateUser(findHospital.get().getFkUser().getIdUser());
+            userRepository.authenticateUser(findHospital.get().getUser().getIdUser());
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

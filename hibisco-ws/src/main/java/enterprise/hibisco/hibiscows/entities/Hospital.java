@@ -20,9 +20,9 @@ public class Hospital {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_user")
-    @Getter @Setter private User fkUser;
+    @Getter @Setter private User user;
 
-    public Hospital(User fkUser) {
-        this.fkUser = fkUser;
+    public Hospital(User user) {
+        this.user = user;
     }
 }

@@ -44,7 +44,7 @@ public class DonatorService {
 
     public ResponseEntity<?> doRegister(Donator donator) {
         logger.info(gson.toJson(donator));
-        if (userRepository.existsByDocumentNumber(donator.getFkUser().getDocumentNumber())) {
+        if (userRepository.existsByDocumentNumber(donator.getUser().getDocumentNumber())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 "CPF inválido, tente novamente com um cpf diferente"
             );
@@ -54,7 +54,7 @@ public class DonatorService {
             repository.save(
                 new Donator(
                     donator.getBloodType(),
-                    donator.getFkUser()
+                    donator.getUser()
                 )
             );
 
@@ -100,8 +100,8 @@ public class DonatorService {
         if (findDonator.isPresent()) {
 
             if (
-                !donator.getFkUser().getDocumentNumber().equals(
-                    findDonator.get().getFkUser().getDocumentNumber()
+                !donator.getUser().getDocumentNumber().equals(
+                    findDonator.get().getUser().getDocumentNumber()
                 )
             ) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
@@ -123,7 +123,7 @@ public class DonatorService {
         Optional<Donator> findDonator = repository.findById(idDonator);
 
         if (findDonator.isPresent()) {
-            userRepository.updatePassword(findDonator.get().getFkUser().getIdUser(), password);
+            userRepository.updatePassword(findDonator.get().getUser().getIdUser(), password);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -164,7 +164,7 @@ public class DonatorService {
             donator.recoverPassword()
         );
         if (findDonator.isPresent()) {
-            userRepository.authenticateUser(findDonator.get().getFkUser().getIdUser());
+            userRepository.authenticateUser(findDonator.get().getUser().getIdUser());
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

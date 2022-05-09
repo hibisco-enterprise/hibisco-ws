@@ -46,13 +46,13 @@ public class User {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="fk_address")
-    @Getter @Setter private AddressData fkAddress;
+    @Getter @Setter private AddressData address;
 
-    public User(String email, String documentNumber, String password, String phone, AddressData fkAddress) {
+    public User(String email, String documentNumber, String password, String phone, AddressData address) {
         this.email = email;
         this.documentNumber = documentNumber;
         this.password = password;
         this.phone = phone;
-        this.fkAddress = fkAddress;
+        this.address = address;
     }
 }
