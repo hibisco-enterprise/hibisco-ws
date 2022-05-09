@@ -5,6 +5,7 @@ import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
+import enterprise.hibisco.hibiscows.repositories.UserRepository;
 import enterprise.hibisco.hibiscows.request.HospitalRequestDTO;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
 import org.modelmapper.ModelMapper;
@@ -27,6 +28,9 @@ public class HospitalService {
     private static final Gson gson = new Gson();
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private HospitalRepository repository;
 
     @Autowired
@@ -37,7 +41,7 @@ public class HospitalService {
 
 
     public ResponseEntity<?> doRegister(Hospital hospital) {
-        if (repository.existsByCnpjHospital(hospital.getCnpjHospital())) {
+        if (userRepository.existsByDocumentNumber(hospital.getFkUser().getDocumentNumber())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     "CNPJ inválido, tente novamente com um cnpj diferente"
             );
@@ -46,12 +50,7 @@ public class HospitalService {
         try {
             repository.save(
                 new Hospital(
-                    hospital.getEmail(),
-                    hospital.getPassword(),
-                    hospital.getPhone(),
-                    hospital.getAddress(),
-                    hospital.getNameHospital(),
-                    hospital.getCnpjHospital()
+                    hospital.getFkUser()
                 )
             );
 
@@ -82,7 +81,7 @@ public class HospitalService {
     }
 
     public ResponseEntity<Optional<Hospital>> getDonatorByCnpj(String cnpjHospital) {
-        Optional<Hospital> hospital = repository.findByCnpjHospital(cnpjHospital);
+        Optional<Hospital> hospital = repository.findByDocumentNumber(cnpjHospital);
         if (hospital.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(hospital);
         }
@@ -96,14 +95,16 @@ public class HospitalService {
 
         if (findHospital.isPresent()) {
 
-            if (!hospital.getCnpjHospital().equals(findHospital.get().getCnpjHospital())) {
+            if (
+                !hospital.getFkUser().getDocumentNumber().equals(
+                    findHospital.get().getFkUser().getDocumentNumber())) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
             }
 
             mapper.getConfiguration().setSkipNullEnabled(true);
             mapper.map(hospital, newHospital);
 
-            newHospital.setIdUser(idHospital);
+            newHospital.setIdHospital(idHospital);
             repository.save(newHospital);
 
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -111,11 +112,14 @@ public class HospitalService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    public ResponseEntity<?> updatePassword(Long idDonator, String password) {
-        Optional<Hospital> findHospital = repository.findById(idDonator);
+    public ResponseEntity<?> updatePassword(Long idHospital, String password) {
+        Optional<Hospital> findHospital = repository.findById(idHospital);
 
         if (findHospital.isPresent()) {
-            repository.updatePassword(idDonator, password);
+            userRepository.updatePassword(
+                    findHospital.get().getFkUser().getIdUser(),
+                    password
+            );
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -151,14 +155,14 @@ public class HospitalService {
             hospital.recoverPassword()
         );
         if (findHospital.isPresent()) {
-            repository.authenticateUser(findHospital.get().getIdUser());
+            userRepository.authenticateUser(findHospital.get().getFkUser().getIdUser());
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     public ResponseEntity<?> doLogoff(Long idUser) {
-        repository.removeAuthenticationUser(idUser);
+        userRepository.removeAuthenticationUser(idUser);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

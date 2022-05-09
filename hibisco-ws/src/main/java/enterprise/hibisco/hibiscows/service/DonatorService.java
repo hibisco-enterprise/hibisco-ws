@@ -3,25 +3,20 @@ package enterprise.hibisco.hibiscows.service;
 import com.google.gson.Gson;
 import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Donator;
-import enterprise.hibisco.hibiscows.entities.Hospital;
-import enterprise.hibisco.hibiscows.manager.CsvType;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.DonatorRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
+import enterprise.hibisco.hibiscows.repositories.UserRepository;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
-import enterprise.hibisco.hibiscows.request.CsvRequestDTO;
 import enterprise.hibisco.hibiscows.request.DonatorRequestDTO;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +26,10 @@ public class DonatorService {
 
     private static final Logger logger = LoggerFactory.getLogger(HospitalService.class);
     private static final Gson gson = new Gson();
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Autowired
     private DonatorRepository repository;
 
@@ -44,21 +43,18 @@ public class DonatorService {
     private AddressDataService addressDataService;
 
     public ResponseEntity<?> doRegister(Donator donator) {
-        if (repository.existsByCpf(donator.getCpf())) {
+        logger.info(gson.toJson(donator));
+        if (userRepository.existsByDocumentNumber(donator.getFkUser().getDocumentNumber())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 "CPF inválido, tente novamente com um cpf diferente"
             );
         }
         try {
+            logger.info(gson.toJson(donator));
             repository.save(
                 new Donator(
-                    donator.getEmail(),
-                    donator.getPassword(),
-                    donator.getPhone(),
-                    donator.getAddress(),
-                    donator.getNameDonator(),
-                    donator.getCpf(),
-                    donator.getBloodType()
+                    donator.getBloodType(),
+                    donator.getFkUser()
                 )
             );
 
@@ -80,8 +76,8 @@ public class DonatorService {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    public ResponseEntity<Optional<Donator>> getDonatorById(Long idUser) {
-        Optional<Donator> user = repository.findById(idUser);
+    public ResponseEntity<Optional<Donator>> getDonatorById(Long idDonator) {
+        Optional<Donator> user = repository.findById(idDonator);
         if (user.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(user);
         }
@@ -89,28 +85,32 @@ public class DonatorService {
     }
 
     public ResponseEntity<Optional<Donator>> getDonatorByCpf(String cpf) {
-        Optional<Donator> user = repository.findByCpf(cpf);
+        Optional<Donator> user = repository.findByDocumentNumber(cpf);
         if (user.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(user);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    public ResponseEntity<?> updateDonator(Long idUser, Donator donator) {
-        Optional<Donator> findDonator = repository.findById(idUser);
+    public ResponseEntity<?> updateDonator(Long idDonator, Donator donator) {
+        Optional<Donator> findDonator = repository.findById(idDonator);
         ModelMapper mapper = new ModelMapper();
         Donator newDonator = new Donator();
 
         if (findDonator.isPresent()) {
 
-            if (!donator.getCpf().equals(findDonator.get().getCpf())) {
+            if (
+                !donator.getFkUser().getDocumentNumber().equals(
+                    findDonator.get().getFkUser().getDocumentNumber()
+                )
+            ) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
             }
 
             mapper.getConfiguration().setSkipNullEnabled(true);
             mapper.map(donator, newDonator);
 
-            newDonator.setIdUser(idUser);
+            newDonator.setIdDonator(idDonator);
 
             repository.save(newDonator);
 
@@ -123,7 +123,7 @@ public class DonatorService {
         Optional<Donator> findDonator = repository.findById(idDonator);
 
         if (findDonator.isPresent()) {
-            repository.updatePassword(idDonator, password);
+            userRepository.updatePassword(findDonator.get().getFkUser().getIdUser(), password);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -131,7 +131,7 @@ public class DonatorService {
 
     public ResponseEntity<?> deleteDonator(Long idUser) {
         Long idAddress;
-        Optional<AddressData> findIdAddress = repository.findFkAddressByIdDonator(idUser);
+        Optional<AddressData> findIdAddress = userRepository.findAddressByIdUser(idUser);
         logger.info(gson.toJson(findIdAddress.toString()));
         if (repository.existsById(idUser) && findIdAddress.isPresent()) {
             idAddress = findIdAddress.get().getIdAddress();
@@ -164,55 +164,55 @@ public class DonatorService {
             donator.recoverPassword()
         );
         if (findDonator.isPresent()) {
-            repository.authenticateUser(findDonator.get().getIdUser());
+            userRepository.authenticateUser(findDonator.get().getFkUser().getIdUser());
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     public ResponseEntity<?> doLogoff(Long idUser) {
-        repository.removeAuthenticationUser(idUser);
+        userRepository.removeAuthenticationUser(idUser);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    public ResponseEntity<?> getReport(Long id) {
-        Optional<Hospital> h1 = hospitalRepository.findById(id);
-        if (h1.isPresent()) {
-
-            CsvRequestDTO csv = new CsvRequestDTO(
-                CsvType.Hospital,
-                h1.get().getNameHospital(),
-                h1.get().getEmail(),
-                h1.get().getPhone(),
-                h1.get().getAddress().getAddress(),
-                h1.get().getAddress().getNeighborhood(),
-                h1.get().getAddress().getCity(),
-                h1.get().getAddress().getUf(),
-                h1.get().getAddress().getCep(),
-                h1.get().getAddress().getNumber().toString()
-            );
-
-            String relatorio = String.join(", ",
-                csv.getType().name(),
-                csv.getName(),
-                csv.getEmail(),
-                csv.getPhoneNumber(),
-                csv.getAddress(),
-                csv.getNeighborhood(),
-                csv.getCity(),
-                csv.getUf(),
-                csv.getCep(),
-                csv.getNumber()
-            );
-
-            relatorio += "\r\n";
-
-            return ResponseEntity
-                    .status(200)
-                    .header("content-type", "text/csv")
-                    .header("content-disposition", "filename=\"hospital.csv\"")
-                    .body(relatorio);
-        }
-            return ResponseEntity.status(404).build();
-    }
+//    public ResponseEntity<?> getReport(Long id) {
+//        Optional<Hospital> h1 = hospitalRepository.findById(id);
+//        if (h1.isPresent()) {
+//
+//            CsvRequestDTO csv = new CsvRequestDTO(
+//                CsvType.Hospital,
+//                h1.get().getNameHospital(),
+//                h1.get().getEmail(),
+//                h1.get().getPhone(),
+//                h1.get().getAddress().getAddress(),
+//                h1.get().getAddress().getNeighborhood(),
+//                h1.get().getAddress().getCity(),
+//                h1.get().getAddress().getUf(),
+//                h1.get().getAddress().getCep(),
+//                h1.get().getAddress().getNumber().toString()
+//            );
+//
+//            String relatorio = String.join(", ",
+//                csv.getType().name(),
+//                csv.getName(),
+//                csv.getEmail(),
+//                csv.getPhoneNumber(),
+//                csv.getAddress(),
+//                csv.getNeighborhood(),
+//                csv.getCity(),
+//                csv.getUf(),
+//                csv.getCep(),
+//                csv.getNumber()
+//            );
+//
+//            relatorio += "\r\n";
+//
+//            return ResponseEntity
+//                    .status(200)
+//                    .header("content-type", "text/csv")
+//                    .header("content-disposition", "filename=\"hospital.csv\"")
+//                    .body(relatorio);
+//        }
+//            return ResponseEntity.status(404).build();
+//    }
 }

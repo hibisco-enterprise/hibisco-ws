@@ -79,10 +79,10 @@ public class DonatorController {
         return donatorService.doLogoff(idUser);
     }
 
-    @GetMapping("/report/{id}")
-    public ResponseEntity<?> getReport(@PathVariable Long id){
-        return donatorService.getReport(id);
-    }
+//    @GetMapping("/report/{id}")
+//    public ResponseEntity<?> getReport(@PathVariable Long id){
+//        return donatorService.getReport(id);
+//    }
 
     @GetMapping("/appointment/{idDonator}/{idHospital}")
     public ResponseEntity<List<Appointment>> getAppointmentDays(@PathVariable Long idDonator,

@@ -1,17 +1,19 @@
 package enterprise.hibisco.hibiscows.entities;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.http.ResponseEntity;
-
+import lombok.*;
+import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @SuppressWarnings("unused")
+@Data
+@Builder
+@Table(name = "tb_user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 
     @Id
@@ -21,13 +23,19 @@ public class User {
     @NotBlank @Email
     @Getter @Setter private String email;
 
+    @Length(
+            min = 11, max = 18,
+            message = "Documento inválido, verifique as pontuações, espaços e zeros à esquerda"
+    )
+    @NotBlank
+    @Getter @Setter private String documentNumber;
+
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    // exige uma senha com no minimo 8 caracteres, cotendo maiúsculas e minúsculas, números e caracteres especiais
-    @Pattern(regexp = "/(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}/",
-             message = "Senha fraca! A senha deve possuir 8 caracteres, letras maiúsculas" +
-                     " e minúsculas, números e caracteres especiais."
-    )
+//    @Pattern(regexp = "/(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[\\da-zA-Z$*&@#]{8,}/",
+//             message = "Senha fraca! A senha deve possuir 8 caracteres, letras maiúsculas " +
+//                       "e minúsculas, números e caracteres especiais."
+//    )
     @Getter @Setter private String password;
 
     @NotBlank
@@ -36,19 +44,15 @@ public class User {
     @Getter @Setter @NotNull
     private boolean authenticated;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="fk_address")
-    @NotBlank @NotNull
-    @Getter @Setter private AddressData address;
+    @Getter @Setter private AddressData fkAddress;
 
-    public User(String email,
-                String password,
-                String phone,
-                AddressData address) {
+    public User(String email, String documentNumber, String password, String phone, AddressData fkAddress) {
         this.email = email;
+        this.documentNumber = documentNumber;
         this.password = password;
         this.phone = phone;
-        this.address = address;
+        this.fkAddress = fkAddress;
     }
-
 }

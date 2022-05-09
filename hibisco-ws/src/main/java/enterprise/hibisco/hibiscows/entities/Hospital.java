@@ -1,55 +1,28 @@
 package enterprise.hibisco.hibiscows.entities;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import enterprise.hibisco.hibiscows.request.HospitalRequestDTO;
-import enterprise.hibisco.hibiscows.service.HospitalService;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.validator.constraints.br.CNPJ;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 @SuppressWarnings("unused")
 @Table(name = "tb_hospital")
+@AllArgsConstructor
 @NoArgsConstructor
-public class Hospital extends User {
+@Data
+@Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Hospital {
 
-    @Autowired @Transient
-    private HospitalService hospitalService;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter @Setter private Long idHospital;
 
-    @NotBlank
-    @Getter @Setter private String nameHospital;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_user")
+    @Getter @Setter private User fkUser;
 
-    @NotBlank @CNPJ
-    @Getter @Setter private String cnpjHospital;
-
-    public Hospital(String email,
-                    String password,
-                    String phone,
-                    AddressData address,
-                    String nameHospital,
-                    String cnpjHospital) {
-        super(email, password, phone, address);
-        this.nameHospital = nameHospital;
-        this.cnpjHospital = cnpjHospital;
+    public Hospital(User fkUser) {
+        this.fkUser = fkUser;
     }
-
-    public ResponseEntity<?> doRegister(Object hospital) {
-        return hospitalService.doRegister((Hospital) hospital);
-    }
-
-    public ResponseEntity<?> doLogin(Object hospital) {
-        return hospitalService.doLogin((HospitalRequestDTO) hospital);
-    }
-
-    public ResponseEntity<?> doLogoff(Long login) {
-        return hospitalService.doLogoff(login);
-    }
-
-
 }

@@ -1,17 +1,19 @@
 package enterprise.hibisco.hibiscows.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @SuppressWarnings("unused")
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tb_address_data")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class AddressData {
 
     @Id
@@ -37,34 +39,12 @@ public class AddressData {
     @NotNull
     @Getter @Setter private Integer number;
 
-    @OneToOne(mappedBy = "address")
-    @NotBlank
-    @Getter @Setter private User user;
-
-    public AddressData(String address,
-                       String cep,
-                       String city,
-                       String neighborhood,
-                       Integer number,
-                       String uf) {
+    public AddressData(String address, String neighborhood, String city, String uf, String cep, Integer number) {
         this.address = address;
-        this.cep = cep;
-        this.city = city;
         this.neighborhood = neighborhood;
-        this.number = number;
+        this.city = city;
         this.uf = uf;
-    }
-
-    @Override
-    public String toString() {
-        return "AddressData{" +
-                "idAddress=" + idAddress +
-                ", address='" + address + '\'' +
-                ", neighborhood='" + neighborhood + '\'' +
-                ", city='" + city + '\'' +
-                ", uf='" + uf + '\'' +
-                ", cep='" + cep + '\'' +
-                ", number=" + number +
-                '}';
+        this.cep = cep;
+        this.number = number;
     }
 }
