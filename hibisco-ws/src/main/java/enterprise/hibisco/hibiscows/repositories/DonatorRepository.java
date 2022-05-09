@@ -14,10 +14,10 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 public interface DonatorRepository extends JpaRepository<Donator, Long> {
 
-    @Query("select d from Donator d inner join User u on u.idUser = d.fkUser where u.documentNumber = ?1")
+    @Query("select d from Donator d inner join User u on u.idUser = d.user where u.documentNumber = ?1")
     Optional<Donator> findByDocumentNumber(String documentNumber);
 
-    @Query("select d from Donator d inner join User u on u.idUser = d.fkUser " + "where u.email = ?1 and u.password = ?2")
+    @Query("select d from Donator d inner join User u on u.idUser = d.user " + "where u.email = ?1 and u.password = ?2")
     Optional<Donator> findByEmailAndPassword(String email, String password);
 
 

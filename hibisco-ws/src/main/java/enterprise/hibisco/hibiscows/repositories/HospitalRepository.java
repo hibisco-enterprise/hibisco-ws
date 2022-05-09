@@ -11,10 +11,10 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
-    @Query("select h from Hospital h inner join User u on u.idUser = h.fkUser where u.documentNumber = ?1")
+    @Query("select h from Hospital h inner join User u on u.idUser = h.user where u.documentNumber = ?1")
     Optional<Hospital> findByDocumentNumber(String documentNumber);
 
-    @Query("select h from Hospital h inner join User u on u.idUser = h.fkUser " + "where u.email = ?1 and u.password = ?2")
+    @Query("select h from Hospital h inner join User u on u.idUser = h.user " + "where u.email = ?1 and u.password = ?2")
     Optional<Hospital> findByEmailAndPassword(String email, String password);
 
 //    @Transactional
