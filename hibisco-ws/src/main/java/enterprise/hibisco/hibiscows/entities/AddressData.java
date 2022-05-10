@@ -39,7 +39,12 @@ public class AddressData {
     @NotNull
     @Getter @Setter private Integer number;
 
-    public AddressData(String address, String neighborhood, String city, String uf, String cep, Integer number) {
+    public AddressData(String address,
+                       String neighborhood,
+                       String city,
+                       String uf,
+                       String cep,
+                       Integer number) {
         this.address = address;
         this.neighborhood = neighborhood;
         this.city = city;

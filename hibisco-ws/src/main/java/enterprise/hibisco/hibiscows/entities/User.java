@@ -24,18 +24,14 @@ public class User {
     @Getter @Setter private String email;
 
     @Length(
-            min = 11, max = 18,
-            message = "Documento inválido, verifique as pontuações, espaços e zeros à esquerda"
+        min = 11, max = 18,
+        message = "Documento inválido, verifique as pontuações, espaços e zeros à esquerda"
     )
     @NotBlank
     @Getter @Setter private String documentNumber;
 
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-//    @Pattern(regexp = "/(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[\\da-zA-Z$*&@#]{8,}/",
-//             message = "Senha fraca! A senha deve possuir 8 caracteres, letras maiúsculas " +
-//                       "e minúsculas, números e caracteres especiais."
-//    )
     @Getter @Setter private String password;
 
     @NotBlank
@@ -48,7 +44,11 @@ public class User {
     @JoinColumn(name="fk_address")
     @Getter @Setter private AddressData address;
 
-    public User(String email, String documentNumber, String password, String phone, AddressData address) {
+    public User(String email,
+                String documentNumber,
+                String password,
+                String phone,
+                AddressData address) {
         this.email = email;
         this.documentNumber = documentNumber;
         this.password = password;

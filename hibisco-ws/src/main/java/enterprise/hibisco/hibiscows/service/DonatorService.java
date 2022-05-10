@@ -43,7 +43,6 @@ public class DonatorService {
     private AddressDataService addressDataService;
 
     public ResponseEntity<?> doRegister(Donator donator) {
-        logger.info(gson.toJson(donator));
         if (userRepository.existsByDocumentNumber(donator.getUser().getDocumentNumber())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 "CPF inválido, tente novamente com um cpf diferente"
@@ -110,18 +109,24 @@ public class DonatorService {
             mapper.getConfiguration().setSkipNullEnabled(true);
             mapper.map(donator, newDonator);
 
+            logger.info("id do endereço: {}", gson.toJson(donator.getUser().getAddress().getIdAddress()) );
+            newDonator.getUser().getAddress().setIdAddress(
+                findDonator.get().getUser().getAddress().getIdAddress()
+            );
+            newDonator.getUser().setIdUser(findDonator.get().getUser().getIdUser());
             newDonator.setIdDonator(idDonator);
+            logger.info(gson.toJson(newDonator));
 
             repository.save(newDonator);
 
             return ResponseEntity.status(HttpStatus.OK).build();
         }
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     public ResponseEntity<?> updatePassword(Long idDonator, String password) {
         Optional<Donator> findDonator = repository.findById(idDonator);
-
         if (findDonator.isPresent()) {
             userRepository.updatePassword(findDonator.get().getUser().getIdUser(), password);
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -130,12 +135,7 @@ public class DonatorService {
     }
 
     public ResponseEntity<?> deleteDonator(Long idUser) {
-        Long idAddress;
-        Optional<AddressData> findIdAddress = userRepository.findAddressByIdUser(idUser);
-        logger.info(gson.toJson(findIdAddress.toString()));
-        if (repository.existsById(idUser) && findIdAddress.isPresent()) {
-            idAddress = findIdAddress.get().getIdAddress();
-            addressRepository.deleteById(idAddress);
+        if (repository.existsById(idUser)) {
             repository.deleteById(idUser);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
