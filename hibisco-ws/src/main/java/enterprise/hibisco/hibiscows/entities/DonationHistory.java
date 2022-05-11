@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
 @Table(name = "tb_donation_history")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class DonationHistory {
