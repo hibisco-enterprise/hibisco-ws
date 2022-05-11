@@ -20,6 +20,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.TABLE)
     @Getter @Setter private Long idUser;
 
+    @NotBlank
+    @Getter @Setter private String name;
+
     @NotBlank @Email
     @Getter @Setter private String email;
 
@@ -44,15 +47,19 @@ public class User {
     @JoinColumn(name="fk_address")
     @Getter @Setter private AddressData address;
 
-    public User(String email,
+    @Builder
+    public User(String name,
+                String email,
                 String documentNumber,
                 String password,
                 String phone,
                 AddressData address) {
+        this.name = name;
         this.email = email;
         this.documentNumber = documentNumber;
         this.password = password;
         this.phone = phone;
         this.address = address;
     }
+
 }

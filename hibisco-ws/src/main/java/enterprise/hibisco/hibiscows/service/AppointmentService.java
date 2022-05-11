@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import javax.swing.text.html.Option;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,5 +65,20 @@ public class AppointmentService {
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    public List<Appointment> getTodayAppointments() {
+        List<Appointment> appointments = repository.findAll();
+        List<Appointment> todayAppointments = new ArrayList<>();
+
+        new Thread(() -> {
+            for (Appointment a : appointments) {
+                if (a.getDhAppointment().toLocalDate().isEqual(LocalDate.now())) {
+                    todayAppointments.add(a);
+                }
+            }
+        }).start();
+
+        return todayAppointments;
     }
 }

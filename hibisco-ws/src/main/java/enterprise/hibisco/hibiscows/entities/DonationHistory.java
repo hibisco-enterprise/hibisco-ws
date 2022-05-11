@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @SuppressWarnings("unused")
@@ -25,18 +26,19 @@ public class DonationHistory {
     @FutureOrPresent
     @Getter @Setter private LocalDateTime dhScheduling;
 
-    @Length(min = 2, max = 3, message = "Tipo sanguíneo inválido!")
-    @Getter @Setter private String bloodType;
+    @NotBlank
+    @Getter @Setter private String nameHospital;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_appointment")
     @Getter @Setter private Appointment appointment;
 
+    @Builder
     public DonationHistory(LocalDateTime dhScheduling,
-                           String bloodType,
+                           String nameHospital,
                            Appointment appointment) {
         this.dhScheduling = dhScheduling;
-        this.bloodType = bloodType;
+        this.nameHospital = nameHospital;
         this.appointment = appointment;
     }
 }

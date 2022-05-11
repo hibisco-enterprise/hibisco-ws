@@ -17,6 +17,9 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long> {
     @Query("select h from Hospital h inner join User u on u.idUser = h.user " + "where u.email = ?1 and u.password = ?2")
     Optional<Hospital> findByEmailAndPassword(String email, String password);
 
+    @Query("select u.name from Hospital h inner join User u on u.idUser = h.user where h.idHospital = ?1")
+    String findNameHospitalByIdUser(Long idHospital);
+
 //    @Transactional
 //    @Modifying
 //    @Query("update Hospital h set h.password = ?2 where h.idUser = ?1")
