@@ -44,11 +44,11 @@ public class DonationHistoryJob {
                 schedules.getFkHospital()
             );
             repository.save(
-                new DonationHistory(
-                    schedules.getDhAppointment(),
-                    nameHospital,
-                    schedules
-                )
+                DonationHistory.builder()
+                    .dhScheduling(schedules.getDhAppointment())
+                    .nameHospital(nameHospital)
+                    .appointment(schedules)
+                .build()
             );
         })).start();
     }
