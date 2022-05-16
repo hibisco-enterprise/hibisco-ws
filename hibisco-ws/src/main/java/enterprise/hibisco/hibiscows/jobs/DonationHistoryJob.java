@@ -38,7 +38,7 @@ public class DonationHistoryJob {
             logger.info("Sem agendamentos concluídos para hoje. Finalizando job...");
             return;
         }
-        logger.info("iniciando batch job com {} agendamentos para armazenar em histórico", appointments.size());
+        logger.info("iniciando job com {} agendamentos para armazenar em histórico", appointments.size());
         new Thread(() -> appointments.forEach(schedules -> {
             String nameHospital = hospitalRepository.findNameHospitalByIdUser(
                 schedules.getFkHospital()

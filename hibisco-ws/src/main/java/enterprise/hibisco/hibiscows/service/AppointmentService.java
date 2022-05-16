@@ -73,7 +73,7 @@ public class AppointmentService {
 
         new Thread(() -> {
             for (Appointment a : appointments) {
-                if (a.getDhAppointment().toLocalDate().isEqual(LocalDate.now())) {
+                if (a.getDhAppointment().toLocalDate().isEqual(LocalDate.now()) && a.isAccepted()) {
                     todayAppointments.add(a);
                 }
             }

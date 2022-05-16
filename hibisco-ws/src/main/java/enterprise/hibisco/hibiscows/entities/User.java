@@ -26,8 +26,7 @@ public class User {
     @NotBlank @Email
     @Getter @Setter private String email;
 
-    @Length(
-        min = 11, max = 18,
+    @Length(min = 11, max = 18,
         message = "Documento inválido, verifique as pontuações, espaços e zeros à esquerda"
     )
     @NotBlank
@@ -40,7 +39,7 @@ public class User {
     @NotBlank
     @Getter @Setter private String phone;
 
-    @Getter @Setter @NotNull
+    @Getter @Setter
     private boolean authenticated;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

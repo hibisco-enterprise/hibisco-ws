@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 
 @SuppressWarnings("unused")
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Table(name = "tb_donation_history")

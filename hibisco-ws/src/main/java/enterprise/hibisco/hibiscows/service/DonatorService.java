@@ -93,31 +93,23 @@ public class DonatorService {
 
     public ResponseEntity<?> updateDonator(Long idDonator, Donator donator) {
         Optional<Donator> findDonator = repository.findById(idDonator);
-        ModelMapper mapper = new ModelMapper();
-        Donator newDonator = new Donator();
-
         if (findDonator.isPresent()) {
 
             if (
                 !donator.getUser().getDocumentNumber().equals(
-                    findDonator.get().getUser().getDocumentNumber()
-                )
+                    findDonator.get().getUser().getDocumentNumber())
             ) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
             }
 
-            mapper.getConfiguration().setSkipNullEnabled(true);
-            mapper.map(donator, newDonator);
-
-            logger.info("id do endereço: {}", gson.toJson(donator.getUser().getAddress().getIdAddress()) );
-            newDonator.getUser().getAddress().setIdAddress(
+            donator.getUser().getAddress().setIdAddress(
                 findDonator.get().getUser().getAddress().getIdAddress()
             );
-            newDonator.getUser().setIdUser(findDonator.get().getUser().getIdUser());
-            newDonator.setIdDonator(idDonator);
-            logger.info(gson.toJson(newDonator));
+            donator.getUser().setIdUser(findDonator.get().getUser().getIdUser());
+            donator.setIdDonator(idDonator);
+            logger.info("Atualizando usuário: {}", gson.toJson(donator));
 
-            repository.save(newDonator);
+            repository.save(donator);
 
             return ResponseEntity.status(HttpStatus.OK).build();
         }
