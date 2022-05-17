@@ -3,6 +3,7 @@ package enterprise.hibisco.hibiscows.service;
 import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
+import enterprise.hibisco.hibiscows.response.LatLongResponseDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,10 @@ public class AddressDataService {
 
     @Autowired
     private AddressRepository repository;
+
+    public LatLongResponseDTO getHospitalLongLat() {
+        return new LatLongResponseDTO(2.0, 2.0);
+    }
 
     public AddressResponseDTO getAddressById(Long idAddress) {
         AddressResponseDTO response = new AddressResponseDTO(404, null);
