@@ -6,6 +6,9 @@ import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
 import enterprise.hibisco.hibiscows.request.AvaliableDaysWrapperRequestDTO;
 import enterprise.hibisco.hibiscows.request.HospitalRequestDTO;
 import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
+import enterprise.hibisco.hibiscows.rest.positionstack.ClientPositionStack;
+import enterprise.hibisco.hibiscows.rest.positionstack.PositionStackResponse;
+import enterprise.hibisco.hibiscows.service.AddressDataService;
 import enterprise.hibisco.hibiscows.service.HospitalAppointmentService;
 import enterprise.hibisco.hibiscows.service.HospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,12 @@ public class HospitalController {
 
     @Autowired
     private HospitalAppointmentService appointmentService;
+
+    @Autowired
+    private AddressDataService addressDataService;
+
+    @Autowired
+    private ClientPositionStack clientPositionStack;
 
     @GetMapping
     public ResponseEntity<List<Hospital>> getHospitals() {
@@ -100,6 +109,11 @@ public class HospitalController {
     @PostMapping("/appointment/accept/{idAppointment}")
     public ResponseEntity<?> acceptAvailableDay(@PathVariable Long idAppointment) {
         return appointmentService.acceptAppointmentDay(idAppointment);
+    }
+
+    @GetMapping("/address")
+    public ResponseEntity<List<PositionStackResponse>> getAllHospitalAddress(){
+        return addressDataService.getAllHospitalsAddress();
     }
 
 }

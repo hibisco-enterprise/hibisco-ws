@@ -1,20 +1,25 @@
 package enterprise.hibisco.hibiscows.service;
 
 import enterprise.hibisco.hibiscows.entities.AddressData;
-import enterprise.hibisco.hibiscows.entities.Hospital;
+import enterprise.hibisco.hibiscows.entities.User;
+import enterprise.hibisco.hibiscows.manager.Formatter;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
-import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
+import enterprise.hibisco.hibiscows.repositories.UserRepository;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
-import enterprise.hibisco.hibiscows.rest.positionstack.ClientePositionStackResposta;
+import enterprise.hibisco.hibiscows.rest.positionstack.AllPositionStackResponse;
+import enterprise.hibisco.hibiscows.rest.positionstack.ClientPositionStack;
+import enterprise.hibisco.hibiscows.rest.positionstack.PositionStackResponse;
 import feign.FeignException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.http.ResponseEntity.status;
 
 @Service
@@ -24,7 +29,13 @@ public class AddressDataService {
     private AddressRepository repository;
     
     @Autowired
-    private HospitalRepository hospitalRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private ClientPositionStack clientPositionStack;
+
+    public AddressDataService() {
+    }
 
     public AddressResponseDTO getAddressById(Long idAddress) {
         AddressResponseDTO response = new AddressResponseDTO(404, null);
@@ -58,9 +69,36 @@ public class AddressDataService {
     }
 
 
-    public ResponseEntity<ClientePositionStackResposta> getAllHospitalsAddress() {
-        List<Hospital> all = hospitalRepository.findAll();
-        return status(200).build();
+    public ResponseEntity<List<PositionStackResponse>> getAllHospitalsAddress() {
+        List<User> all = userRepository.findAll();
+        List<PositionStackResponse> positionStack = new ArrayList<>();
+
+        for (User user: all) {
+            AddressData addressData = user.getAddress();
+            // 08595370 Parque Macedo Rua Berlim 91 A, Itaquaquecetuba SP
+            String address = Formatter.addressFormatter(addressData);
+
+            System.out.println("Address: " + address);
+            AllPositionStackResponse addressResponse = null;
+            try {
+                addressResponse = clientPositionStack.getAddress(address);
+            } catch (FeignException fe) {
+                if (fe.status() == -1) {
+                    System.out.println("No response from position stack");
+                    return status(503).build();
+                }
+                if (fe.status() >= 400 && fe.status() < 500) {
+                    System.out.println("Invalid address");
+                    return status(400).build();
+                }
+                System.out.println("Falha no processamento #chamado");
+                return status(500).build();
+            }
+
+            positionStack.add(addressResponse.getData());
+        }
+
+        return ok(positionStack);
     }
 
 }

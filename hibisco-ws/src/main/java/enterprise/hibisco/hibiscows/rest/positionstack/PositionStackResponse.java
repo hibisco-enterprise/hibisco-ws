@@ -1,6 +1,10 @@
 package enterprise.hibisco.hibiscows.rest.positionstack;
 
-public class ClientePositionStackResposta {
+import lombok.Getter;
+
+public class PositionStackResponse {
+    @Getter
     private Double latitude;
+    @Getter
     private Double longitude;
 }
