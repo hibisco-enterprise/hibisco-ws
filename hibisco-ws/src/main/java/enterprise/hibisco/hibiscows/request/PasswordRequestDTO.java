@@ -16,13 +16,6 @@ public class PasswordRequestDTO {
 
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Pattern(regexp = "/(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}/")
     @Getter @Setter private String password;
-
-//    Json de envio de senha :)
-
-//    {
-//        "password": ""
-//    }
 
 }

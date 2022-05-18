@@ -8,8 +8,7 @@ import enterprise.hibisco.hibiscows.repositories.DonatorRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
 import enterprise.hibisco.hibiscows.repositories.UserRepository;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
-import enterprise.hibisco.hibiscows.request.DonatorRequestDTO;
-import org.modelmapper.ModelMapper;
+import enterprise.hibisco.hibiscows.request.DonatorLoginRequestDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,10 +149,10 @@ public class DonatorService {
         return ResponseEntity.status(address.getStatusCode()).build();
     }
 
-    public ResponseEntity<?> doLogin(DonatorRequestDTO donator) {
+    public ResponseEntity<?> doLogin(DonatorLoginRequestDTO donator) {
         Optional<Donator>findDonator = repository.findByEmailAndPassword(
             donator.getEmail(),
-            donator.recoverPassword()
+            donator.getPassword()
         );
         if (findDonator.isPresent()) {
             userRepository.authenticateUser(findDonator.get().getUser().getIdUser());

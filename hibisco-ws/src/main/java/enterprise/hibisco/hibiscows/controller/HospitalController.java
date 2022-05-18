@@ -4,7 +4,7 @@ import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
 import enterprise.hibisco.hibiscows.request.AvaliableDaysWrapperRequestDTO;
-import enterprise.hibisco.hibiscows.request.HospitalRequestDTO;
+import enterprise.hibisco.hibiscows.request.HospitalLoginRequestDTO;
 import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
 import enterprise.hibisco.hibiscows.service.HospitalAppointmentService;
 import enterprise.hibisco.hibiscows.service.HospitalService;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Basic;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +71,7 @@ public class HospitalController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> doLogin(@RequestBody @Valid HospitalRequestDTO user) {
+    public ResponseEntity<?> doLogin(@RequestBody @Valid HospitalLoginRequestDTO user) {
         return hospitalService.doLogin(user);
     }
 

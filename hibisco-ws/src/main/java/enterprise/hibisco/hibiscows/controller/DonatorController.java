@@ -3,7 +3,7 @@ package enterprise.hibisco.hibiscows.controller;
 import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Appointment;
 import enterprise.hibisco.hibiscows.entities.Donator;
-import enterprise.hibisco.hibiscows.request.DonatorRequestDTO;
+import enterprise.hibisco.hibiscows.request.DonatorLoginRequestDTO;
 import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
 import enterprise.hibisco.hibiscows.service.AppointmentService;
 import enterprise.hibisco.hibiscows.service.DonatorService;
@@ -70,7 +70,7 @@ public class DonatorController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> doLogin(@RequestBody @Valid DonatorRequestDTO user) {
+    public ResponseEntity<?> doLogin(@RequestBody @Valid DonatorLoginRequestDTO user) {
         return donatorService.doLogin(user);
     }
 

@@ -1,6 +1,7 @@
 package enterprise.hibisco.hibiscows.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +26,7 @@ public class Donator {
     @JoinColumn(name = "fk_user")
     @Getter @Setter private User user;
 
+    @Builder
     public Donator(String bloodType, User user) {
         this.bloodType = bloodType;
         this.user = user;

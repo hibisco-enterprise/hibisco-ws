@@ -1,10 +1,8 @@
 package enterprise.hibisco.hibiscows.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -39,6 +37,7 @@ public class AddressData {
     @NotNull
     @Getter @Setter private Integer number;
 
+    @Builder
     public AddressData(String address,
                        String neighborhood,
                        String city,

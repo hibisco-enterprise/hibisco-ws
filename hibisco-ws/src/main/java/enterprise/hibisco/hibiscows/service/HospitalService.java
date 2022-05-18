@@ -6,7 +6,7 @@ import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
 import enterprise.hibisco.hibiscows.repositories.UserRepository;
-import enterprise.hibisco.hibiscows.request.HospitalRequestDTO;
+import enterprise.hibisco.hibiscows.request.HospitalLoginRequestDTO;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -149,10 +149,10 @@ public class HospitalService {
         return ResponseEntity.status(address.getStatusCode()).build();
     }
 
-    public ResponseEntity<?> doLogin(HospitalRequestDTO hospital) {
+    public ResponseEntity<?> doLogin(HospitalLoginRequestDTO hospital) {
         Optional<Hospital> findHospital = repository.findByEmailAndPassword(
             hospital.getEmail(),
-            hospital.recoverPassword()
+            hospital.getPassword()
         );
         if (findHospital.isPresent()) {
             userRepository.authenticateUser(findHospital.get().getUser().getIdUser());
