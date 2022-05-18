@@ -75,7 +75,7 @@ public class AddressDataService {
 
         for (User user: all) {
             AddressData addressData = user.getAddress();
-            // 08595370 Parque Macedo Rua Berlim 91 A, Itaquaquecetuba SP
+            // 01414001 Cerqueira Cesar Rua Haddock Lobo 595, Sao Paulo SP
             String address = Formatter.addressFormatter(addressData);
 
             System.out.println("Address: " + address);
@@ -89,7 +89,7 @@ public class AddressDataService {
                 }
                 if (fe.status() >= 400 && fe.status() < 500) {
                     System.out.println("Invalid address");
-                    return status(400).build();
+                    return status(fe.status()).build();
                 }
                 System.out.println("Falha no processamento #chamado");
                 return status(500).build();
