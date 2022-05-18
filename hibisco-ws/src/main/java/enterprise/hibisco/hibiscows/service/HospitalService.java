@@ -177,4 +177,5 @@ public class HospitalService {
         repository.removeAuthenticationUser(idUser);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
 }

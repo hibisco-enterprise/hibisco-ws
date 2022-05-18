@@ -1,5 +1,6 @@
 package enterprise.hibisco.hibiscows.repositories;
 
+import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -7,12 +8,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 @SuppressWarnings("unused")
 public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
+
+    @Query("select address")
     boolean existsByCnpjHospital(String cnpjHospital);
 
     Optional<Hospital> findByCnpjHospital(String cnpjHospital);
