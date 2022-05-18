@@ -67,7 +67,7 @@ public class HospitalController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> doRegister(@RequestBody @Valid HospitalRequestDTO hospital) {
+    public ResponseEntity<?> doRegister(@RequestBody @Valid Hospital hospital) {
         return hospitalService.doRegister(hospital);
     }
 

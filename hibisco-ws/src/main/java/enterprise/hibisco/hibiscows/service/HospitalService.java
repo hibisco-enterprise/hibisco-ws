@@ -5,6 +5,7 @@ import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
+import enterprise.hibisco.hibiscows.repositories.UserRepository;
 import enterprise.hibisco.hibiscows.request.HospitalRequestDTO;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
 import org.modelmapper.ModelMapper;
@@ -27,6 +28,9 @@ public class HospitalService {
     private static final Gson gson = new Gson();
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private HospitalRepository repository;
 
     @Autowired
@@ -36,33 +40,17 @@ public class HospitalService {
     private AddressDataService addressDataService;
 
 
-    public ResponseEntity<?> doRegister(HospitalRequestDTO hospital) {
-        if (repository.existsByCnpjHospital(hospital.getCnpjHospital())) {
+    public ResponseEntity<?> doRegister(Hospital hospital) {
+        if (userRepository.existsByDocumentNumber(hospital.getUser().getDocumentNumber())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     "CNPJ inválido, tente novamente com um cnpj diferente"
             );
         }
 
         try {
-            AddressData fkAddress = addressRepository.save(
-                new AddressData(
-                    hospital.getAddress(),
-                    hospital.getCep(),
-                    hospital.getCity(),
-                    hospital.getNeighborhood(),
-                    hospital.getNumber(),
-                    hospital.getUf()
-                )
-            );
-
             repository.save(
                 new Hospital(
-                    hospital.getEmail(),
-                    hospital.recoverPassword(),
-                    hospital.getPhone(),
-                    hospital.getNameHospital(),
-                    hospital.getCnpjHospital(),
-                    fkAddress.getIdAddress()
+                    hospital.getUser()
                 )
             );
 
@@ -93,7 +81,7 @@ public class HospitalService {
     }
 
     public ResponseEntity<Optional<Hospital>> getDonatorByCnpj(String cnpjHospital) {
-        Optional<Hospital> hospital = repository.findByCnpjHospital(cnpjHospital);
+        Optional<Hospital> hospital = repository.findByDocumentNumber(cnpjHospital);
         if (hospital.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(hospital);
         }
@@ -107,15 +95,16 @@ public class HospitalService {
 
         if (findHospital.isPresent()) {
 
-            if (!hospital.getCnpjHospital().equals(findHospital.get().getCnpjHospital())) {
+            if (
+                !hospital.getUser().getDocumentNumber().equals(
+                    findHospital.get().getUser().getDocumentNumber())) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
             }
 
             mapper.getConfiguration().setSkipNullEnabled(true);
             mapper.map(hospital, newHospital);
 
-            newHospital.setFkAddress(findHospital.get().getFkAddress());
-            newHospital.setIdUser(idHospital);
+            newHospital.setIdHospital(idHospital);
             repository.save(newHospital);
 
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -123,22 +112,21 @@ public class HospitalService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    public ResponseEntity<?> updatePassword(Long idDonator, String password) {
-        Optional<Hospital> findHospital = repository.findById(idDonator);
+    public ResponseEntity<?> updatePassword(Long idHospital, String password) {
+        Optional<Hospital> findHospital = repository.findById(idHospital);
 
         if (findHospital.isPresent()) {
-            repository.updatePassword(idDonator, password);
+            userRepository.updatePassword(
+                    findHospital.get().getUser().getIdUser(),
+                    password
+            );
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     public ResponseEntity<?> deleteHospital(Long idUser) {
-        Long idAddress;
-        Optional<Long> findIdAddress = repository.findFkAddressByIdHospital(idUser);
-        if (repository.existsById(idUser) && findIdAddress.isPresent()) {
-            idAddress = findIdAddress.get();
-            addressRepository.deleteById(idAddress);
+        if (repository.existsById(idUser)) {
             repository.deleteById(idUser);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
@@ -167,14 +155,14 @@ public class HospitalService {
             hospital.recoverPassword()
         );
         if (findHospital.isPresent()) {
-            repository.authenticateUser(findHospital.get().getIdUser());
+            userRepository.authenticateUser(findHospital.get().getUser().getIdUser());
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     public ResponseEntity<?> doLogoff(Long idUser) {
-        repository.removeAuthenticationUser(idUser);
+        userRepository.removeAuthenticationUser(idUser);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

@@ -1,17 +1,19 @@
 package enterprise.hibisco.hibiscows.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @SuppressWarnings("unused")
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tb_address_data")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class AddressData {
 
     @Id
@@ -38,16 +40,16 @@ public class AddressData {
     @Getter @Setter private Integer number;
 
     public AddressData(String address,
-                       String cep,
-                       String city,
                        String neighborhood,
-                       Integer number,
-                       String uf) {
+                       String city,
+                       String uf,
+                       String cep,
+                       Integer number) {
         this.address = address;
-        this.cep = cep;
-        this.city = city;
         this.neighborhood = neighborhood;
-        this.number = number;
+        this.city = city;
         this.uf = uf;
+        this.cep = cep;
+        this.number = number;
     }
 }

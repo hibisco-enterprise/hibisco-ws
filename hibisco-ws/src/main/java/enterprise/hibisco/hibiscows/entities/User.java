@@ -1,52 +1,64 @@
 package enterprise.hibisco.hibiscows.entities;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.http.ResponseEntity;
-
+import lombok.*;
+import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@AllArgsConstructor
 @NoArgsConstructor
 @SuppressWarnings("unused")
-public abstract class User {
+@Data
+@Builder
+@Table(name = "tb_user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     @Getter @Setter private Long idUser;
 
+    @NotBlank
+    @Getter @Setter private String name;
+
     @NotBlank @Email
     @Getter @Setter private String email;
 
+    @Length(min = 11, max = 18,
+        message = "Documento inválido, verifique as pontuações, espaços e zeros à esquerda"
+    )
+    @NotBlank
+    @Getter @Setter private String documentNumber;
+
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    // exige uma senha com no minimo 8 caracteres, cotendo maiúsculas e minúsculas, números e caracteres especiais
-    @Pattern(regexp = "/(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}/",
-             message = "Senha fraca! A senha deve possuir 8 caracteres, letras maiúsculas" +
-                     " e minúsculas, números e caracteres especiais."
-    )
     @Getter @Setter private String password;
 
     @NotBlank
     @Getter @Setter private String phone;
 
-    @Getter @Setter @NotNull
+    @Getter @Setter
     private boolean authenticated;
 
-    public User(String email, String password, String phone) {
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="fk_address")
+    @Getter @Setter private AddressData address;
+
+    @Builder
+    public User(String name,
+                String email,
+                String documentNumber,
+                String password,
+                String phone,
+                AddressData address) {
+        this.name = name;
         this.email = email;
+        this.documentNumber = documentNumber;
         this.password = password;
         this.phone = phone;
+        this.address = address;
     }
-
-    public abstract ResponseEntity<?> doRegister(Object user);
-
-    public abstract ResponseEntity<?> doLogin(Object user);
-
-    public abstract ResponseEntity<?> doLogoff(Long IdUser);
 
 }

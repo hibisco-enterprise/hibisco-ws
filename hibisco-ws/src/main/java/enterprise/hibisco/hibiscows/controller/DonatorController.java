@@ -65,7 +65,7 @@ public class DonatorController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> doRegister(@RequestBody @Valid DonatorRequestDTO donator) {
+    public ResponseEntity<?> doRegister(@RequestBody @Valid Donator donator) {
         return donatorService.doRegister(donator);
     }
 
@@ -79,10 +79,10 @@ public class DonatorController {
         return donatorService.doLogoff(idUser);
     }
 
-    @GetMapping("/report/{id}")
-    public ResponseEntity<?> getReport(@PathVariable Long id){
-        return donatorService.getReport(id);
-    }
+//    @GetMapping("/report/{id}")
+//    public ResponseEntity<?> getReport(@PathVariable Long id){
+//        return donatorService.getReport(id);
+//    }
 
     @GetMapping("/appointment/{idDonator}/{idHospital}")
     public ResponseEntity<List<Appointment>> getAppointmentDays(@PathVariable Long idDonator,
