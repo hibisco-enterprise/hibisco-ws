@@ -8,6 +8,7 @@ import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
 import enterprise.hibisco.hibiscows.repositories.UserRepository;
 import enterprise.hibisco.hibiscows.request.HospitalRequestDTO;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
+import enterprise.hibisco.hibiscows.rest.positionstack.PositionStackResponse;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -46,6 +48,22 @@ public class HospitalService {
                     "CNPJ inválido, tente novamente com um cnpj diferente"
             );
         }
+
+        ResponseEntity<PositionStackResponse> coordinates = addressDataService.getGeocoordinates(
+            hospital.getUser().getAddress()
+        );
+
+        hospital.getUser().getAddress().setLatitude(
+            Objects.requireNonNull(coordinates.getBody()).getLatitude()
+        );
+
+        hospital.getUser().getAddress().setLongitude(
+            Objects.requireNonNull(coordinates.getBody()).getLongitude()
+        );
+
+
+
+        logger.info("Endereço: {}", gson.toJson(hospital.getUser().getAddress()));
 
         try {
             repository.save(

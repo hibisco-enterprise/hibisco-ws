@@ -111,9 +111,4 @@ public class HospitalController {
         return appointmentService.acceptAppointmentDay(idAppointment);
     }
 
-    @GetMapping("/address")
-    public ResponseEntity<List<PositionStackResponse>> getAllHospitalAddress(){
-        return addressDataService.getAllHospitalsAddress();
-    }
-
 }

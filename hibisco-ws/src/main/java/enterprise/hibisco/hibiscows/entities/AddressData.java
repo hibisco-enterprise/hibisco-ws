@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.math.BigDecimal;
 
 @SuppressWarnings("unused")
 @Entity
@@ -39,17 +40,25 @@ public class AddressData {
     @NotNull
     @Getter @Setter private Integer number;
 
-    public AddressData(String address,
+    @Getter @Setter private Float latitude;
+
+    @Getter @Setter private Float longitude;
+
+    public AddressData(Long idAddress,
+                       String address,
                        String neighborhood,
                        String city,
                        String uf,
                        String cep,
                        Integer number) {
+        this.idAddress = idAddress;
         this.address = address;
         this.neighborhood = neighborhood;
         this.city = city;
         this.uf = uf;
         this.cep = cep;
         this.number = number;
+        this.latitude = Float.NaN;
+        this.longitude = Float.NaN;
     }
 }

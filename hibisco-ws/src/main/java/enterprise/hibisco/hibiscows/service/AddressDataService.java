@@ -12,12 +12,14 @@ import enterprise.hibisco.hibiscows.rest.positionstack.PositionStackResponse;
 import feign.FeignException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.http.HttpStatus.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.http.ResponseEntity.status;
@@ -27,7 +29,7 @@ public class AddressDataService {
 
     @Autowired
     private AddressRepository repository;
-    
+
     @Autowired
     private UserRepository userRepository;
 
@@ -68,37 +70,28 @@ public class AddressDataService {
         return response;
     }
 
-
-    public ResponseEntity<List<PositionStackResponse>> getAllHospitalsAddress() {
-        List<User> all = userRepository.findAll();
-        List<PositionStackResponse> positionStack = new ArrayList<>();
-
-        for (User user: all) {
-            AddressData addressData = user.getAddress();
-            // 01414001 Cerqueira Cesar Rua Haddock Lobo 595, Sao Paulo SP
+    public ResponseEntity<PositionStackResponse> getGeocoordinates(AddressData addressData) {
+        PositionStackResponse positionStack;
             String address = Formatter.addressFormatter(addressData);
-
             System.out.println("Address: " + address);
-            AllPositionStackResponse addressResponse = null;
+            AllPositionStackResponse addressResponse;
             try {
                 addressResponse = clientPositionStack.getAddress(address);
             } catch (FeignException fe) {
                 if (fe.status() == -1) {
                     System.out.println("No response from position stack");
-                    return status(503).build();
+                    return status(SERVICE_UNAVAILABLE).build();
                 }
                 if (fe.status() >= 400 && fe.status() < 500) {
                     System.out.println("Invalid address");
+                    System.out.println(fe.getMessage());
                     return status(fe.status()).build();
                 }
                 System.out.println("Falha no processamento #chamado");
-                return status(500).build();
+                return status(INTERNAL_SERVER_ERROR).build();
             }
-
-            positionStack.add(addressResponse.getData());
-        }
+            positionStack = addressResponse.getData().get(0);
 
         return ok(positionStack);
     }
-
 }
