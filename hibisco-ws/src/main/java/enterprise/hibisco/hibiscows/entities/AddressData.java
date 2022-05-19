@@ -37,6 +37,10 @@ public class AddressData {
     @NotNull
     @Getter @Setter private Integer number;
 
+    @Getter @Setter private Float latitude;
+
+    @Getter @Setter private Float longitude;
+
     @Builder
     public AddressData(String address,
                        String neighborhood,
@@ -50,5 +54,7 @@ public class AddressData {
         this.uf = uf;
         this.cep = cep;
         this.number = number;
+        this.latitude = Float.NaN;
+        this.longitude = Float.NaN;
     }
 }

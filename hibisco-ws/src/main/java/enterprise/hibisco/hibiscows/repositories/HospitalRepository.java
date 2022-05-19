@@ -1,15 +1,21 @@
 package enterprise.hibisco.hibiscows.repositories;
 
+import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 @SuppressWarnings("unused")
 public interface HospitalRepository extends JpaRepository<Hospital, Long> {
+
+
+    // @Query("select address")
+    //boolean existsByCnpjHospital(String cnpjHospital);
 
     @Query("select h from Hospital h inner join User u on u.idUser = h.user where u.documentNumber = ?1")
     Optional<Hospital> findByDocumentNumber(String documentNumber);
