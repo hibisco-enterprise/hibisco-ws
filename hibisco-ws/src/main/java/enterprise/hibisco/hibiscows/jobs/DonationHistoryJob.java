@@ -41,7 +41,7 @@ public class DonationHistoryJob {
         logger.info("iniciando job com {} agendamentos para armazenar em histórico", appointments.size());
         new Thread(() -> appointments.forEach(schedules -> {
             String nameHospital = hospitalRepository.findNameHospitalByIdUser(
-                schedules.getFkHospital()
+                schedules.getHospitalAppointment().getHospital().getUser().getIdUser()
             );
             repository.save(
                 DonationHistory.builder()

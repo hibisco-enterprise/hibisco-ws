@@ -1,6 +1,7 @@
 package enterprise.hibisco.hibiscows.service;
 
 import enterprise.hibisco.hibiscows.entities.Appointment;
+import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
 import enterprise.hibisco.hibiscows.repositories.AppointmentRepository;
 import enterprise.hibisco.hibiscows.repositories.DonatorRepository;
@@ -13,6 +14,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.ResponseEntity.*;
 
 @Service
 public class AppointmentService {
@@ -30,41 +33,40 @@ public class AppointmentService {
         Optional<HospitalAppointment> appointmentDay = hospitalAppointmentRepository.findById(
                 fkAppointmentHospital
         );
+        Optional<Donator> donator = donatorRepository.findById(idDonator);
 
-        if (appointmentDay.isPresent() && donatorRepository.existsById(idDonator)) {
+        if (appointmentDay.isPresent() && donator.isPresent()) {
             Appointment appointment = repository.save(
                 new Appointment(
                     appointmentDay.get().getDhAvaliable(),
-                    idDonator,
-                    appointmentDay.get().getFkHospital(),
-                    fkAppointmentHospital
+                    donator.get(),
+                    appointmentDay.get()
                 )
             );
-            return ResponseEntity.status(HttpStatus.CREATED).body(appointment);
+            return status(CREATED).body(appointment);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
-    public ResponseEntity<List<Appointment>> getAppointmentDays(Long idDonator, Long idHospital) {
+    public ResponseEntity<List<Appointment>> getAppointmentDays(Long idDonator) {
 
-        List<Appointment> appointmentDays = repository.findByFkDonatorAndFkHospital(
-            idDonator,
-            idHospital
+        List<Appointment> appointmentDays = repository.findByDonator(
+            idDonator
         );
 
         if (!appointmentDays.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.OK).body(appointmentDays);
+            return status(OK).body(appointmentDays);
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
     public ResponseEntity<?> cancelAppointmentDay(Long idAppointment) {
         if (repository.existsById(idAppointment)) {
             repository.deleteById(idAppointment);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return status(OK).build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
     public List<Appointment> getTodayAppointments() {
@@ -81,4 +83,5 @@ public class AppointmentService {
 
         return todayAppointments;
     }
+
 }

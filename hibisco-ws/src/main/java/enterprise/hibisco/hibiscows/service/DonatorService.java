@@ -15,7 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.ResponseEntity.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +44,7 @@ public class DonatorService {
 
     public ResponseEntity<?> doRegister(Donator donator) {
         if (userRepository.existsByDocumentNumber(donator.getUser().getDocumentNumber())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+            return status(BAD_REQUEST).body(
                 "CPF inválido, tente novamente com um cpf diferente"
             );
         }
@@ -56,38 +57,38 @@ public class DonatorService {
                 )
             );
 
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            return status(CREATED).build();
 
         }catch (Exception e) {
             logger.error("Erro de criação de usuário: \n\t{} \nErro: \n\t{}",
                 gson.toJson(donator), gson.toJson(e.getMessage())
             );
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+            return status(BAD_REQUEST).body(e);
         }
     }
 
     public ResponseEntity<List<Donator>> getDonators() {
         if (repository.count() > 0) {
             var donators = repository.findAll();
-            return ResponseEntity.status(HttpStatus.OK).body(donators);
+            return status(OK).body(donators);
         }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return status(NO_CONTENT).build();
     }
 
     public ResponseEntity<Optional<Donator>> getDonatorById(Long idDonator) {
         Optional<Donator> user = repository.findById(idDonator);
         if (user.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(user);
+            return status(OK).body(user);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
     public ResponseEntity<Optional<Donator>> getDonatorByCpf(String cpf) {
         Optional<Donator> user = repository.findByDocumentNumber(cpf);
         if (user.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(user);
+            return status(OK).body(user);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
     public ResponseEntity<?> updateDonator(Long idDonator, Donator donator) {
@@ -98,7 +99,7 @@ public class DonatorService {
                 !donator.getUser().getDocumentNumber().equals(
                     findDonator.get().getUser().getDocumentNumber())
             ) {
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+                return status(NOT_ACCEPTABLE).build();
             }
 
             donator.getUser().getAddress().setIdAddress(
@@ -110,43 +111,43 @@ public class DonatorService {
 
             repository.save(donator);
 
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return status(OK).build();
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
     public ResponseEntity<?> updatePassword(Long idDonator, String password) {
         Optional<Donator> findDonator = repository.findById(idDonator);
         if (findDonator.isPresent()) {
             userRepository.updatePassword(findDonator.get().getUser().getIdUser(), password);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return status(OK).build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
     public ResponseEntity<?> deleteDonator(Long idUser) {
         if (repository.existsById(idUser)) {
             repository.deleteById(idUser);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return status(OK).build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
     public ResponseEntity<Optional<AddressData>> getAddressById(Long idAddress) {
         AddressResponseDTO address = addressDataService.getAddressById(idAddress);
         if (address.getAddressData().isPresent()) {
-            return ResponseEntity.status(address.getStatusCode()).body(address.getAddressData());
+            return status(address.getStatusCode()).body(address.getAddressData());
         }
-        return ResponseEntity.status(address.getStatusCode()).build();
+        return status(address.getStatusCode()).build();
     }
 
     public ResponseEntity<Optional<AddressData>> updateAddressById(Long idAddress, AddressData newAddress) {
         AddressResponseDTO address = addressDataService.updateAddress(idAddress, newAddress);
         if (address.getAddressData().isPresent()) {
-            return ResponseEntity.status(address.getStatusCode()).body(address.getAddressData());
+            return status(address.getStatusCode()).body(address.getAddressData());
         }
-        return ResponseEntity.status(address.getStatusCode()).build();
+        return status(address.getStatusCode()).build();
     }
 
     public ResponseEntity<?> doLogin(DonatorLoginRequestDTO donator) {
@@ -156,14 +157,14 @@ public class DonatorService {
         );
         if (findDonator.isPresent()) {
             userRepository.authenticateUser(findDonator.get().getUser().getIdUser());
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return status(OK).build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
     public ResponseEntity<?> doLogoff(Long idUser) {
         userRepository.removeAuthenticationUser(idUser);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return status(OK).build();
     }
 
 //    public ResponseEntity<?> getReport(Long id) {
@@ -204,6 +205,6 @@ public class DonatorService {
 //                    .header("content-disposition", "filename=\"hospital.csv\"")
 //                    .body(relatorio);
 //        }
-//            return ResponseEntity.status(404).build();
+//            return status(404).build();
 //    }
 }

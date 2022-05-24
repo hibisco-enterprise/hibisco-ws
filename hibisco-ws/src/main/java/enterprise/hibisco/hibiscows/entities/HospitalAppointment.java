@@ -20,11 +20,13 @@ public class HospitalAppointment {
     @NotNull @FutureOrPresent
     @Getter @Setter private LocalDateTime dhAvaliable;
 
-    @NotNull
-    @Getter @Setter private Long fkHospital;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_hospital")
+    @Getter @Setter private Hospital hospital;
 
-    public HospitalAppointment(LocalDateTime dhAvaliable, Long fkHospital) {
+    public HospitalAppointment(LocalDateTime dhAvaliable,
+                               Hospital hospital) {
         this.dhAvaliable = dhAvaliable;
-        this.fkHospital = fkHospital;
+        this.hospital = hospital;
     }
 }

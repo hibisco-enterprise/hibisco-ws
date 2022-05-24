@@ -1,12 +1,15 @@
 package enterprise.hibisco.hibiscows.service;
 
 import enterprise.hibisco.hibiscows.entities.Appointment;
+import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
 import enterprise.hibisco.hibiscows.repositories.HospitalAppointmentRepository;
+import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
 import enterprise.hibisco.hibiscows.request.AvaliableDaysWrapperRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.ResponseEntity.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,27 +22,36 @@ public class HospitalAppointmentService {
     @Autowired
     private HospitalAppointmentRepository repository;
 
+    @Autowired
+    private HospitalRepository hospitalRepository;
+
     public ResponseEntity<List<HospitalAppointment>> getAvaliableDays(Long idHospital) {
-        List<HospitalAppointment> appointments = repository.findByFkHospital(idHospital);
+        List<HospitalAppointment> appointments = repository.findByHospital(idHospital);
         if (appointments.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return status(NO_CONTENT).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(appointments);
+        return status(OK).body(appointments);
     }
 
     public ResponseEntity<?> setAvaliableDays(
         Long idHospital,
         AvaliableDaysWrapperRequestDTO avaliableDays
     ) {
-        avaliableDays.getAvaliableDays().forEach(day ->
-            repository.save(
-                new HospitalAppointment(
-                    day,
-                    idHospital
+        Optional<Hospital> hospital = hospitalRepository.findById(idHospital);
+
+        if (hospital.isPresent()) {
+            avaliableDays.getAvaliableDays().forEach(day ->
+                repository.save(
+                    new HospitalAppointment(
+                        day,
+                        hospital.get()
+                    )
                 )
-            )
-        );
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+            );
+            return status(CREATED).build();
+        }
+
+        return status(NOT_FOUND).build();
     }
 
     public ResponseEntity<?> deleteAvaliableDay(
@@ -48,25 +60,18 @@ public class HospitalAppointmentService {
         Optional<HospitalAppointment> appointment = repository.findById(idHospitalAppointment);
         if (appointment.isPresent()) {
             repository.deleteById(appointment.get().getIdHospitalAppointment());
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return status(OK).build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
     public ResponseEntity<Appointment> acceptAppointmentDay(Long idAppointment) {
         if (repository.existsById(idAppointment)) {
             repository.acceptAppointmentDay(idAppointment);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return status(OK).build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
-    public ResponseEntity<?> deleteAppointmentDay(Long idAppointment) {
-        if (repository.existsById(idAppointment)) {
-            repository.deleteById(idAppointment);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
 
 }

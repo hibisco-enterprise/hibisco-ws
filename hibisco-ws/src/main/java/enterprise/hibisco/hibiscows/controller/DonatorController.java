@@ -10,7 +10,6 @@ import enterprise.hibisco.hibiscows.service.DonatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -84,12 +83,20 @@ public class DonatorController {
 //        return donatorService.getReport(id);
 //    }
 
-    @GetMapping("/appointment/{idDonator}/{idHospital}")
-    public ResponseEntity<List<Appointment>> getAppointmentDays(@PathVariable Long idDonator,
-                                                                @PathVariable Long idHospital) {
-        return appointmentService.getAppointmentDays(idDonator, idHospital);}
+    @GetMapping("/appointment/{idDonator}")
+    public ResponseEntity<List<Appointment>> getAppointmentDays(@PathVariable Long idDonator) {
+        return appointmentService.getAppointmentDays(idDonator);
+    }
+
+    @DeleteMapping("/appointment/{idAppointment}")
+    public ResponseEntity<?> deleteAppointmentDays(@PathVariable Long idAppointment) {
+        return appointmentService.cancelAppointmentDay(idAppointment);
+    }
 
     @PostMapping("/appointment/{idDonator}/{fkAppointment}")
-    public ResponseEntity<?> setAppointment(@PathVariable Long idDonator, @PathVariable Long fkAppointment) {
-        return appointmentService.setAppointmentDay(fkAppointment, idDonator); }
+    public ResponseEntity<?> setAppointment(@PathVariable Long idDonator,
+                                            @PathVariable Long fkAppointment) {
+        return appointmentService.setAppointmentDay(fkAppointment, idDonator);
+    }
+
 }

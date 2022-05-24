@@ -16,7 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.ResponseEntity.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -61,8 +62,6 @@ public class HospitalService {
             Objects.requireNonNull(coordinates.getBody()).getLongitude()
         );
 
-
-
         logger.info("Endereço: {}", gson.toJson(hospital.getUser().getAddress()));
 
         try {
@@ -72,38 +71,38 @@ public class HospitalService {
                 )
             );
 
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            return status(CREATED).build();
 
         }catch (Exception e) {
             logger.error("Erro de criação de usuário: \n\t{} \nErro: \n\t{}",
                 gson.toJson(hospital), gson.toJson(e.getMessage())
             );
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+            return status(BAD_REQUEST).body(e);
         }
     }
 
     public ResponseEntity<List<Hospital>> getHospitals() {
         if (repository.count() > 0) {
             List<Hospital> hospitals = repository.findAll();
-            return ResponseEntity.status(HttpStatus.OK).body(hospitals);
+            return status(OK).body(hospitals);
         }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return status(NO_CONTENT).build();
     }
 
     public ResponseEntity<Optional<Hospital>> getHospitalById(Long idUser) {
         Optional<Hospital> hospital = repository.findById(idUser);
         if (hospital.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(hospital);
+            return status(OK).body(hospital);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
     public ResponseEntity<Optional<Hospital>> getDonatorByCnpj(String cnpjHospital) {
         Optional<Hospital> hospital = repository.findByDocumentNumber(cnpjHospital);
         if (hospital.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(hospital);
+            return status(OK).body(hospital);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
     public ResponseEntity<?> updateHospital(Long idHospital, Hospital hospital) {
@@ -116,7 +115,7 @@ public class HospitalService {
             if (
                 !hospital.getUser().getDocumentNumber().equals(
                     findHospital.get().getUser().getDocumentNumber())) {
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+                return status(NOT_ACCEPTABLE).build();
             }
 
             mapper.getConfiguration().setSkipNullEnabled(true);
@@ -125,9 +124,9 @@ public class HospitalService {
             newHospital.setIdHospital(idHospital);
             repository.save(newHospital);
 
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return status(OK).build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
     public ResponseEntity<?> updatePassword(Long idHospital, String password) {
@@ -138,33 +137,33 @@ public class HospitalService {
                     findHospital.get().getUser().getIdUser(),
                     password
             );
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return status(OK).build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
     public ResponseEntity<?> deleteHospital(Long idUser) {
         if (repository.existsById(idUser)) {
             repository.deleteById(idUser);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return status(OK).build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
     public ResponseEntity<Optional<AddressData>> getAddressById(Long idAddress) {
         AddressResponseDTO address = addressDataService.getAddressById(idAddress);
         if (address.getAddressData().isPresent()) {
-            return ResponseEntity.status(address.getStatusCode()).body(address.getAddressData());
+            return status(address.getStatusCode()).body(address.getAddressData());
         }
-        return ResponseEntity.status(address.getStatusCode()).build();
+        return status(address.getStatusCode()).build();
     }
 
     public ResponseEntity<Optional<AddressData>> updateAddressById(Long idAddress, AddressData newAddress) {
         AddressResponseDTO address = addressDataService.updateAddress(idAddress, newAddress);
         if (address.getAddressData().isPresent()) {
-            return ResponseEntity.status(address.getStatusCode()).body(address.getAddressData());
+            return status(address.getStatusCode()).body(address.getAddressData());
         }
-        return ResponseEntity.status(address.getStatusCode()).build();
+        return status(address.getStatusCode()).build();
     }
 
     public ResponseEntity<?> doLogin(HospitalLoginRequestDTO hospital) {
@@ -174,14 +173,14 @@ public class HospitalService {
         );
         if (findHospital.isPresent()) {
             userRepository.authenticateUser(findHospital.get().getUser().getIdUser());
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return status(OK).build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
     public ResponseEntity<?> doLogoff(Long idUser) {
         userRepository.removeAuthenticationUser(idUser);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return status(OK).build();
     }
 
 }

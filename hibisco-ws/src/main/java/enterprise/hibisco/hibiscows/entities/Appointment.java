@@ -1,12 +1,9 @@
 package enterprise.hibisco.hibiscows.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-
 import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -23,33 +20,22 @@ public class Appointment {
     @NotNull @FutureOrPresent
     @Getter @Setter private LocalDateTime dhAppointment;
 
-    @Getter @Setter @NotNull
-    private boolean accepted;
+    @Getter @Setter private boolean accepted;
 
-    @NotNull
-    @Getter @Setter private Long fkDonator;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_donator")
+    @Getter @Setter private Donator donator;
 
-    @NotNull
-    @Getter @Setter private Long fkHospital;
-
-    @NotNull
-    @Getter @Setter private Long fkAppointmentHospital;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_appointment_hospital")
+    @Getter @Setter private HospitalAppointment hospitalAppointment;
 
     public Appointment(LocalDateTime dhAppointment,
-                       Long fkDonator,
-                       Long fkHospital,
-                       Long fkAppointmentHospital) {
+                       Donator donator,
+                       HospitalAppointment hospitalAppointment) {
         this.dhAppointment = dhAppointment;
-        this.fkDonator = fkDonator;
-        this.fkHospital = fkHospital;
-        this.fkAppointmentHospital = fkAppointmentHospital;
+        this.donator = donator;
+        this.hospitalAppointment = hospitalAppointment;
     }
 
-   //  {
-   //     "dhAppointment": "2022-05-16T10:00:00",
-   //         "accepted": false,
-   //         "fkDonator": 5,
-   //         "fkHospital": 1,
-   //         "fkAppointmentHospital": 2
-    // }
 }

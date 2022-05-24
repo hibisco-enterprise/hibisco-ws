@@ -6,15 +6,11 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface HospitalAppointmentRepository extends JpaRepository<HospitalAppointment, Long> {
 
-    boolean existsByFkHospital(Long fkHospital);
-
-    List<HospitalAppointment> findByFkHospital(Long idHospital);
+    List<HospitalAppointment> findByHospital(Long idHospital);
 
     @Transactional
     @Modifying
