@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    List<Appointment> findByDonator(Long fkDonator);
+    List<Appointment> findByDonatorIdDonator(Long idDonator);
 
     @Query("update Appointment a set a.accepted = true where a.idAppointment = ?1")
     @Transactional

@@ -5,9 +5,14 @@ import java.text.Normalizer;
 
 public class Formatter {
 
-    public static String cepFormatter (String cep) {
-        cep = cep.replaceAll("-","");
-        return cep;
+    public static String cepFormatter (String cep) throws IllegalStateException {
+        if (cep.contains("-")) {
+            cep = cep.replaceAll("-","");
+            return cep;
+        }
+        throw new IllegalArgumentException(
+            "CEP inválido, verifique a formatação e tente novamente"
+        );
     }
 
     public static String addressFormatter(AddressData addressData) {

@@ -3,7 +3,6 @@ package enterprise.hibisco.hibiscows.jobs;
 import enterprise.hibisco.hibiscows.entities.Appointment;
 import enterprise.hibisco.hibiscows.entities.DonationHistory;
 import enterprise.hibisco.hibiscows.repositories.DonationHistoryRepository;
-import enterprise.hibisco.hibiscows.repositories.DonatorRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
 import enterprise.hibisco.hibiscows.service.AppointmentService;
 import org.slf4j.Logger;
@@ -11,9 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 
 @SuppressWarnings("unused")

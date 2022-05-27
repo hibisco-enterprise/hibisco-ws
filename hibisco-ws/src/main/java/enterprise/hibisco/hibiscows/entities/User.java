@@ -29,11 +29,18 @@ public class User {
     @Length(min = 11, max = 18,
         message = "Documento inválido, verifique as pontuações, espaços e zeros à esquerda"
     )
+    @Pattern(regexp =
+        "^([0-9]{3}\\.?[0-9]{3}\\.?[0-9]{3}\\-?[0-9]{2}|[0-9]{2}" +
+        "\\.?[0-9]{3}\\.?[0-9]{3}\\/?[0-9]{4}\\-?[0-9]{2})$",
+        message = "Documento inválido. Verifique a pontuação e a quantidade de caracteres!")
     @NotBlank
     @Getter @Setter private String documentNumber;
 
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[!@#$%&*+=^~/?|<>,.;:])(?=.*\\d)(?=.*[a-z]).{8,16}$",
+    message = "Senha inválida. A senha deve possuir no mínimo 8 caracteres, " +
+              "contendo letras maiúsculas e minúsculas, números e caracteres especiais!")
     @Getter @Setter private String password;
 
     @NotBlank

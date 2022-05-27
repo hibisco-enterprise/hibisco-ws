@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
@@ -20,6 +22,7 @@ public class Donator {
     @Getter @Setter private Long idDonator;
 
     @NotBlank
+    @Length(min = 2, max = 3, message = "Tipo sanguíneo inválido.")
     @Getter @Setter private String bloodType;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

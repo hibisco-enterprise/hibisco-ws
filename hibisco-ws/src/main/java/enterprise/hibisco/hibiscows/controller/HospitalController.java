@@ -6,6 +6,7 @@ import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
 import enterprise.hibisco.hibiscows.request.AvaliableDaysWrapperRequestDTO;
 import enterprise.hibisco.hibiscows.request.HospitalLoginRequestDTO;
 import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
+import enterprise.hibisco.hibiscows.response.AvaliableDaysResponseDTO;
 import enterprise.hibisco.hibiscows.rest.positionstack.ClientPositionStack;
 import enterprise.hibisco.hibiscows.rest.positionstack.PositionStackResponse;
 import enterprise.hibisco.hibiscows.service.AddressDataService;
@@ -90,7 +91,7 @@ public class HospitalController {
     }
 
     @GetMapping("/appointment/{idHospital}")
-    public ResponseEntity<List<HospitalAppointment>> getAvaliableDays(@PathVariable Long idHospital) {
+    public ResponseEntity<List<AvaliableDaysResponseDTO>> getAvaliableDays(@PathVariable Long idHospital) {
         return appointmentService.getAvaliableDays(idHospital);
     }
 

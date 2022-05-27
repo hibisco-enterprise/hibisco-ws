@@ -5,6 +5,7 @@ import enterprise.hibisco.hibiscows.entities.Appointment;
 import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.request.DonatorLoginRequestDTO;
 import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
+import enterprise.hibisco.hibiscows.response.AppointmentResponseDTO;
 import enterprise.hibisco.hibiscows.service.AppointmentService;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,8 +85,14 @@ public class DonatorController {
 //    }
 
     @GetMapping("/appointment/{idDonator}")
-    public ResponseEntity<List<Appointment>> getAppointmentDays(@PathVariable Long idDonator) {
+    public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentDays(@PathVariable Long idDonator) {
         return appointmentService.getAppointmentDays(idDonator);
+    }
+
+    @PostMapping("/appointment/{idDonator}/{fkAppointment}")
+    public ResponseEntity<Void> setAppointment(@PathVariable Long idDonator,
+                                            @PathVariable Long fkAppointment) {
+        return appointmentService.setAppointmentDay(fkAppointment, idDonator);
     }
 
     @DeleteMapping("/appointment/{idAppointment}")
@@ -93,10 +100,6 @@ public class DonatorController {
         return appointmentService.cancelAppointmentDay(idAppointment);
     }
 
-    @PostMapping("/appointment/{idDonator}/{fkAppointment}")
-    public ResponseEntity<?> setAppointment(@PathVariable Long idDonator,
-                                            @PathVariable Long fkAppointment) {
-        return appointmentService.setAppointmentDay(fkAppointment, idDonator);
-    }
+
 
 }
