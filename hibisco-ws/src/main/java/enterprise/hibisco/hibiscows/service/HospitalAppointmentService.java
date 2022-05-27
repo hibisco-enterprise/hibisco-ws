@@ -50,7 +50,7 @@ public class HospitalAppointmentService {
         return status(OK).body(avaiableDays);
     }
 
-    public ResponseEntity<?> setAvaliableDays(
+    public ResponseEntity<Void> setAvaliableDays(
         Long idHospital,
         AvaliableDaysWrapperRequestDTO avaliableDays
     ) {
@@ -71,7 +71,7 @@ public class HospitalAppointmentService {
         return status(NOT_FOUND).build();
     }
 
-    public ResponseEntity<?> deleteAvaliableDay(
+    public ResponseEntity<Void> deleteAvaliableDay(
         Long idHospitalAppointment
     ) {
         Optional<HospitalAppointment> appointment = repository.findById(idHospitalAppointment);
@@ -82,7 +82,7 @@ public class HospitalAppointmentService {
         return status(NOT_FOUND).build();
     }
 
-    public ResponseEntity<Appointment> acceptAppointmentDay(Long idAppointment) {
+    public ResponseEntity<Void> acceptAppointmentDay(Long idAppointment) {
         if (repository.existsById(idAppointment)) {
             repository.acceptAppointmentDay(idAppointment);
             return status(OK).build();

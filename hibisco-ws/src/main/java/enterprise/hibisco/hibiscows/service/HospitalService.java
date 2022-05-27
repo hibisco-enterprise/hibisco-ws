@@ -105,7 +105,7 @@ public class HospitalService {
         return status(NOT_FOUND).build();
     }
 
-    public ResponseEntity<?> updateHospital(Long idHospital, Hospital hospital) {
+    public ResponseEntity<Void> updateHospital(Long idHospital, Hospital hospital) {
         Optional<Hospital> findHospital = repository.findById(idHospital);
         ModelMapper mapper = new ModelMapper();
         Hospital newHospital = new Hospital();
@@ -129,7 +129,7 @@ public class HospitalService {
         return status(NOT_FOUND).build();
     }
 
-    public ResponseEntity<?> updatePassword(Long idHospital, String password) {
+    public ResponseEntity<Void> updatePassword(Long idHospital, String password) {
         Optional<Hospital> findHospital = repository.findById(idHospital);
 
         if (findHospital.isPresent()) {
@@ -142,7 +142,7 @@ public class HospitalService {
         return status(NOT_FOUND).build();
     }
 
-    public ResponseEntity<?> deleteHospital(Long idUser) {
+    public ResponseEntity<Void> deleteHospital(Long idUser) {
         if (repository.existsById(idUser)) {
             repository.deleteById(idUser);
             return status(OK).build();
@@ -178,7 +178,7 @@ public class HospitalService {
         return status(NOT_FOUND).build();
     }
 
-    public ResponseEntity<?> doLogoff(Long idUser) {
+    public ResponseEntity<Void> doLogoff(Long idUser) {
         userRepository.removeAuthenticationUser(idUser);
         return status(OK).build();
     }
