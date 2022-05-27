@@ -1,72 +1,94 @@
 package enterprise.hibisco.hibiscows.service;
 
 import enterprise.hibisco.hibiscows.entities.Appointment;
+import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
 import enterprise.hibisco.hibiscows.repositories.HospitalAppointmentRepository;
+import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
 import enterprise.hibisco.hibiscows.request.AvaliableDaysWrapperRequestDTO;
+import enterprise.hibisco.hibiscows.response.AvaliableDaysResponseDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.ResponseEntity.*;
 import org.springframework.stereotype.Service;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@SuppressWarnings("unused")
 public class HospitalAppointmentService {
 
     @Autowired
     private HospitalAppointmentRepository repository;
 
-    public ResponseEntity<List<HospitalAppointment>> getAvaliableDays(Long idHospital) {
-        List<HospitalAppointment> appointments = repository.findByFkHospital(idHospital);
+    @Autowired
+    private HospitalRepository hospitalRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(HospitalService.class);
+
+    public ResponseEntity<List<AvaliableDaysResponseDTO>> getAvaliableDays(Long idHospital) {
+        List<HospitalAppointment> appointments = repository.findByHospitalIdHospital(idHospital);
+
+        List<AvaliableDaysResponseDTO> avaiableDays = new ArrayList<>();
+
+        appointments.forEach(it -> {
+            avaiableDays.add(
+                AvaliableDaysResponseDTO.builder()
+                    .idHospitalAppointment(it.getIdHospitalAppointment())
+                    .avaliableDay(it.getDhAvaliable())
+                    .idHospital(it.getHospital().getIdHospital())
+                .build()
+            );
+        });
+
         if (appointments.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return status(NO_CONTENT).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(appointments);
+        return status(OK).body(avaiableDays);
     }
 
-    public ResponseEntity<?> setAvaliableDays(
+    public ResponseEntity<Void> setAvaliableDays(
         Long idHospital,
         AvaliableDaysWrapperRequestDTO avaliableDays
     ) {
-        avaliableDays.getAvaliableDays().forEach(day ->
-            repository.save(
-                new HospitalAppointment(
-                    day,
-                    idHospital
+        Optional<Hospital> hospital = hospitalRepository.findById(idHospital);
+
+        if (hospital.isPresent()) {
+            avaliableDays.getAvaliableDays().forEach(day ->
+                repository.save(
+                    new HospitalAppointment(
+                        day,
+                        hospital.get()
+                    )
                 )
-            )
-        );
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+            );
+            return status(CREATED).build();
+        }
+
+        return status(NOT_FOUND).build();
     }
 
-    public ResponseEntity<?> deleteAvaliableDay(
+    public ResponseEntity<Void> deleteAvaliableDay(
         Long idHospitalAppointment
     ) {
         Optional<HospitalAppointment> appointment = repository.findById(idHospitalAppointment);
         if (appointment.isPresent()) {
             repository.deleteById(appointment.get().getIdHospitalAppointment());
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return status(OK).build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
-    public ResponseEntity<Appointment> acceptAppointmentDay(Long idAppointment) {
+    public ResponseEntity<Void> acceptAppointmentDay(Long idAppointment) {
         if (repository.existsById(idAppointment)) {
             repository.acceptAppointmentDay(idAppointment);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return status(OK).build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return status(NOT_FOUND).build();
     }
 
-    public ResponseEntity<?> deleteAppointmentDay(Long idAppointment) {
-        if (repository.existsById(idAppointment)) {
-            repository.deleteById(idAppointment);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
 
 }

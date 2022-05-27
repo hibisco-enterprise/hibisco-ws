@@ -3,14 +3,14 @@ package enterprise.hibisco.hibiscows.controller;
 import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Appointment;
 import enterprise.hibisco.hibiscows.entities.Donator;
-import enterprise.hibisco.hibiscows.request.DonatorRequestDTO;
+import enterprise.hibisco.hibiscows.request.DonatorLoginRequestDTO;
 import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
+import enterprise.hibisco.hibiscows.response.AppointmentResponseDTO;
 import enterprise.hibisco.hibiscows.service.AppointmentService;
 import enterprise.hibisco.hibiscows.service.DonatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -65,12 +65,12 @@ public class DonatorController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> doRegister(@RequestBody @Valid DonatorRequestDTO donator) {
+    public ResponseEntity<?> doRegister(@RequestBody @Valid Donator donator) {
         return donatorService.doRegister(donator);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> doLogin(@RequestBody @Valid DonatorRequestDTO user) {
+    public ResponseEntity<?> doLogin(@RequestBody @Valid DonatorLoginRequestDTO user) {
         return donatorService.doLogin(user);
     }
 
@@ -79,17 +79,27 @@ public class DonatorController {
         return donatorService.doLogoff(idUser);
     }
 
-    @GetMapping("/report/{id}")
-    public ResponseEntity<?> getReport(@PathVariable Long id){
-        return donatorService.getReport(id);
+//    @GetMapping("/report/{id}")
+//    public ResponseEntity<?> getReport(@PathVariable Long id){
+//        return donatorService.getReport(id);
+//    }
+
+    @GetMapping("/appointment/{idDonator}")
+    public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentDays(@PathVariable Long idDonator) {
+        return appointmentService.getAppointmentDays(idDonator);
     }
 
-    @GetMapping("/appointment/{idDonator}/{idHospital}")
-    public ResponseEntity<List<Appointment>> getAppointmentDays(@PathVariable Long idDonator,
-                                                                @PathVariable Long idHospital) {
-        return appointmentService.getAppointmentDays(idDonator, idHospital);}
-
     @PostMapping("/appointment/{idDonator}/{fkAppointment}")
-    public ResponseEntity<?> setAppointment(@PathVariable Long idDonator, @PathVariable Long fkAppointment) {
-        return appointmentService.setAppointmentDay(fkAppointment, idDonator); }
+    public ResponseEntity<Void> setAppointment(@PathVariable Long idDonator,
+                                            @PathVariable Long fkAppointment) {
+        return appointmentService.setAppointmentDay(fkAppointment, idDonator);
+    }
+
+    @DeleteMapping("/appointment/{idAppointment}")
+    public ResponseEntity<?> deleteAppointmentDays(@PathVariable Long idAppointment) {
+        return appointmentService.cancelAppointmentDay(idAppointment);
+    }
+
+
+
 }
