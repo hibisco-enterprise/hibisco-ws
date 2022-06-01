@@ -84,7 +84,7 @@ public class HospitalController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> doLogin(@RequestBody @Valid HospitalLoginRequestDTO user) {
+    public ResponseEntity<Hospital> doLogin(@RequestBody @Valid HospitalLoginRequestDTO user) {
         return hospitalService.doLogin(user);
     }
 

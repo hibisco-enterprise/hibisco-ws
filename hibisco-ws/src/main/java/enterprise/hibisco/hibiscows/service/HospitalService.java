@@ -166,14 +166,15 @@ public class HospitalService {
         return status(address.getStatusCode()).build();
     }
 
-    public ResponseEntity<?> doLogin(HospitalLoginRequestDTO hospital) {
+    public ResponseEntity<Hospital> doLogin(HospitalLoginRequestDTO hospital) {
         Optional<Hospital> findHospital = repository.findByEmailAndPassword(
             hospital.getEmail(),
             hospital.getPassword()
         );
         if (findHospital.isPresent()) {
             userRepository.authenticateUser(findHospital.get().getUser().getIdUser());
-            return status(OK).build();
+            findHospital.get().getUser().setAuthenticated(true);
+            return status(OK).body(findHospital.get());
         }
         return status(NOT_FOUND).build();
     }

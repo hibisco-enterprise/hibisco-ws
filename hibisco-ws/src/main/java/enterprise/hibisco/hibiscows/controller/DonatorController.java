@@ -70,7 +70,7 @@ public class DonatorController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> doLogin(@RequestBody @Valid DonatorLoginRequestDTO user) {
+    public ResponseEntity<Donator> doLogin(@RequestBody @Valid DonatorLoginRequestDTO user) {
         return donatorService.doLogin(user);
     }
 

@@ -12,7 +12,6 @@ import enterprise.hibisco.hibiscows.request.DonatorLoginRequestDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import static org.springframework.http.HttpStatus.*;
@@ -150,14 +149,15 @@ public class DonatorService {
         return status(address.getStatusCode()).build();
     }
 
-    public ResponseEntity<?> doLogin(DonatorLoginRequestDTO donator) {
-        Optional<Donator>findDonator = repository.findByEmailAndPassword(
+    public ResponseEntity<Donator> doLogin(DonatorLoginRequestDTO donator) {
+        Optional<Donator> findDonator = repository.findByEmailAndPassword(
             donator.getEmail(),
             donator.getPassword()
         );
         if (findDonator.isPresent()) {
             userRepository.authenticateUser(findDonator.get().getUser().getIdUser());
-            return status(OK).build();
+            findDonator.get().getUser().setAuthenticated(true);
+            return status(OK).body(findDonator.get());
         }
         return status(NOT_FOUND).build();
     }
