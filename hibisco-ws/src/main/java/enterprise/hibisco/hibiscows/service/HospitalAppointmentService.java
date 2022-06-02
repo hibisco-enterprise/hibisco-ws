@@ -93,5 +93,17 @@ public class HospitalAppointmentService {
         return status(NOT_FOUND).build();
     }
 
+    public ResponseEntity<Void> undoLastDelete() {
+        if (this.appointmentsStack.isEmpty()) {
+            return status(204).build();
+        } else {
+            HospitalAppointment recover = appointmentsStack.pop();
+           AvaliableDaysWrapperRequestDTO recovered =  new AvaliableDaysWrapperRequestDTO();
+           recovered.setAvaliableDays(new ArrayList<>(recovered.getAvaliableDays()));
+           setAvaliableDays(recover.getHospital().getIdHospital(), recovered);
+
+           return status(201).build();
+        }
+    }
 
 }
