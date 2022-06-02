@@ -98,11 +98,10 @@ public class HospitalAppointmentService {
             return status(204).build();
         } else {
             HospitalAppointment recover = appointmentsStack.pop();
-           AvaliableDaysWrapperRequestDTO recovered =  new AvaliableDaysWrapperRequestDTO();
-           recovered.setAvaliableDays(new ArrayList<>(recovered.getAvaliableDays()));
-           setAvaliableDays(recover.getHospital().getIdHospital(), recovered);
-
-           return status(201).build();
+            AvaliableDaysWrapperRequestDTO recovered =  new AvaliableDaysWrapperRequestDTO();
+            recovered.setAvaliableDays(new ArrayList<>(recovered.getAvaliableDays()));
+            setAvaliableDays(recover.getHospital().getIdHospital(), recovered);
+            return status(201).build();
         }
     }
 
