@@ -3,6 +3,7 @@ package enterprise.hibisco.hibiscows.service;
 import enterprise.hibisco.hibiscows.entities.Appointment;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
+import enterprise.hibisco.hibiscows.manager.PilhaObj;
 import enterprise.hibisco.hibiscows.repositories.HospitalAppointmentRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
 import enterprise.hibisco.hibiscows.request.AvaliableDaysWrapperRequestDTO;
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 @Service
 public class HospitalAppointmentService {
+    private PilhaObj<HospitalAppointment> appointmentsStack = new PilhaObj<>(5);
 
     @Autowired
     private HospitalAppointmentRepository repository;
@@ -76,6 +78,7 @@ public class HospitalAppointmentService {
     ) {
         Optional<HospitalAppointment> appointment = repository.findById(idHospitalAppointment);
         if (appointment.isPresent()) {
+            appointmentsStack.push(repository.getById(idHospitalAppointment));
             repository.deleteById(appointment.get().getIdHospitalAppointment());
             return status(OK).build();
         }

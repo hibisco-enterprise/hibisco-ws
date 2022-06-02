@@ -24,7 +24,6 @@ import static org.springframework.http.ResponseEntity.*;
 public class AppointmentService {
 
     private static final Logger logger = LoggerFactory.getLogger(HospitalService.class);
-    private PilhaObj<Appointment> appointmentsStack = new PilhaObj<>(5);
 
     @Autowired
     private AppointmentRepository repository;
@@ -96,7 +95,6 @@ public class AppointmentService {
 
     public ResponseEntity<?> cancelAppointmentDay(Long idAppointment) {
         if (repository.existsById(idAppointment)) {
-            appointmentsStack.push(repository.getById(idAppointment));
             repository.deleteById(idAppointment);
             return status(OK).build();
         }
