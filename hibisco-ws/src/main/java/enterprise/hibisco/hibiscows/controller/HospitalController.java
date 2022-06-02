@@ -124,8 +124,9 @@ public class HospitalController {
         return ResponseEntity.status(200).build();
     }
 
-   public ResponseEntity<Void> reverseHospitalAppointmentDelete() {
-       return appointmentService.undoLastDelete();
-   }
+    @PostMapping("/appointment/reverse")
+    public ResponseEntity<Void> reverseHospitalAppointmentDelete() {
+        return appointmentService.undoLastDelete();
+    }
 
 }
