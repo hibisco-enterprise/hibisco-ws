@@ -159,7 +159,9 @@ public class DonatorService {
             findDonator.get().getUser().setAuthenticated(true);
             return status(OK).body(findDonator.get());
         }
-        return status(FORBIDDEN).build();
+        else {
+            return status(FORBIDDEN).build();
+        }
     }
 
     public ResponseEntity<?> doLogoff(Long idUser) {

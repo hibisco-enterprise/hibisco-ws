@@ -176,7 +176,9 @@ public class HospitalService {
             findHospital.get().getUser().setAuthenticated(true);
             return status(OK).body(findHospital.get());
         }
-        return status(FORBIDDEN).build();
+        else {
+            return status(FORBIDDEN).build();
+        }
     }
 
     public ResponseEntity<Void> doLogoff(Long idUser) {
