@@ -8,7 +8,7 @@ import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
 import enterprise.hibisco.hibiscows.repositories.UserRepository;
 import enterprise.hibisco.hibiscows.request.HospitalLoginRequestDTO;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
-import enterprise.hibisco.hibiscows.rest.positionstack.PositionStackResponse;
+import enterprise.hibisco.hibiscows.rest.mapbox.LatLongDTO;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +50,7 @@ public class HospitalService {
             );
         }
 
-        ResponseEntity<PositionStackResponse> coordinates = addressDataService.getGeocoordinates(
+        ResponseEntity<LatLongDTO> coordinates = addressDataService.getGeocoordinates(
             hospital.getUser().getAddress()
         );
 

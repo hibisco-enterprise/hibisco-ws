@@ -7,7 +7,6 @@ import enterprise.hibisco.hibiscows.request.AvaliableDaysWrapperRequestDTO;
 import enterprise.hibisco.hibiscows.request.HospitalLoginRequestDTO;
 import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
 import enterprise.hibisco.hibiscows.response.AvaliableDaysResponseDTO;
-import enterprise.hibisco.hibiscows.rest.positionstack.ClientPositionStack;
 import enterprise.hibisco.hibiscows.service.AddressDataService;
 import enterprise.hibisco.hibiscows.service.HospitalAppointmentService;
 import enterprise.hibisco.hibiscows.service.HospitalService;
@@ -37,9 +36,6 @@ public class HospitalController {
 
     @Autowired
     private AddressDataService addressDataService;
-
-    @Autowired
-    private ClientPositionStack clientPositionStack;
 
     @GetMapping
     public ResponseEntity<List<Hospital>> getHospitals() {

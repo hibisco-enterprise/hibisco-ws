@@ -15,6 +15,15 @@ public class Formatter {
         );
     }
 
+    public static String removeSpaces(String addressWithSpaces) {
+        if (addressWithSpaces.contains(" ")) {
+            addressWithSpaces = addressWithSpaces.replaceAll(" ","%20");
+            return addressWithSpaces;
+        } else {
+            return addressWithSpaces;
+        }
+    }
+
     public static String addressFormatter(AddressData addressData) {
 
         String addressRawString =
@@ -25,7 +34,7 @@ public class Formatter {
                 addressData.getCity() + " " +
                 addressData.getUf();
 
-        return utf8Formatter(addressRawString);
+        return utf8Formatter(removeSpaces(addressRawString));
     }
 
     public static String utf8Formatter(String rawString) {

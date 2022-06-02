@@ -1,31 +1,30 @@
 package enterprise.hibisco.hibiscows.service;
 
+import com.google.gson.Gson;
 import enterprise.hibisco.hibiscows.entities.AddressData;
-import enterprise.hibisco.hibiscows.entities.User;
 import enterprise.hibisco.hibiscows.manager.Formatter;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.UserRepository;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
-import enterprise.hibisco.hibiscows.rest.positionstack.AllPositionStackResponse;
-import enterprise.hibisco.hibiscows.rest.positionstack.ClientPositionStack;
-import enterprise.hibisco.hibiscows.rest.positionstack.PositionStackResponse;
+import enterprise.hibisco.hibiscows.rest.mapbox.AllMapBoxResponse;
+import enterprise.hibisco.hibiscows.rest.mapbox.ClientMapBox;
+import enterprise.hibisco.hibiscows.rest.mapbox.LatLongDTO;
 import feign.FeignException;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.http.HttpStatus.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
-
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.http.ResponseEntity.status;
 
 @Service
 public class AddressDataService {
+    private static final Logger logger = LoggerFactory.getLogger(HospitalService.class);
 
     @Autowired
     private AddressRepository repository;
@@ -34,7 +33,7 @@ public class AddressDataService {
     private UserRepository userRepository;
 
     @Autowired
-    private ClientPositionStack clientPositionStack;
+    private ClientMapBox clientMapBox;
 
     public AddressDataService() {
     }
@@ -70,28 +69,34 @@ public class AddressDataService {
         return response;
     }
 
-    public ResponseEntity<PositionStackResponse> getGeocoordinates(AddressData addressData) {
-        PositionStackResponse positionStack;
-            String address = Formatter.addressFormatter(addressData);
-            System.out.println("Address: " + address);
-            AllPositionStackResponse addressResponse;
-            try {
-                addressResponse = clientPositionStack.getAddress(address);
-            } catch (FeignException fe) {
-                if (fe.status() == -1) {
-                    System.out.println("No response from position stack");
-                    return status(SERVICE_UNAVAILABLE).build();
-                }
-                if (fe.status() >= 400 && fe.status() < 500) {
-                    System.out.println("Invalid address");
-                    System.out.println(fe.getMessage());
-                    return status(fe.status()).build();
-                }
-                System.out.println("Falha no processamento #chamado");
-                return status(INTERNAL_SERVER_ERROR).build();
-            }
-            positionStack = addressResponse.getData().get(0);
+    public ResponseEntity<LatLongDTO> getGeocoordinates(AddressData addressData) {
+        List<Double> center;
+        String address = Formatter.addressFormatter(addressData);
+        AllMapBoxResponse mapBoxResponse;
 
-        return ok(positionStack);
+        try {
+            mapBoxResponse = clientMapBox.getAddress(address);
+            System.out.println(mapBoxResponse.toString());
+            }
+        catch (FeignException fe) {
+            if (fe.status() == -1) {
+                logger.error("No response from mapbox");
+                return status(SERVICE_UNAVAILABLE).build();
+            }
+            if (fe.status() >= 400 && fe.status() < 500) {
+                System.out.println("Invalid address");
+                logger.error(fe.toString());
+                return status(fe.status()).build();
+            }
+            System.out.println("Falha no processamento #chamado");
+            logger.error(fe.toString());
+            return status(INTERNAL_SERVER_ERROR).build();
+            }
+
+        center = mapBoxResponse.getFeatures().get(0).getCenter();
+
+        return ok(
+            new LatLongDTO(center.get(0), center.get(1))
+        );
     }
 }
