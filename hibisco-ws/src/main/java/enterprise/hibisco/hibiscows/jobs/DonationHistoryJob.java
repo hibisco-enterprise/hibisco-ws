@@ -2,6 +2,8 @@ package enterprise.hibisco.hibiscows.jobs;
 
 import enterprise.hibisco.hibiscows.entities.Appointment;
 import enterprise.hibisco.hibiscows.entities.DonationHistory;
+import enterprise.hibisco.hibiscows.manager.FilaObj;
+import enterprise.hibisco.hibiscows.manager.ListaObj;
 import enterprise.hibisco.hibiscows.repositories.DonationHistoryRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
 import enterprise.hibisco.hibiscows.service.AppointmentService;
@@ -25,28 +27,36 @@ public class DonationHistoryJob {
     @Autowired
     private HospitalRepository hospitalRepository;
 
+    private FilaObj<Appointment> appointmentsList;
+
     private static final Logger logger = LoggerFactory.getLogger(DonationHistoryJob.class);
 
     @Scheduled(cron = "0 0 21 * * *", zone = "America/Sao_Paulo")
     public void doJob() {
         List<Appointment> appointments = appointment.getTodayAppointments();
-        if (appointments.size() == 0) {
+        appointmentsList = new FilaObj<>(appointments.size());
+        appointments.forEach(appointment -> {
+            appointmentsList.insert(appointment);
+        });
+        if (appointmentsList.getTamanho() == 0) {
             logger.info("Sem agendamentos concluídos para hoje. Finalizando job...");
             return;
         }
-        logger.info("iniciando job com {} agendamentos para armazenar em histórico", appointments.size());
-        new Thread(() -> appointments.forEach(schedules -> {
+        logger.info("iniciando job com {} agendamentos para armazenar em histórico",
+                appointmentsList.getTamanho());
+
+        for (int i = 0; i < appointmentsList.getTamanho(); i++) {
+            Appointment currentAppointment = appointmentsList.poll();
             String nameHospital = hospitalRepository.findNameHospitalByIdUser(
-                schedules.getHospitalAppointment().getHospital().getUser().getIdUser()
+                    currentAppointment.getHospitalAppointment().getHospital().getUser().getIdUser()
             );
             repository.save(
-                DonationHistory.builder()
-                    .dhScheduling(schedules.getDhAppointment())
-                    .nameHospital(nameHospital)
-                    .appointment(schedules)
-                .build()
+                    DonationHistory.builder()
+                            .dhScheduling(currentAppointment.getDhAppointment())
+                            .nameHospital(nameHospital)
+                            .appointment(currentAppointment)
+                            .build()
             );
-        })).start();
+        }
     }
-
 }
