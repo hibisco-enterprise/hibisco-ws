@@ -338,11 +338,16 @@ public class HospitalController {
     }
 
     @GetMapping("/blood/{idHospital}")
-    public ResponseEntity<List<BloodStock>> getBloodStock(@PathVariable Long idHospital) {
+    public ResponseEntity<List<BloodTypeWrapperDTO>> getBloodStock(@PathVariable Long idHospital) {
         List<BloodStock> bloodStocks = bloodStockRepository.findByHospitalIdHospital(idHospital);
         if (bloodStocks.isEmpty()) { return status(204).build(); }
 
-        return status(200).body(bloodStocks);
+        List<BloodTypeWrapperDTO> bloodStockList = new ArrayList<>();
+        for(BloodStock b: bloodStocks) {
+            bloodStockList.add(new BloodTypeWrapperDTO(b.getBloodType(), b.getPercentage()));
+        }
+
+        return status(200).body(bloodStockList);
     }
-    
+
 }
