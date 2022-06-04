@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Appointment;
 import enterprise.hibisco.hibiscows.entities.Donator;
+import enterprise.hibisco.hibiscows.entities.Hospital;
+import enterprise.hibisco.hibiscows.manager.FileHandler;
+import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
 import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
 import enterprise.hibisco.hibiscows.repositories.*;
 import enterprise.hibisco.hibiscows.request.DonatorLoginRequestDTO;
@@ -16,6 +19,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.yaml.snakeyaml.events.Event;
+
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +35,8 @@ import static org.springframework.http.ResponseEntity.status;
 @RequestMapping("/donators")
 @SuppressWarnings("unused")
 public class DonatorController {
+    @Autowired
+    private HospitalRepository hospitalRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(DonatorController.class);
     private static final Gson gson = new Gson();
@@ -267,6 +274,25 @@ public class DonatorController {
             return status(OK).build();
         }
         return status(NOT_FOUND).build();
+    }
+
+    @GetMapping("/report/{id}")
+    public ResponseEntity<?> getReport(@PathVariable Long id) {
+
+        Optional<Hospital> hospital = hospitalRepository.findById(id);
+        if (hospital.isPresent()) {
+            List<Hospital> lista = new ArrayList<>();
+            lista.add(hospital.get());
+
+            String hospitalTxt = FileHandler.gravaArquivoTxt(lista, "hospital-" + hospital.get().getUser().getName());
+
+            return ResponseEntity.status(200)
+                    .header("content-type", "text/txt")
+                    .header("content-disposition", "filename=\"hospital.txt\"")
+                    .body(hospitalTxt);
+        } else {
+            return ResponseEntity.status(404).build();
+        }
     }
 
 }

@@ -14,9 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SuppressWarnings("unused")
 public class HibiscoWsApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(HibiscoWsApplication.class, args);
-	}
+	public static void main(String[] args) { SpringApplication.run(HibiscoWsApplication.class, args); }
 
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
