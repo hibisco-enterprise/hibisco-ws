@@ -11,7 +11,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Table(name = "tb_donation_history")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BloodStock {
 
