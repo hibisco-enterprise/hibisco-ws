@@ -60,7 +60,7 @@ public class DonatorService {
 
         }catch (Exception e) {
             logger.error("Erro de criação de usuário: \n\t{} \nErro: \n\t{}",
-                gson.toJson(donator), gson.toJson(e.getMessage())
+                donator, e.toString()
             );
             return status(BAD_REQUEST).body(e);
         }
