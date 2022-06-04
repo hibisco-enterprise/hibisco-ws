@@ -19,15 +19,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.yaml.snakeyaml.events.Event;
-
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import static org.springframework.http.HttpStatus.*;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.ResponseEntity.status;
 
 @RestController
@@ -111,8 +107,8 @@ public class DonatorController {
     }
 
     @PatchMapping("password/{id}")
-    public ResponseEntity<?> updatePassword(@PathVariable Long idDonator,
-                                            @RequestBody @Valid PasswordRequestDTO password) {
+    public ResponseEntity<Void> updatePassword(@PathVariable Long idDonator,
+                                               @RequestBody @Valid PasswordRequestDTO password) {
         Optional<Donator> findDonator = donatorRepository.findById(idDonator);
         if (findDonator.isPresent()) {
             userRepository.updatePassword(
