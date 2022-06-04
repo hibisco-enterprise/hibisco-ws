@@ -297,7 +297,7 @@ public class HospitalController {
         List<BloodTypeWrapperDTO> bloodList = FileHandler.leArquivoTxt(file);
 
         for (BloodTypeWrapperDTO b: bloodList) {
-            
+
         }
         return ResponseEntity.status(200).build();
     }
