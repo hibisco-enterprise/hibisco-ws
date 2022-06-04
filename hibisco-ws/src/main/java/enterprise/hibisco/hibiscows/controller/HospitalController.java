@@ -337,4 +337,12 @@ public class HospitalController {
         return status(200).body(updated);
     }
 
+    @GetMapping("/blood/{idHospital}")
+    public ResponseEntity<List<BloodStock>> getBloodStock(@PathVariable Long idHospital) {
+        List<BloodStock> bloodStocks = bloodStockRepository.findByHospitalIdHospital(idHospital);
+        if (bloodStocks.isEmpty()) { return status(204).build(); }
+
+        return status(200).body(bloodStocks);
+    }
+    
 }

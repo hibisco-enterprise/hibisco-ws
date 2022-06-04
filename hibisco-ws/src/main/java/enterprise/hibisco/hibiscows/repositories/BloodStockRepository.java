@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface BloodStockRepository extends JpaRepository<BloodStock, Long> {
@@ -16,4 +17,6 @@ public interface BloodStockRepository extends JpaRepository<BloodStock, Long> {
     int updateBloodStock(Long id, Double percentage);
 
     Optional<BloodStock> findByBloodTypeAndHospitalIdHospital(String bloodType, Long idHospital);
+
+    List<BloodStock> findByHospitalIdHospital(Long idHospital);
 }
