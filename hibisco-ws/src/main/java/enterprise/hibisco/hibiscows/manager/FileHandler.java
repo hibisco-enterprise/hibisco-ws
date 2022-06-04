@@ -1,13 +1,14 @@
 package enterprise.hibisco.hibiscows.manager;
 
+import enterprise.hibisco.hibiscows.entities.BloodStock;
 import enterprise.hibisco.hibiscows.entities.Hospital;
+import enterprise.hibisco.hibiscows.request.BloodTypeWrapperDTO;
 import enterprise.hibisco.hibiscows.request.CsvRequestDTO;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
 import java.util.List;
@@ -107,5 +108,84 @@ public class FileHandler {
         gravaRegistro(trailer, nomeArq);
 
         return registro;
+    }
+
+    public static void leArquivoTxt(String nomeArq) {
+        BufferedReader entrada = null;
+
+        String bloodType, documentNumber;
+        Double percentage;
+        String registro, tipoRegistro;
+        int contaRegCorpoLido = 0;
+        int qtdRegCorpoGravado;
+
+        List<BloodTypeWrapperDTO> bloodStockList = new ArrayList<>();
+        List<Hospital> hospitalList = new ArrayList<>();
+
+        try {
+            entrada = new BufferedReader(new FileReader(nomeArq));
+        }
+        catch (IOException erro) {
+            System.out.println("Erro ao abrir o arquivo: " + erro);
+        }
+
+        try {
+            // Leitura do primeiro registro do arquivo
+            registro = entrada.readLine();
+
+            while (registro != null) {
+                tipoRegistro = registro.substring(0,2);
+                if (tipoRegistro.equals("00")) {
+                    System.out.println("É um registro de header");
+                    System.out.println("Tipo de arquivo: " + registro.substring(2,9));
+                    System.out.println("Data e hora da gravação: " + registro.substring(9,28));
+                    System.out.println("Versão do documento: " + registro.substring(28, 30));
+                }
+                else if (tipoRegistro.equals("01")) {
+                    System.out.println("É um registro de trailer");
+                    qtdRegCorpoGravado = Integer.parseInt(registro.substring(2,6));
+                    if (contaRegCorpoLido == qtdRegCorpoGravado) {
+                        System.out.println("Quantidade de registros lidos é compatível " +
+                                "com a quantidade de registros gravados");
+                    }
+                    else {
+                        System.out.println("Quantidade de registros lidos não é compatível " +
+                                "com a quantidade de registros gravados");
+                    }
+                }
+                else if (tipoRegistro.equals("02")) {
+                    System.out.println("É um registro de corpo");
+                    bloodType = registro.substring(2,5).trim();
+                    percentage = Double.valueOf(registro.substring(5,11).replace(',','.'));
+                    contaRegCorpoLido++;
+
+                    // No projeto de PI, poderia fazer:
+                    // repository.save(a);
+
+                    bloodStockList.add(new BloodTypeWrapperDTO(bloodType, percentage));
+                } else if (tipoRegistro.equals("03")) {
+                    System.out.println("É um registro de corpo");
+                    documentNumber = registro.substring(102,116).trim();
+                    contaRegCorpoLido++;
+                }
+                else {
+                    System.out.println("Tipo de registro inválido!");
+                }
+                registro = entrada.readLine();
+            }
+            entrada.close();
+        }
+        catch (IOException erro) {
+            System.out.println("Erro ao ler o arquivo: " + erro);
+        }
+
+        // No Projeto de PI, pode-se fazer:
+        // repository.saveAll(listaLida);
+
+        // Vamos exibir a listaLida
+        System.out.println("\nConteúdo da lista lida:");
+     //   for (Aluno a : listaLida) {
+       //     System.out.println(a);
+        //}
     }
 }

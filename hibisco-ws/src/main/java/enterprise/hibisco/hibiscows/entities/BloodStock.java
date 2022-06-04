@@ -1,10 +1,7 @@
 package enterprise.hibisco.hibiscows.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
@@ -14,6 +11,7 @@ import javax.validation.constraints.Min;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Table(name = "tb_donation_history")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

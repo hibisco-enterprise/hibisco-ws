@@ -120,7 +120,6 @@ public class HospitalController {
         catch (IOException erro) {
             System.out.println("Erro ao abrir o arquivo: " + erro);
         }
-
         return ResponseEntity.status(200).build();
     }
 
