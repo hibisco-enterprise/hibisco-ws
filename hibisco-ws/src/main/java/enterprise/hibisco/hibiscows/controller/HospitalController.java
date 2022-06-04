@@ -322,8 +322,7 @@ public class HospitalController {
 
     @PutMapping("/blood/{idHospital}")
     public ResponseEntity<Integer> updateBloodStock(@PathVariable Long idHospital,
-                                                 @RequestBody @Valid List<BloodTypeWrapperDTO> bloodStock) {
-
+                                                    @RequestBody @Valid List<BloodTypeWrapperDTO> bloodStock) {
         Optional<Hospital> hospital = hospitalRepository.findById(idHospital);
         if (hospital.isEmpty()) { return status(404).build(); }
 
@@ -335,7 +334,7 @@ public class HospitalController {
                 updated++;
             }
         }
-        
+
         return status(200).body(updated);
     }
 
