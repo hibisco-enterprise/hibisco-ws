@@ -4,12 +4,14 @@ import com.google.gson.Gson;
 import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
+import enterprise.hibisco.hibiscows.manager.FileHandler;
 import enterprise.hibisco.hibiscows.manager.PilhaObj;
 import enterprise.hibisco.hibiscows.repositories.AddressRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalAppointmentRepository;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
 import enterprise.hibisco.hibiscows.repositories.UserRepository;
 import enterprise.hibisco.hibiscows.request.AvaliableDaysWrapperRequestDTO;
+import enterprise.hibisco.hibiscows.request.BloodTypeWrapperDTO;
 import enterprise.hibisco.hibiscows.request.HospitalLoginRequestDTO;
 import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
@@ -292,12 +294,10 @@ public class HospitalController {
     @PostMapping(value = "/importacao-txt")
     public ResponseEntity<Void> exportacaoTxt(@RequestParam("file") MultipartFile file) {
         BufferedReader entrada;
-        try {
-            entrada = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
-            System.out.println(entrada.readLine());
-        }
-        catch (IOException erro) {
-            System.out.println("Erro ao abrir o arquivo: " + erro);
+        List<BloodTypeWrapperDTO> bloodList = FileHandler.leArquivoTxt(file);
+
+        for (BloodTypeWrapperDTO b: bloodList) {
+            
         }
         return ResponseEntity.status(200).build();
     }

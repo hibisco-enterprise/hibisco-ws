@@ -1,11 +1,15 @@
 package enterprise.hibisco.hibiscows.manager;
 
+import enterprise.hibisco.hibiscows.controller.HospitalController;
 import enterprise.hibisco.hibiscows.entities.BloodStock;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.request.BloodTypeWrapperDTO;
 import enterprise.hibisco.hibiscows.request.CsvRequestDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,6 +18,7 @@ import java.util.FormatterClosedException;
 import java.util.List;
 
 public class FileHandler {
+
     public static void gravaArquivoCsv(ListaObj<CsvRequestDTO> lista, String nomeArq) {
         FileWriter arq = null;
         Formatter saida = null;
@@ -110,29 +115,27 @@ public class FileHandler {
         return registro;
     }
 
-    public static void leArquivoTxt(String nomeArq) {
+    public static List<BloodTypeWrapperDTO> leArquivoTxt(MultipartFile file)  {
         BufferedReader entrada = null;
 
-        String bloodType, documentNumber;
+        String bloodType;
+        String documentNumber = "";
         Double percentage;
         String registro, tipoRegistro;
         int contaRegCorpoLido = 0;
         int qtdRegCorpoGravado;
 
         List<BloodTypeWrapperDTO> bloodStockList = new ArrayList<>();
-        List<Hospital> hospitalList = new ArrayList<>();
-
         try {
-            entrada = new BufferedReader(new FileReader(nomeArq));
+            entrada = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
+            System.out.println(entrada.readLine());
         }
         catch (IOException erro) {
             System.out.println("Erro ao abrir o arquivo: " + erro);
         }
 
         try {
-            // Leitura do primeiro registro do arquivo
             registro = entrada.readLine();
-
             while (registro != null) {
                 tipoRegistro = registro.substring(0,2);
                 if (tipoRegistro.equals("00")) {
@@ -159,9 +162,6 @@ public class FileHandler {
                     percentage = Double.valueOf(registro.substring(5,11).replace(',','.'));
                     contaRegCorpoLido++;
 
-                    // No projeto de PI, poderia fazer:
-                    // repository.save(a);
-
                     bloodStockList.add(new BloodTypeWrapperDTO(bloodType, percentage));
                 } else if (tipoRegistro.equals("03")) {
                     System.out.println("É um registro de corpo");
@@ -178,14 +178,10 @@ public class FileHandler {
         catch (IOException erro) {
             System.out.println("Erro ao ler o arquivo: " + erro);
         }
+        for (BloodTypeWrapperDTO b: bloodStockList) {
+            b.setDocumentNumber(documentNumber);
+        }
 
-        // No Projeto de PI, pode-se fazer:
-        // repository.saveAll(listaLida);
-
-        // Vamos exibir a listaLida
-        System.out.println("\nConteúdo da lista lida:");
-     //   for (Aluno a : listaLida) {
-       //     System.out.println(a);
-        //}
+        return bloodStockList;
     }
 }

@@ -8,8 +8,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BloodTypeWrapperDTO {
+    public BloodTypeWrapperDTO(String bloodType, Double percentage) {
+        this.bloodType = bloodType;
+        this.percentage = percentage;
+    }
+
     @Getter @Setter
     private String bloodType;
     @Getter @Setter
     private Double percentage;
+    @Getter @Setter
+    private String documentNumber;
 }
