@@ -11,7 +11,6 @@ import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
 import enterprise.hibisco.hibiscows.response.AppointmentResponseDTO;
 import enterprise.hibisco.hibiscows.service.AddressDataService;
-import enterprise.hibisco.hibiscows.service.HospitalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ import static org.springframework.http.ResponseEntity.status;
 @SuppressWarnings("unused")
 public class DonatorController {
 
-    private static final Logger logger = LoggerFactory.getLogger(HospitalService.class);
+    private static final Logger logger = LoggerFactory.getLogger(DonatorController.class);
     private static final Gson gson = new Gson();
 
     @Autowired
@@ -40,12 +39,6 @@ public class DonatorController {
 
     @Autowired
     private DonatorRepository donatorRepository;
-
-    @Autowired
-    private HospitalRepository hospitalRepository;
-
-    @Autowired
-    private AddressRepository addressRepository;
 
     @Autowired
     private AddressDataService addressDataService;
@@ -74,7 +67,16 @@ public class DonatorController {
         return status(NOT_FOUND).build();
     }
 
-    @PutMapping("/{id}")
+    @GetMapping("/{cpf}")
+    public ResponseEntity<Optional<Donator>> getDonatorByCpf(@PathVariable String cpf) {
+        Optional<Donator> user = donatorRepository.findByUserDocumentNumberIgnoreCase(cpf);
+        if (user.isPresent()) {
+            return status(OK).body(user);
+        }
+        return status(NOT_FOUND).build();
+    }
+
+    @PutMapping("/{idDonator}")
     public ResponseEntity<?> updateDonator(@PathVariable Long idDonator,
                                            @RequestBody @Valid Donator donator) {
         Optional<Donator> findDonator = donatorRepository.findById(idDonator);
@@ -193,11 +195,6 @@ public class DonatorController {
         }
         return status(BAD_REQUEST).build();
     }
-
-//    @GetMapping("/report/{id}")
-//    public ResponseEntity<?> getReport(@PathVariable Long id){
-//        return donatorService.getReport(id);
-//    }
 
     @GetMapping("/appointment/{idDonator}")
     public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentDays(
