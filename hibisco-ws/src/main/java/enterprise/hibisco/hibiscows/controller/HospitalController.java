@@ -2,18 +2,13 @@ package enterprise.hibisco.hibiscows.controller;
 
 import com.google.gson.Gson;
 import enterprise.hibisco.hibiscows.entities.AddressData;
+import enterprise.hibisco.hibiscows.entities.BloodStock;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
 import enterprise.hibisco.hibiscows.manager.FileHandler;
 import enterprise.hibisco.hibiscows.manager.PilhaObj;
-import enterprise.hibisco.hibiscows.repositories.AddressRepository;
-import enterprise.hibisco.hibiscows.repositories.HospitalAppointmentRepository;
-import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
-import enterprise.hibisco.hibiscows.repositories.UserRepository;
-import enterprise.hibisco.hibiscows.request.AvaliableDaysWrapperRequestDTO;
-import enterprise.hibisco.hibiscows.request.BloodTypeWrapperDTO;
-import enterprise.hibisco.hibiscows.request.HospitalLoginRequestDTO;
-import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
+import enterprise.hibisco.hibiscows.repositories.*;
+import enterprise.hibisco.hibiscows.request.*;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
 import enterprise.hibisco.hibiscows.response.AvaliableDaysResponseDTO;
 import enterprise.hibisco.hibiscows.rest.mapbox.LatLongDTO;
@@ -27,13 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -66,6 +55,9 @@ public class HospitalController {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private BloodStockRepository bloodStockRepository;
 
 
     @GetMapping
@@ -291,17 +283,6 @@ public class HospitalController {
         return status(NOT_FOUND).build();
     }
 
-    @PostMapping(value = "/importacao-txt")
-    public ResponseEntity<Void> exportacaoTxt(@RequestParam("file") MultipartFile file) {
-        BufferedReader entrada;
-        List<BloodTypeWrapperDTO> bloodList = FileHandler.leArquivoTxt(file);
-
-        for (BloodTypeWrapperDTO b: bloodList) {
-
-        }
-        return ResponseEntity.status(200).build();
-    }
-
     @PostMapping("/appointment/reverse")
     public ResponseEntity<Void> reverseHospitalAppointmentDelete() {
         if (this.appointmentsStack.isEmpty()) {
@@ -313,6 +294,49 @@ public class HospitalController {
             setAvaliableDays(recover.getHospital().getIdHospital(), recovered);
             return status(201).build();
         }
+    }
+
+    @PostMapping(value = "/importacao-txt")
+    public ResponseEntity<Void> importTxt(@RequestParam("file") MultipartFile file) {
+        BufferedReader entrada;
+        BloodRegisterRequestDTO bloodList = FileHandler.leArquivoTxt(file);
+
+        return ResponseEntity.status(200).build();
+    }
+
+    @PostMapping("/blood/register")
+    public ResponseEntity<Void> registerBloodStock(@RequestBody BloodRegisterRequestDTO bloodStock) {
+        Optional<Hospital> hospital = hospitalRepository.findByUserDocumentNumberIgnoreCase(bloodStock.getDocumentNumber());
+
+        if (hospital.isPresent()) {
+            for (BloodTypeWrapperDTO blood: bloodStock.getBloodStock()) {
+                BloodStock newBlood = new BloodStock(blood.getBloodType(), blood.getPercentage(), hospital.get());
+                bloodStockRepository.save(newBlood);
+            }
+
+            return status(201).build();
+        }
+
+        return status(404).build();
+    }
+
+    @PutMapping("/blood/{idHospital}")
+    public ResponseEntity<Integer> updateBloodStock(@PathVariable Long idHospital,
+                                                 @RequestBody @Valid List<BloodTypeWrapperDTO> bloodStock) {
+
+        Optional<Hospital> hospital = hospitalRepository.findById(idHospital);
+        if (hospital.isEmpty()) { return status(404).build(); }
+
+        Integer updated = 0;
+        for (BloodTypeWrapperDTO b: bloodStock) {
+            Optional<BloodStock> current =  bloodStockRepository.findByBloodTypeAndHospitalIdHospital(b.getBloodType(), idHospital);
+            if (current.isPresent()) {
+                bloodStockRepository.updateBloodStock(current.get().getIdBloodStock(), b.getPercentage());
+                updated++;
+            }
+        }
+        
+        return status(200).body(updated);
     }
 
 }

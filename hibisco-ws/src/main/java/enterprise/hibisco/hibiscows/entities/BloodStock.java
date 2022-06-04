@@ -17,6 +17,12 @@ import javax.validation.constraints.Min;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BloodStock {
 
+    public BloodStock(String bloodType, Double percentage, Hospital hospital) {
+        BloodType = bloodType;
+        this.percentage = percentage;
+        this.hospital = hospital;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter @Setter private Long idBloodStock;

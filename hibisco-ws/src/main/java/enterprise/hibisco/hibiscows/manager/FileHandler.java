@@ -3,6 +3,7 @@ package enterprise.hibisco.hibiscows.manager;
 import enterprise.hibisco.hibiscows.controller.HospitalController;
 import enterprise.hibisco.hibiscows.entities.BloodStock;
 import enterprise.hibisco.hibiscows.entities.Hospital;
+import enterprise.hibisco.hibiscows.request.BloodRegisterRequestDTO;
 import enterprise.hibisco.hibiscows.request.BloodTypeWrapperDTO;
 import enterprise.hibisco.hibiscows.request.CsvRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,7 +116,7 @@ public class FileHandler {
         return registro;
     }
 
-    public static List<BloodTypeWrapperDTO> leArquivoTxt(MultipartFile file)  {
+    public static BloodRegisterRequestDTO leArquivoTxt(MultipartFile file)  {
         BufferedReader entrada = null;
 
         String bloodType;
@@ -178,10 +179,7 @@ public class FileHandler {
         catch (IOException erro) {
             System.out.println("Erro ao ler o arquivo: " + erro);
         }
-        for (BloodTypeWrapperDTO b: bloodStockList) {
-            b.setDocumentNumber(documentNumber);
-        }
 
-        return bloodStockList;
+        return new BloodRegisterRequestDTO(documentNumber, bloodStockList);
     }
 }
