@@ -1,8 +1,11 @@
 package enterprise.hibisco.hibiscows.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.Nullable;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -25,6 +28,11 @@ public class User {
 
     @NotBlank @Email
     @Getter @Setter private String email;
+
+    @Column(length = 50 * 1024 * 1024) // 50Mb
+    @JsonIgnore
+    @Nullable
+    private byte[] photo;
 
     @Length(min = 11, max = 18,
         message = "Documento inválido, verifique as pontuações, espaços e zeros à esquerda"

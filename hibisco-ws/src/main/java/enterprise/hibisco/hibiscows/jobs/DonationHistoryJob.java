@@ -51,11 +51,11 @@ public class DonationHistoryJob {
                     currentAppointment.getHospitalAppointment().getHospital().getUser().getIdUser()
             );
             repository.save(
-                    DonationHistory.builder()
-                            .dhScheduling(currentAppointment.getDhAppointment())
-                            .nameHospital(nameHospital)
-                            .appointment(currentAppointment)
-                            .build()
+                DonationHistory.builder()
+                    .dhScheduling(currentAppointment.getDhAppointment())
+                    .nameHospital(nameHospital)
+                    .appointment(currentAppointment)
+                .build()
             );
         }
     }

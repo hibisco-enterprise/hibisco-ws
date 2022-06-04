@@ -24,13 +24,10 @@ import static org.springframework.http.ResponseEntity.status;
 
 @Service
 public class AddressDataService {
-    private static final Logger logger = LoggerFactory.getLogger(HospitalService.class);
+    private static final Logger logger = LoggerFactory.getLogger(AddressDataService.class);
 
     @Autowired
     private AddressRepository repository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private ClientMapBox clientMapBox;

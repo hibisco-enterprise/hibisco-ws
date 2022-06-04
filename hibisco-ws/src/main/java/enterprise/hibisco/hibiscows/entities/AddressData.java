@@ -54,7 +54,7 @@ public class AddressData {
         this.uf = uf;
         this.cep = cep;
         this.number = number;
-        this.latitude = Double.NaN;
-        this.longitude = Double.NaN;
+        this.latitude = 0.0;
+        this.longitude = 0.0;
     }
 }

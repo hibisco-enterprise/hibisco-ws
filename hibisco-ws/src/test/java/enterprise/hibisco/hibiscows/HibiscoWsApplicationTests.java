@@ -23,9 +23,13 @@ public class HibiscoWsApplicationTests {
     @Autowired
     private DonatorController controller;
 
+    @Test
+    void contextLoads() {
+
+    }
+
 	@Test
 	public void loginAndRegisterDonatorShouldReturnOK() {
-
         //teste cadastro
 		Donator donatorTest =
             Donator.builder()
@@ -49,8 +53,7 @@ public class HibiscoWsApplicationTests {
                     .build())
             .build();
         ResponseEntity<?> testRegister = controller.doRegister(donatorTest);
-        assert(testRegister.getStatusCode().equals(OK));
-
+        assert(testRegister.getStatusCode().equals(CREATED));
 
         // teste login
         DonatorLoginRequestDTO login =
