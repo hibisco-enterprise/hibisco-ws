@@ -305,7 +305,7 @@ public class HospitalController {
     }
 
     @PostMapping("/blood/register")
-    public ResponseEntity<Void> registerBloodStock(@RequestBody BloodRegisterRequestDTO bloodStock) {
+    public ResponseEntity<Void> registerBloodStock(@RequestBody @Valid BloodRegisterRequestDTO bloodStock) {
         Optional<Hospital> hospital = hospitalRepository.findByUserDocumentNumberIgnoreCase(bloodStock.getDocumentNumber());
 
         if (hospital.isPresent()) {
@@ -316,7 +316,6 @@ public class HospitalController {
 
             return status(201).build();
         }
-
         return status(404).build();
     }
 

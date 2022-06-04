@@ -15,5 +15,5 @@ public interface BloodStockRepository extends JpaRepository<BloodStock, Long> {
     @Query("update BloodStock b set b.percentage = ?2 where b.idBloodStock = ?1")
     int updateBloodStock(Long id, Double percentage);
 
-    Optional<BloodStock> findByBloodTypeAndHospitalIdHospital(String BloodType, Long idHospital);
+    Optional<BloodStock> findByBloodTypeAndHospitalIdHospital(String bloodType, Long idHospital);
 }

@@ -6,8 +6,6 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 
 @Entity
 @NoArgsConstructor
@@ -18,7 +16,7 @@ import javax.validation.constraints.Min;
 public class BloodStock {
 
     public BloodStock(String bloodType, Double percentage, Hospital hospital) {
-        BloodType = bloodType;
+        this.bloodType = bloodType;
         this.percentage = percentage;
         this.hospital = hospital;
     }
@@ -28,7 +26,7 @@ public class BloodStock {
     @Getter @Setter private Long idBloodStock;
 
     @Length(min = 2, max = 3, message = "Tipo sanguíneo inválido.")
-    @Getter @Setter private String BloodType;
+    @Getter @Setter private String bloodType;
 
     @Range(min = 0, max = (long) 100.0, message = "Insira um número válido entre 0% e 100%")
     @Getter @Setter private Double percentage;
