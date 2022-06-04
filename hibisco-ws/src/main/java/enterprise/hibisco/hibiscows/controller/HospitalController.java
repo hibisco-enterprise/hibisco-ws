@@ -85,7 +85,7 @@ public class HospitalController {
     }
 
     @GetMapping("/{cnpjHospital}")
-    public ResponseEntity<Optional<Hospital>> getDonatorByCnpj(@PathVariable String cnpjHospital) {
+    public ResponseEntity<Optional<Hospital>> getHospitalByCnpj(@PathVariable String cnpjHospital) {
         Optional<Hospital> hospital = hospitalRepository.findByUserDocumentNumberIgnoreCase(cnpjHospital);
         if (hospital.isPresent()) {
             return status(OK).body(hospital);
