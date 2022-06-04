@@ -73,12 +73,14 @@ public class FileHandler {
         }
     }
 
-    public static void gravaArquivoTxt(List<Hospital> lista, String nomeArq) {
+    public static String gravaArquivoTxt(List<Hospital> lista, String nomeArq) {
         int contaRegistroCorpo = 0;
 
+        String registro = "";
         String header = "00USUARIOS";
         header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
         header += "01";
+        registro += header + "\n";
         gravaRegistro(header, nomeArq);
 
         String corpo;
@@ -95,11 +97,15 @@ public class FileHandler {
             corpo += String.format("%-30.30s", a.getUser().getAddress().getCity());
             corpo += String.format("%-2.2s", a.getUser().getAddress().getUf());
             gravaRegistro(corpo, nomeArq);
+            registro += corpo + "\n";
             contaRegistroCorpo++;
         }
 
         String trailer = "03";
         trailer += String.format("%010d", contaRegistroCorpo);
+        registro += trailer + "\n";
         gravaRegistro(trailer, nomeArq);
+
+        return registro;
     }
 }

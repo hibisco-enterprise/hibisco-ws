@@ -3,6 +3,9 @@ package enterprise.hibisco.hibiscows.controller;
 import enterprise.hibisco.hibiscows.entities.AddressData;
 import enterprise.hibisco.hibiscows.entities.Appointment;
 import enterprise.hibisco.hibiscows.entities.Donator;
+import enterprise.hibisco.hibiscows.entities.Hospital;
+import enterprise.hibisco.hibiscows.manager.FileHandler;
+import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
 import enterprise.hibisco.hibiscows.request.DonatorLoginRequestDTO;
 import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
 import enterprise.hibisco.hibiscows.response.AppointmentResponseDTO;
@@ -11,7 +14,10 @@ import enterprise.hibisco.hibiscows.service.DonatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.yaml.snakeyaml.events.Event;
+
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +26,8 @@ import java.util.Optional;
 @RequestMapping("/donators")
 @SuppressWarnings("unused")
 public class DonatorController {
+    @Autowired
+    private HospitalRepository hospitalRepository;
 
     @Autowired
     private DonatorService donatorService;
@@ -79,11 +87,6 @@ public class DonatorController {
         return donatorService.doLogoff(idUser);
     }
 
-//    @GetMapping("/report/{id}")
-//    public ResponseEntity<?> getReport(@PathVariable Long id){
-//        return donatorService.getReport(id);
-//    }
-
     @GetMapping("/appointment/{idDonator}")
     public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentDays(@PathVariable Long idDonator) {
         return appointmentService.getAppointmentDays(idDonator);
@@ -98,6 +101,25 @@ public class DonatorController {
     @DeleteMapping("/appointment/{idAppointment}")
     public ResponseEntity<?> deleteAppointmentDays(@PathVariable Long idAppointment) {
         return appointmentService.cancelAppointmentDay(idAppointment);
+    }
+
+    @GetMapping("/report/{id}")
+    public ResponseEntity<?> getReport(@PathVariable Long id) {
+
+        Optional<Hospital> hospital = hospitalRepository.findById(id);
+        if (hospital.isPresent()) {
+            List<Hospital> lista = new ArrayList<>();
+            lista.add(hospital.get());
+
+            String hospitalTxt = FileHandler.gravaArquivoTxt(lista, "hospital-" + hospital.get().getUser().getName());
+
+            return ResponseEntity.status(200)
+                    .header("content-type", "text/txt")
+                    .header("content-disposition", "filename=\"hospital.txt\"")
+                    .body(hospitalTxt);
+        } else {
+            return ResponseEntity.status(404).build();
+        }
     }
 
 }
