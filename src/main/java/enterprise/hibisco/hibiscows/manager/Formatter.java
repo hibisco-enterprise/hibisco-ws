@@ -11,7 +11,7 @@ public class Formatter {
             return cep;
         }
         throw new IllegalArgumentException(
-            "CEP inválido, verifique a formatação e tente novamente"
+            "CEP invalido, verifique a formatação e tente novamente"
         );
     }
 
