@@ -35,9 +35,7 @@ public class DonationHistoryJob {
     public void doJob() {
         List<Appointment> appointments = appointment.getTodayAppointments();
         appointmentsList = new FilaObj<>(appointments.size());
-        appointments.forEach(appointment -> {
-            appointmentsList.insert(appointment);
-        });
+        appointments.forEach(appointment -> appointmentsList.insert(appointment));
         if (appointmentsList.getTamanho() == 0) {
             logger.info("Sem agendamentos concluídos para hoje. Finalizando job...");
             return;

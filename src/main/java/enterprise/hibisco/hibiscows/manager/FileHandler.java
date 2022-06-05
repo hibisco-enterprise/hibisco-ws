@@ -72,6 +72,7 @@ public class FileHandler {
         }
 
         try {
+            assert saida != null;
             saida.append(registro + "\n");
             saida.close();
         }
@@ -136,6 +137,7 @@ public class FileHandler {
         }
 
         try {
+            assert entrada != null;
             registro = entrada.readLine();
             while (registro != null) {
                 tipoRegistro = registro.substring(0,2);
