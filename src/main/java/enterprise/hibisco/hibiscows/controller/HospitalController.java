@@ -309,6 +309,7 @@ public class HospitalController {
     public ResponseEntity<Void> importTxt(@RequestParam("file") MultipartFile file) {
         BufferedReader entrada;
         BloodRegisterRequestDTO bloodList = FileHandler.leArquivoTxt(file);
+        registerBloodStock(bloodList);
 
         return ResponseEntity.status(200).build();
     }
