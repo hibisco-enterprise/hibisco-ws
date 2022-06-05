@@ -22,7 +22,7 @@ jobs:
           java-version: '11'
 
       - name: Build with Maven
-        run: mvn clean install -Xe -Dmaven.test.skip
+        run: spring-boot:run
         env: 
           AZURE_PASSWORD: ${{ secrets.AZURE_PASSWORD }}
           AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
