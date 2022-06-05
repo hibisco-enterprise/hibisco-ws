@@ -13,6 +13,7 @@ import enterprise.hibisco.hibiscows.request.DonatorLoginRequestDTO;
 import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
 import enterprise.hibisco.hibiscows.response.AppointmentResponseDTO;
+import enterprise.hibisco.hibiscows.rest.mapbox.LatLongDTO;
 import enterprise.hibisco.hibiscows.service.AddressDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.ResponseEntity.status;
@@ -156,6 +158,19 @@ public class DonatorController {
                     "CPF inválido, tente novamente com um cpf diferente"
             );
         }
+
+        ResponseEntity<LatLongDTO> coordinates = addressDataService.getGeocoordinates(
+                donator.getUser().getAddress()
+        );
+
+        donator.getUser().getAddress().setLatitude(
+                Objects.requireNonNull(coordinates.getBody()).getLatitude()
+        );
+
+        donator.getUser().getAddress().setLongitude(
+                Objects.requireNonNull(coordinates.getBody()).getLongitude()
+        );
+
         try {
             logger.info(gson.toJson(donator));
             donatorRepository.save(
