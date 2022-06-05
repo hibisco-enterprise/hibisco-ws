@@ -133,6 +133,7 @@
 	</dependencyManagement>
 
 	<build>
+		<defaultGoal>install</defaultGoal>
 		<finalName>hibisco-ws</finalName>
 		<plugins>
 			<plugin>
