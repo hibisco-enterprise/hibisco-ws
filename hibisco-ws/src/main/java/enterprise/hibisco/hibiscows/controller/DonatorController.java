@@ -13,21 +13,19 @@ import enterprise.hibisco.hibiscows.request.DonatorLoginRequestDTO;
 import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
 import enterprise.hibisco.hibiscows.response.AppointmentResponseDTO;
+import enterprise.hibisco.hibiscows.rest.mapbox.LatLongDTO;
 import enterprise.hibisco.hibiscows.service.AddressDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.yaml.snakeyaml.events.Event;
-
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-
 import static org.springframework.http.HttpStatus.*;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.ResponseEntity.status;
 
 @RestController
@@ -111,8 +109,8 @@ public class DonatorController {
     }
 
     @PatchMapping("password/{id}")
-    public ResponseEntity<?> updatePassword(@PathVariable Long idDonator,
-                                            @RequestBody @Valid PasswordRequestDTO password) {
+    public ResponseEntity<Void> updatePassword(@PathVariable Long idDonator,
+                                               @RequestBody @Valid PasswordRequestDTO password) {
         Optional<Donator> findDonator = donatorRepository.findById(idDonator);
         if (findDonator.isPresent()) {
             userRepository.updatePassword(
@@ -160,6 +158,19 @@ public class DonatorController {
                     "CPF inválido, tente novamente com um cpf diferente"
             );
         }
+
+        ResponseEntity<LatLongDTO> coordinates = addressDataService.getGeocoordinates(
+                donator.getUser().getAddress()
+        );
+
+        donator.getUser().getAddress().setLatitude(
+                Objects.requireNonNull(coordinates.getBody()).getLatitude()
+        );
+
+        donator.getUser().getAddress().setLongitude(
+                Objects.requireNonNull(coordinates.getBody()).getLongitude()
+        );
+
         try {
             logger.info(gson.toJson(donator));
             donatorRepository.save(

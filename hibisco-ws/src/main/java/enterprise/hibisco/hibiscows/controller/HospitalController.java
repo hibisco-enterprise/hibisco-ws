@@ -104,6 +104,15 @@ public class HospitalController {
             );
             hospital.getUser().setIdUser(findHospital.get().getUser().getIdUser());
             hospital.setIdHospital(idHospital);
+
+            hospital.getUser().getAddress().setLatitude(
+                hospital.getUser().getAddress().getLatitude()
+            );
+
+            hospital.getUser().getAddress().setLongitude(
+                hospital.getUser().getAddress().getLongitude()
+            );
+
             logger.info("atualizando Hospital: {}", gson.toJson(hospital));
 
             hospitalRepository.save(hospital);
