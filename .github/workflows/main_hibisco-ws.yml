@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -22,12 +22,7 @@ jobs:
           java-version: '11'
 
       - name: Build with Maven
-        run: mvn -X process-test-resources
-        env: 
-          AZURE_PASSWORD: ${{ secrets.AZURE_PASSWORD }}
-          AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
-          AZURE_URL: ${{ secrets.AZURE_URL }}
-
+        run: mvn clean install
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -36,12 +31,12 @@ jobs:
           path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
@@ -54,5 +49,5 @@ jobs:
         with:
           app-name: 'hibisco-ws'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_92739A8B034440C1966B42F8D0F0D356 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DA46A43EDB914AFA9956C3BAA7FD32DA }}
           package: '*.jar'
