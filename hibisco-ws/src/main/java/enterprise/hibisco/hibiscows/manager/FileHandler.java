@@ -1,18 +1,25 @@
 package enterprise.hibisco.hibiscows.manager;
 
+import enterprise.hibisco.hibiscows.controller.HospitalController;
+import enterprise.hibisco.hibiscows.entities.BloodStock;
 import enterprise.hibisco.hibiscows.entities.Hospital;
+import enterprise.hibisco.hibiscows.request.BloodRegisterRequestDTO;
+import enterprise.hibisco.hibiscows.request.BloodTypeWrapperDTO;
 import enterprise.hibisco.hibiscows.request.CsvRequestDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
 import java.util.List;
 
 public class FileHandler {
+
     public static void gravaArquivoCsv(ListaObj<CsvRequestDTO> lista, String nomeArq) {
         FileWriter arq = null;
         Formatter saida = null;
@@ -107,5 +114,72 @@ public class FileHandler {
         gravaRegistro(trailer, nomeArq);
 
         return registro;
+    }
+
+    public static BloodRegisterRequestDTO leArquivoTxt(MultipartFile file)  {
+        BufferedReader entrada = null;
+
+        String bloodType;
+        String documentNumber = "";
+        Double percentage;
+        String registro, tipoRegistro;
+        int contaRegCorpoLido = 0;
+        int qtdRegCorpoGravado;
+
+        List<BloodTypeWrapperDTO> bloodStockList = new ArrayList<>();
+        try {
+            entrada = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
+            System.out.println(entrada.readLine());
+        }
+        catch (IOException erro) {
+            System.out.println("Erro ao abrir o arquivo: " + erro);
+        }
+
+        try {
+            registro = entrada.readLine();
+            while (registro != null) {
+                tipoRegistro = registro.substring(0,2);
+                if (tipoRegistro.equals("00")) {
+                    System.out.println("É um registro de header");
+                    System.out.println("Tipo de arquivo: " + registro.substring(2,9));
+                    System.out.println("Data e hora da gravação: " + registro.substring(9,28));
+                    System.out.println("Versão do documento: " + registro.substring(28, 30));
+                }
+                else if (tipoRegistro.equals("01")) {
+                    System.out.println("É um registro de trailer");
+                    qtdRegCorpoGravado = Integer.parseInt(registro.substring(2,6));
+                    if (contaRegCorpoLido == qtdRegCorpoGravado) {
+                        System.out.println("Quantidade de registros lidos é compatível " +
+                                "com a quantidade de registros gravados");
+                    }
+                    else {
+                        System.out.println("Quantidade de registros lidos não é compatível " +
+                                "com a quantidade de registros gravados");
+                    }
+                }
+                else if (tipoRegistro.equals("02")) {
+                    System.out.println("É um registro de corpo");
+                    bloodType = registro.substring(2,5).trim();
+                    percentage = Double.valueOf(registro.substring(5,11).replace(',','.'));
+                    contaRegCorpoLido++;
+
+                    bloodStockList.add(new BloodTypeWrapperDTO(bloodType, percentage));
+                } else if (tipoRegistro.equals("03")) {
+                    System.out.println("É um registro de corpo");
+                    documentNumber = registro.substring(102,116).trim();
+                    contaRegCorpoLido++;
+                }
+                else {
+                    System.out.println("Tipo de registro inválido!");
+                }
+                registro = entrada.readLine();
+            }
+            entrada.close();
+        }
+        catch (IOException erro) {
+            System.out.println("Erro ao ler o arquivo: " + erro);
+        }
+
+        return new BloodRegisterRequestDTO(documentNumber, bloodStockList);
     }
 }
