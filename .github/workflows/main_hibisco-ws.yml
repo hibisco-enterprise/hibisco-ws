@@ -26,7 +26,7 @@ jobs:
           AZURE_URL: ${{ secrets.AZURE_URL }}
 
       - name: Build with Maven
-        run: mvn -f pom.xml clean package -Dmaven.test.skip
+        run: mvn -fe pom.xml clean package -Dmaven.test.skip
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
