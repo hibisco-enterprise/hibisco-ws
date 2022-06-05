@@ -63,6 +63,7 @@ public class FileHandler {
 
     public static void gravaRegistro(String registro, String nomeArq) {
         BufferedWriter saida = null;
+
         try {
             saida = new BufferedWriter(new FileWriter(nomeArq,true));
         }
@@ -76,7 +77,7 @@ public class FileHandler {
             saida.close();
         }
         catch(IOException erro) {
-            System.out.println("Erro na gravacao do arquivo: " + erro);
+            System.out.println("Erro na gravação do arquivo: " + erro);
         }
     }
 
@@ -128,7 +129,7 @@ public class FileHandler {
 
         List<BloodTypeWrapperDTO> bloodStockList = new ArrayList<>();
         try {
-            entrada = new BufferedReader(new InputStreamReader(file.getInputStream(), "utf-8"));
+            entrada = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
             System.out.println(entrada.readLine());
         }
         catch (IOException erro) {
@@ -144,34 +145,34 @@ public class FileHandler {
                     System.out.println("É um registro de header");
                     System.out.println("Tipo de arquivo: " + registro.substring(2,9));
                     System.out.println("Data e hora da gravação: " + registro.substring(9,28));
-                    System.out.println("Versao do documento: " + registro.substring(28, 30));
+                    System.out.println("Versão do documento: " + registro.substring(28, 30));
                 }
                 else if (tipoRegistro.equals("01")) {
-                    System.out.println("E um registro de trailer");
+                    System.out.println("É um registro de trailer");
                     qtdRegCorpoGravado = Integer.parseInt(registro.substring(2,6));
                     if (contaRegCorpoLido == qtdRegCorpoGravado) {
-                        System.out.println("Quantidade de registros lidos é compativel " +
+                        System.out.println("Quantidade de registros lidos é compatível " +
                                 "com a quantidade de registros gravados");
                     }
                     else {
-                        System.out.println("Quantidade de registros lidos não é compativel " +
+                        System.out.println("Quantidade de registros lidos não é compatível " +
                                 "com a quantidade de registros gravados");
                     }
                 }
                 else if (tipoRegistro.equals("02")) {
-                    System.out.println("E um registro de corpo");
+                    System.out.println("É um registro de corpo");
                     bloodType = registro.substring(2,5).trim();
                     percentage = Double.valueOf(registro.substring(5,11).replace(',','.'));
                     contaRegCorpoLido++;
 
                     bloodStockList.add(new BloodTypeWrapperDTO(bloodType, percentage));
                 } else if (tipoRegistro.equals("03")) {
-                    System.out.println("E um registro de corpo");
+                    System.out.println("É um registro de corpo");
                     documentNumber = registro.substring(102,116).trim();
                     contaRegCorpoLido++;
                 }
                 else {
-                    System.out.println("Tipo de registro invalido!");
+                    System.out.println("Tipo de registro inválido!");
                 }
                 registro = entrada.readLine();
             }

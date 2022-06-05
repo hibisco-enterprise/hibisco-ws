@@ -295,8 +295,8 @@ public class DonatorController {
             List<Hospital> lista = new ArrayList<>();
             lista.add(hospital.get());
 
-            String hospitalTxt = FileHandler.gravaArquivoTxt(lista, "hospital-" + hospital.get().getUser().getName());
-
+            //String hospitalTxt = FileHandler.gravaArquivoTxt(lista, "hospital-" + hospital.get().getUser().getName());
+            String hospitalTxt = " ";
             return ResponseEntity.status(200)
                     .header("content-type", "text/txt")
                     .header("content-disposition", "filename=\"hospital.txt\"")
