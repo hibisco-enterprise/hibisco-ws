@@ -63,7 +63,6 @@ public class FileHandler {
 
     public static void gravaRegistro(String registro, String nomeArq) {
         BufferedWriter saida = null;
-
         try {
             saida = new BufferedWriter(new FileWriter(nomeArq,true));
         }
@@ -129,7 +128,7 @@ public class FileHandler {
 
         List<BloodTypeWrapperDTO> bloodStockList = new ArrayList<>();
         try {
-            entrada = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
+            entrada = new BufferedReader(new InputStreamReader(file.getInputStream(), "utf-8"));
             System.out.println(entrada.readLine());
         }
         catch (IOException erro) {
