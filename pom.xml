@@ -141,10 +141,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
     			<configuration>
         			<propertiesEncoding>UTF-8</propertiesEncoding>
-        			<nonFilteredFileExtensions>
-            			<nonFilteredFileExtension>xls</nonFilteredFileExtension>
-            			<nonFilteredFileExtension>xlsx</nonFilteredFileExtension>
-        			</nonFilteredFileExtensions>
     			</configuration>
 			</plugin>
 		</plugins>
