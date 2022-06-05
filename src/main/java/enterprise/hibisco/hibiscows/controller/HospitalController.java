@@ -307,11 +307,7 @@ public class HospitalController {
 
     @PostMapping(value = "/importacao-txt")
     public ResponseEntity<Void> importTxt(@RequestParam("file") MultipartFile file) {
-        BufferedReader entrada;
-        BloodRegisterRequestDTO bloodList = FileHandler.leArquivoTxt(file);
-        registerBloodStock(bloodList);
-
-        return ResponseEntity.status(200).build();
+        return registerBloodStock(FileHandler.leArquivoTxt(file));
     }
 
     @PostMapping("/blood/register")
