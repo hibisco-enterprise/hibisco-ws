@@ -22,7 +22,7 @@ jobs:
           java-version: '11'
 
       - name: Build with Maven
-        run: mvn install -X -e -Dmaven.test.skip
+        run: mvn clean install -X -e -Dmaven.test.skip
         env: 
           AZURE_PASSWORD: ${{ secrets.AZURE_PASSWORD }}
           AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
