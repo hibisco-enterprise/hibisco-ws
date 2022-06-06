@@ -2,15 +2,14 @@ package enterprise.hibisco.hibiscows.controller;
 
 import com.google.gson.Gson;
 import enterprise.hibisco.hibiscows.entities.AddressData;
+import enterprise.hibisco.hibiscows.entities.Appointment;
 import enterprise.hibisco.hibiscows.entities.BloodStock;
 import enterprise.hibisco.hibiscows.entities.Hospital;
-import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
 import enterprise.hibisco.hibiscows.manager.FileHandler;
 import enterprise.hibisco.hibiscows.manager.PilhaObj;
 import enterprise.hibisco.hibiscows.repositories.*;
 import enterprise.hibisco.hibiscows.request.*;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
-import enterprise.hibisco.hibiscows.response.AvaliableDaysResponseDTO;
 import enterprise.hibisco.hibiscows.rest.mapbox.LatLongDTO;
 import enterprise.hibisco.hibiscows.service.AddressDataService;
 import org.slf4j.Logger;
@@ -21,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
-import java.io.BufferedReader;
 import java.util.*;
 
 import static org.springframework.http.HttpStatus.*;
@@ -38,7 +36,7 @@ public class HospitalController {
 
     private static final Gson gson = new Gson();
 
-    private PilhaObj<HospitalAppointment> appointmentsStack = new PilhaObj<>(5);
+    private PilhaObj<Appointment> appointmentsStack = new PilhaObj<>(5);
 
 
     @Autowired
@@ -48,9 +46,6 @@ public class HospitalController {
     private UserRepository userRepository;
 
     @Autowired
-    private HospitalAppointmentRepository hospitalAppointmentRepository;
-
-    @Autowired
     private HospitalRepository hospitalRepository;
 
     @Autowired
@@ -58,6 +53,9 @@ public class HospitalController {
 
     @Autowired
     private BloodStockRepository bloodStockRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
 
     @GetMapping
@@ -228,65 +226,14 @@ public class HospitalController {
         return status(BAD_REQUEST).build();
     }
 
-    @GetMapping("/appointment/{idHospital}")
-    public ResponseEntity<List<AvaliableDaysResponseDTO>> getAvaliableDays(@PathVariable Long idHospital) {
-        List<HospitalAppointment> appointments = hospitalAppointmentRepository.findByHospitalIdHospital(
-            idHospital
-        );
-
-        List<AvaliableDaysResponseDTO> avaiableDays = new ArrayList<>();
-
-        appointments.forEach(it -> avaiableDays.add(
-            AvaliableDaysResponseDTO.builder()
-                .idHospitalAppointment(it.getIdHospitalAppointment())
-                .avaliableDay(it.getDhAvaliable())
-                .idHospital(it.getHospital().getIdHospital())
-                .build()
-        ));
-
-        if (appointments.isEmpty()) {
-            return status(NO_CONTENT).build();
-        }
-        return status(OK).body(avaiableDays);
-    }
-
-    @PostMapping("/appointment/{idHospital}")
-    public ResponseEntity<?> setAvaliableDays(@PathVariable Long idHospital,
-                                                 @RequestBody @Valid AvaliableDaysWrapperRequestDTO avaliableDays) {
-        Optional<Hospital> hospital = hospitalRepository.findById(idHospital);
-
-        if (hospital.isPresent()) {
-            avaliableDays.getAvaliableDays().forEach(day ->
-                hospitalAppointmentRepository.save(
-                    new HospitalAppointment(
-                        day,
-                        hospital.get()
-                    )
-                )
-            );
-            return status(CREATED).build();
-        }
-
-        return status(NOT_FOUND).build();
-    }
-
-    @DeleteMapping("/appointment/{idHospitalAppointment}")
-    public ResponseEntity<Void> deleteAvaliableDay(@PathVariable Long idHospitalAppointment) {
-        Optional<HospitalAppointment> appointment = hospitalAppointmentRepository.findById(
-            idHospitalAppointment
+    @DeleteMapping("/appointment/{idAppointment}")
+    public ResponseEntity<Void> deleteAvaliableDay(@PathVariable Long idAppointment) {
+        Optional<Appointment> appointment = appointmentRepository.findById(
+            idAppointment
         );
         if (appointment.isPresent()) {
-            appointmentsStack.push(hospitalAppointmentRepository.getById(idHospitalAppointment));
-            hospitalAppointmentRepository.deleteById(appointment.get().getIdHospitalAppointment());
-            return status(OK).build();
-        }
-        return status(NOT_FOUND).build();
-    }
-
-    @PostMapping("/appointment/accept/{idAppointment}")
-    public ResponseEntity<Void> acceptAvailableDay(@PathVariable Long idAppointment) {
-        if (hospitalAppointmentRepository.existsById(idAppointment)) {
-            hospitalAppointmentRepository.acceptAppointmentDay(idAppointment);
+            appointmentsStack.push(appointment.get());
+            appointmentRepository.deleteById(appointment.get().getIdAppointment());
             return status(OK).build();
         }
         return status(NOT_FOUND).build();
@@ -297,17 +244,43 @@ public class HospitalController {
         if (this.appointmentsStack.isEmpty()) {
             return status(204).build();
         } else {
-            HospitalAppointment recover = appointmentsStack.pop();
-            AvaliableDaysWrapperRequestDTO recovered =  new AvaliableDaysWrapperRequestDTO();
-            recovered.setAvaliableDays(new ArrayList<>(recovered.getAvaliableDays()));
-            setAvaliableDays(recover.getHospital().getIdHospital(), recovered);
+            Appointment recover = appointmentsStack.pop();
+            AppointmentRequestDTO recovered = new AppointmentRequestDTO(
+                recover.getDhAppointment(),
+                recover.getDonator().getIdDonator(),
+                recover.getHospital().getIdHospital()
+            );
+            new DonatorController().setAppointmentDay(recovered);
             return status(201).build();
         }
+    }
+
+    @PostMapping("/appointment/accept/{idAppointment}")
+    public ResponseEntity<Void> acceptAvailableDay(@PathVariable Long idAppointment) {
+        if (appointmentRepository.existsById(idAppointment)) {
+            appointmentRepository.acceptAppointmentDay(idAppointment);
+            return status(OK).build();
+        }
+        return status(NOT_FOUND).build();
     }
 
     @PostMapping(value = "/importacao-txt")
     public ResponseEntity<Void> importTxt(@RequestParam("file") MultipartFile file) {
         return registerBloodStock(FileHandler.leArquivoTxt(file));
+    }
+
+    @GetMapping("appointments/{idHospital}/order-date")
+    public ResponseEntity<List<Appointment>> getAppointmentsByDate(@PathVariable Long idHospital) {
+        return hospitalRepository.existsById(idHospital) ? status(OK).body(
+            appointmentRepository.findByHospitalIdHospitalOrderByDhAppointmentDesc(idHospital)
+        ) : status(NOT_FOUND).build();
+    }
+
+    @GetMapping("appointments/{idHospital}/not-accepted")
+    public ResponseEntity<List<Appointment>> getAppointmentsNotAccepted(@PathVariable Long idHospital) {
+        return hospitalRepository.existsById(idHospital) ? status(OK).body(
+            appointmentRepository.findByHospitalIdHospitalAndAcceptedFalseOrderByDhAppointmentDesc(idHospital)
+        ) :  status(NOT_FOUND).build();
     }
 
     @PostMapping("/blood/register")

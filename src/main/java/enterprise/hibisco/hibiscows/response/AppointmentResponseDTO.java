@@ -62,9 +62,6 @@ public class AppointmentResponseDTO {
     @Getter @Setter private Integer number;
 
     @NotNull
-    @Getter @Setter private Long idHospitalAppointment;
-
-    @NotNull
     @Getter @Setter private Long idHospital;
 
 }

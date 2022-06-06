@@ -26,16 +26,15 @@ public class Appointment {
     @JoinColumn(name = "fk_donator")
     @Getter @Setter private Donator donator;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_appointment_hospital")
-    @Getter @Setter private HospitalAppointment hospitalAppointment;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_hospital")
+    @Getter @Setter private Hospital hospital;
 
     public Appointment(LocalDateTime dhAppointment,
                        Donator donator,
-                       HospitalAppointment hospitalAppointment) {
+                       Hospital hospital) {
         this.dhAppointment = dhAppointment;
         this.donator = donator;
-        this.hospitalAppointment = hospitalAppointment;
+        this.hospital = hospital;
     }
-
 }

@@ -46,7 +46,7 @@ public class DonationHistoryJob {
         for (int i = 0; i < appointmentsList.getTamanho(); i++) {
             Appointment currentAppointment = appointmentsList.poll();
             String nameHospital = hospitalRepository.findNameHospitalByIdUser(
-                    currentAppointment.getHospitalAppointment().getHospital().getUser().getIdUser()
+                    currentAppointment.getHospital().getUser().getIdUser()
             );
             repository.save(
                 DonationHistory.builder()

@@ -17,4 +17,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     @Transactional
     @Modifying
     void acceptAppointmentDay(Long idAppointment);
+
+    List<Appointment> findByHospitalIdHospitalOrderByDhAppointmentDesc(Long idHospital);
+
+    List<Appointment> findByHospitalIdHospitalAndAcceptedFalseOrderByDhAppointmentDesc(Long idHospital);
 }

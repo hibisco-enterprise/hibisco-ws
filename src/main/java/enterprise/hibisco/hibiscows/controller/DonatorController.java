@@ -7,8 +7,8 @@ import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.manager.FileHandler;
 import enterprise.hibisco.hibiscows.repositories.HospitalRepository;
-import enterprise.hibisco.hibiscows.entities.HospitalAppointment;
 import enterprise.hibisco.hibiscows.repositories.*;
+import enterprise.hibisco.hibiscows.request.AppointmentRequestDTO;
 import enterprise.hibisco.hibiscows.request.DonatorLoginRequestDTO;
 import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
 import enterprise.hibisco.hibiscows.response.AddressResponseDTO;
@@ -51,8 +51,6 @@ public class DonatorController {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
-    @Autowired
-    private HospitalAppointmentRepository hospitalAppointmentRepository;
 
     @GetMapping
     public ResponseEntity<List<Donator>> getDonators() {
@@ -244,8 +242,7 @@ public class DonatorController {
                         .uf(it.getDonator().getUser().getAddress().getUf())
                         .cep(it.getDonator().getUser().getAddress().getCep())
                         .number(it.getDonator().getUser().getAddress().getNumber())
-                        .idHospitalAppointment(it.getHospitalAppointment().getIdHospitalAppointment())
-                        .idHospital(it.getHospitalAppointment().getHospital().getIdHospital())
+                        .idHospital(it.getHospital().getIdHospital())
                     .build()
                 )
             );
@@ -255,21 +252,17 @@ public class DonatorController {
         return status(NOT_FOUND).build();
     }
 
-    @PostMapping("/appointment/{idDonator}/{fkHospitalAppointment}")
-    public ResponseEntity<Void> setAppointmentDay(@PathVariable Long idDonator,
-                                            @PathVariable Long fkHospitalAppointment) {
-        Optional<HospitalAppointment> appointmentDay = hospitalAppointmentRepository.findById(
-            fkHospitalAppointment
-        );
-        Optional<Donator> donator = donatorRepository.findById(idDonator);
+    @PostMapping("/appointment")
+    public ResponseEntity<Void> setAppointmentDay(@RequestBody AppointmentRequestDTO appointment) {
+        Optional<Hospital> hospital = hospitalRepository.findById(appointment.getFkHospital());
+        Optional<Donator> donator = donatorRepository.findById(appointment.getFkDonator());
 
-
-        if (appointmentDay.isPresent() && donator.isPresent()) {
+        if (hospital.isPresent() && donator.isPresent()) {
             appointmentRepository.save(
                 new Appointment(
-                    appointmentDay.get().getDhAvaliable(),
+                    appointment.getDhAppointment(),
                     donator.get(),
-                    appointmentDay.get()
+                    hospital.get()
                 )
             );
 
@@ -277,6 +270,7 @@ public class DonatorController {
         }
         return status(NOT_FOUND).build();
     }
+
 
     @DeleteMapping("/appointment/{idAppointment}")
     public ResponseEntity<?> deleteAppointmentDays(@PathVariable Long idAppointment) {

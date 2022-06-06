@@ -3,7 +3,6 @@ package enterprise.hibisco.hibiscows.controller;
 import enterprise.hibisco.hibiscows.entities.Donator;
 import enterprise.hibisco.hibiscows.entities.Hospital;
 import enterprise.hibisco.hibiscows.repositories.*;
-import enterprise.hibisco.hibiscows.request.DonatorLoginRequestDTO;
 import enterprise.hibisco.hibiscows.request.HospitalLoginRequestDTO;
 import enterprise.hibisco.hibiscows.request.PasswordRequestDTO;
 import enterprise.hibisco.hibiscows.service.AddressDataService;
@@ -13,16 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.http.HttpStatus.*;
-import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.*;
 
 @SpringBootTest(classes = {HospitalController.class})
+@SuppressWarnings("unused")
 class HospitalControllerTest {
 
     @Autowired
@@ -42,9 +40,6 @@ class HospitalControllerTest {
 
     @MockBean
     private AppointmentRepository appointmentRepository;
-
-    @MockBean
-    private HospitalAppointmentRepository hospitalAppointmentRepository;
 
     @MockBean
     private AddressRepository addressRepository;
@@ -98,7 +93,7 @@ class HospitalControllerTest {
     }
 
     @Test
-    @DisplayName("getDonatorByCnpj() - Sem corpo e deve retornar 404 - Not Found")
+    @DisplayName("getHospitalByCnpj() - Sem corpo e deve retornar 404 - Not Found")
     void getDonatorByCnpjScenario1() {
         Hospital hospitalMock = mock(Hospital.class, RETURNS_DEEP_STUBS);
         when(hospitalMock.getUser().getDocumentNumber()).thenReturn("04.496.958/0001-76");
@@ -118,7 +113,7 @@ class HospitalControllerTest {
     }
 
     @Test
-    @DisplayName("getDonatorByCnpj() - Com corpo (1 registro) e deve retornar 200 - Ok")
+    @DisplayName("getHospitalByCnpj() - Com corpo (1 registro) e deve retornar 200 - Ok")
     void getDonatorByCnpjScenario2() {
         Hospital hospitalMock = mock(Hospital.class, RETURNS_DEEP_STUBS);
         when(hospitalMock.getUser().getDocumentNumber()).thenReturn("04.496.958/0001-76");
