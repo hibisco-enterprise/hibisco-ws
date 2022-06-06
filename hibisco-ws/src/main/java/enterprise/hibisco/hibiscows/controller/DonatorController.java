@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/donators")
-public class DonatorController {
+public class  DonatorController {
 
     @Autowired
     private DonatorService donatorService;
