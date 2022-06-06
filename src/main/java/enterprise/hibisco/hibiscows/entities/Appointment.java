@@ -22,11 +22,11 @@ public class Appointment {
 
     @Getter @Setter private boolean accepted;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_donator")
     @Getter @Setter private Donator donator;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_hospital")
     @Getter @Setter private Hospital hospital;
 
