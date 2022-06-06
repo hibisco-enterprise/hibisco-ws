@@ -20,11 +20,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.ResponseEntity.status;
 
@@ -92,7 +94,7 @@ public class DonatorController {
             }
 
             donator.getUser().getAddress().setIdAddress(
-                findDonator.get().getUser().getAddress().getIdAddress()
+                    findDonator.get().getUser().getAddress().getIdAddress()
             );
             donator.getUser().setIdUser(findDonator.get().getUser().getIdUser());
             donator.setIdDonator(idDonator);
@@ -112,8 +114,8 @@ public class DonatorController {
         Optional<Donator> findDonator = donatorRepository.findById(idDonator);
         if (findDonator.isPresent()) {
             userRepository.updatePassword(
-                findDonator.get().getUser().getIdUser(),
-                password.getPassword()
+                    findDonator.get().getUser().getIdUser(),
+                    password.getPassword()
             );
 
             return status(OK).build();
@@ -180,7 +182,7 @@ public class DonatorController {
 
             return status(CREATED).build();
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error("Erro de criação de usuário: \n\t{} \nErro: \n\t{}",
                     donator, e.toString()
             );
@@ -191,8 +193,8 @@ public class DonatorController {
     @PostMapping("/login")
     public ResponseEntity<Donator> doLogin(@RequestBody @Valid DonatorLoginRequestDTO donator) {
         Optional<Donator> findDonator = donatorRepository.findByEmailAndPassword(
-            donator.getEmail(),
-            donator.getPassword()
+                donator.getEmail(),
+                donator.getPassword()
         );
 
         if (findDonator.isPresent()) {
@@ -214,39 +216,56 @@ public class DonatorController {
 
     @GetMapping("/appointment/{idDonator}")
     public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentDays(
-        @PathVariable Long idDonator
+            @PathVariable Long idDonator
     ) {
         List<AppointmentResponseDTO> appointments = new ArrayList<>();
-        List<Appointment> appointmentDays = appointmentRepository.findByDonatorIdDonator(
-            idDonator
+        List<Appointment> appointmentDays = appointmentRepository.findByDonatorIdDonatorOrderByDhAppointmentDesc(
+                idDonator
         );
         logger.info("Appointments: {}", appointmentDays);
 
         if (!appointmentDays.isEmpty()) {
             appointmentDays.forEach(
-                it -> appointments.add(
-                    AppointmentResponseDTO.builder()
-                        .idAppointment(it.getIdAppointment())
-                        .dhAppointment(it.getDhAppointment())
-                        .accepted(it.isAccepted())
-                        .idDonator(it.getDonator().getIdDonator())
-                        .bloodType(it.getDonator().getBloodType())
-                        .name(it.getDonator().getUser().getName())
-                        .email(it.getDonator().getUser().getEmail())
-                        .documentNumber(it.getDonator().getUser().getDocumentNumber())
-                        .phone(it.getDonator().getUser().getPhone())
-                        .idAddress(it.getDonator().getUser().getAddress().getIdAddress())
-                        .address(it.getDonator().getUser().getAddress().getAddress())
-                        .neighborhood(it.getDonator().getUser().getAddress().getNeighborhood())
-                        .city(it.getDonator().getUser().getAddress().getCity())
-                        .uf(it.getDonator().getUser().getAddress().getUf())
-                        .cep(it.getDonator().getUser().getAddress().getCep())
-                        .number(it.getDonator().getUser().getAddress().getNumber())
-                        .idHospital(it.getHospital().getIdHospital())
-                    .build()
-                )
+                    it -> appointments.add(
+                            AppointmentResponseDTO.builder()
+                                    .idAppointment(it.getIdAppointment())
+                                    .dhAppointment(it.getDhAppointment())
+                                    .accepted(it.isAccepted())
+                                    .idDonator(it.getDonator().getIdDonator())
+                                    .bloodType(it.getDonator().getBloodType())
+                                    .name(it.getDonator().getUser().getName())
+                                    .email(it.getDonator().getUser().getEmail())
+                                    .documentNumber(it.getDonator().getUser().getDocumentNumber())
+                                    .phone(it.getDonator().getUser().getPhone())
+                                    .idAddress(it.getDonator().getUser().getAddress().getIdAddress())
+                                    .address(it.getDonator().getUser().getAddress().getAddress())
+                                    .neighborhood(it.getDonator().getUser().getAddress().getNeighborhood())
+                                    .city(it.getDonator().getUser().getAddress().getCity())
+                                    .uf(it.getDonator().getUser().getAddress().getUf())
+                                    .cep(it.getDonator().getUser().getAddress().getCep())
+                                    .number(it.getDonator().getUser().getAddress().getNumber())
+                                    .idHospital(it.getHospital().getIdHospital())
+                                    .build()
+                    )
             );
             return status(OK).body(appointments);
+        }
+
+        return status(NOT_FOUND).build();
+    }
+
+    @GetMapping("/appointment/{idDonator}/accepted")
+    public ResponseEntity<List<Appointment>> getAcceptedAppointmentDays(
+            @PathVariable Long idDonator
+    ) {
+        List<Appointment> appointmentDays = appointmentRepository.findByDonatorIdDonatorAndAcceptedTrueOrderByDhAppointmentDesc(
+                idDonator
+        );
+        logger.info("Appointments: {}", appointmentDays);
+
+        if (!appointmentDays.isEmpty()) {
+
+            return status(OK).body(appointmentDays);
         }
 
         return status(NOT_FOUND).build();
@@ -259,11 +278,11 @@ public class DonatorController {
 
         if (hospital.isPresent() && donator.isPresent()) {
             appointmentRepository.save(
-                new Appointment(
-                    appointment.getDhAppointment(),
-                    donator.get(),
-                    hospital.get()
-                )
+                    new Appointment(
+                            appointment.getDhAppointment(),
+                            donator.get(),
+                            hospital.get()
+                    )
             );
 
             return status(CREATED).build();
@@ -292,7 +311,7 @@ public class DonatorController {
             //String hospitalTxt = FileHandler.gravaArquivoTxt(lista, "hospital-" + hospital.get().getUser().getName());
             String hospitalTxt = " ";
             return ResponseEntity.status(200)
-                    .header("content-type", "text/txt")
+                    .header("content-type", "text/plain")
                     .header("content-disposition", "filename=\"hospital.txt\"")
                     .body(hospitalTxt);
         } else {

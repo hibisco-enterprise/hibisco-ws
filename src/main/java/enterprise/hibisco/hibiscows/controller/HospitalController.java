@@ -269,17 +269,24 @@ public class HospitalController {
         return registerBloodStock(FileHandler.leArquivoTxt(file));
     }
 
-    @GetMapping("appointments/{idHospital}/order-date")
+    @GetMapping("/appointments/{idHospital}/order-date")
     public ResponseEntity<List<Appointment>> getAppointmentsByDate(@PathVariable Long idHospital) {
         return hospitalRepository.existsById(idHospital) ? status(OK).body(
-            appointmentRepository.findByHospitalIdHospitalOrderByDhAppointmentDesc(idHospital)
+            appointmentRepository.findByHospitalIdHospitalOrderByDhAppointment(idHospital)
         ) : status(NOT_FOUND).build();
     }
 
-    @GetMapping("appointments/{idHospital}/not-accepted")
+    @GetMapping("/appointments/{idHospital}/not-accepted")
     public ResponseEntity<List<Appointment>> getAppointmentsNotAccepted(@PathVariable Long idHospital) {
         return hospitalRepository.existsById(idHospital) ? status(OK).body(
-            appointmentRepository.findByHospitalIdHospitalAndAcceptedFalseOrderByDhAppointmentDesc(idHospital)
+            appointmentRepository.findByHospitalIdHospitalAndAcceptedFalseOrderByDhAppointment(idHospital)
+        ) :  status(NOT_FOUND).build();
+    }
+
+    @GetMapping("/appointments/{idHospital}/accepted")
+    public ResponseEntity<List<Appointment>> getAppointmentsAccepted(@PathVariable Long idHospital) {
+        return hospitalRepository.existsById(idHospital) ? status(OK).body(
+            appointmentRepository.findByHospitalIdHospitalAndAcceptedTrueOrderByDhAppointment(idHospital)
         ) :  status(NOT_FOUND).build();
     }
 

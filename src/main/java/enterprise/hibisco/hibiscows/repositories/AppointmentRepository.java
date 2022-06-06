@@ -11,14 +11,17 @@ import java.util.Optional;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    List<Appointment> findByDonatorIdDonator(Long idDonator);
+    List<Appointment> findByDonatorIdDonatorOrderByDhAppointmentDesc(Long idDonator);
+
+    List<Appointment> findByDonatorIdDonatorAndAcceptedTrueOrderByDhAppointmentDesc(Long idDonator);
 
     @Query("update Appointment a set a.accepted = true where a.idAppointment = ?1")
     @Transactional
     @Modifying
     void acceptAppointmentDay(Long idAppointment);
 
-    List<Appointment> findByHospitalIdHospitalOrderByDhAppointmentDesc(Long idHospital);
+    List<Appointment> findByHospitalIdHospitalOrderByDhAppointment(Long idHospital);
 
-    List<Appointment> findByHospitalIdHospitalAndAcceptedFalseOrderByDhAppointmentDesc(Long idHospital);
+    List<Appointment> findByHospitalIdHospitalAndAcceptedFalseOrderByDhAppointment(Long idHospital);
+    List<Appointment> findByHospitalIdHospitalAndAcceptedTrueOrderByDhAppointment(Long idHospital);
 }
