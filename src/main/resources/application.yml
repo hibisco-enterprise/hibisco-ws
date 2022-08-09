@@ -1,13 +1,15 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://grupo6-3adsa-221.database.windows.net:1433;database=Hibisco;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30
-    username: grupo6_sptech
-    password: 3adsA@grupo06
+    url: ${AZURE_URL}
+    username: ${AZURE_USER}
+    password: ${AZURE_PASSWORD}
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
-      dialect : org.hibernate.dialect.SQLServer2012Dialect
+      format_sql: true
+      dialect : org.hibernate.dialect.SQLServer2018Dialect
 
 server:
   port: 8080
