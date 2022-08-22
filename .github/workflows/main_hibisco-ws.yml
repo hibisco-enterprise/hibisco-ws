@@ -22,7 +22,7 @@ jobs:
           java-version: '11'
 
       - name: Build with Maven
-        run: mvn install clean package -Dmaven.test.skip
+        run: echoargs mvn clean install package '-Dmaven.test.skip=true'
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
