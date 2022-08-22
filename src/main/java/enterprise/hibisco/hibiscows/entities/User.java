@@ -46,7 +46,7 @@ public class User {
 
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[!@#$%&*+=^~/?|<>,.;:])(?=.*\\d)(?=.*[a-z]).{8,16}$",
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[!@#$%&()*+=^~/?|<>,.;:°'{}`ºª])(?=.*\\d)(?=.*[a-z]).{8,16}$",
     message = "Senha inválida. A senha deve possuir no mínimo 8 caracteres, " +
               "contendo letras maiúsculas e minúsculas, números e caracteres especiais!")
     @Getter @Setter private String password;
