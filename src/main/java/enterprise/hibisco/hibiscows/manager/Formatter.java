@@ -7,7 +7,7 @@ public class Formatter {
 
     public static String cepFormatter (String cep) throws IllegalStateException {
         if (cep.contains("-")) {
-            cep = cep.replaceAll("-","");
+            cep = cep.replaceAll("-", "");
             return cep;
         }
         throw new IllegalArgumentException(
@@ -15,26 +15,16 @@ public class Formatter {
         );
     }
 
-    public static String removeSpaces(String addressWithSpaces) {
-        if (addressWithSpaces.contains(" ")) {
-            addressWithSpaces = addressWithSpaces.replaceAll(" ","%20");
-            return addressWithSpaces;
-        } else {
-            return addressWithSpaces;
-        }
-    }
-
     public static String addressFormatter(AddressData addressData) {
 
         String addressRawString =
-                cepFormatter(addressData.getCep()) + " " +
-                addressData.getNeighborhood() + " " +
-                addressData.getAddress() + " " +
-                addressData.getNumber() + " " +
-                addressData.getCity() + " " +
-                addressData.getUf();
+            addressData.getAddress() + ", " +
+            addressData.getNumber() + " " +
+            addressData.getNeighborhood() + " " +
+            addressData.getCity() + " " +
+            cepFormatter(addressData.getCep()) + " ";
 
-        return utf8Formatter(removeSpaces(addressRawString));
+        return utf8Formatter(addressRawString);
     }
 
     public static String utf8Formatter(String rawString) {
