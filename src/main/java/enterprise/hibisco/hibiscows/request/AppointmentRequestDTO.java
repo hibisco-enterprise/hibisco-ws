@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AppointmentRequestDTO {
 
-    @JsonFormat(pattern = "yyyy-MM-ddTHH:mm:ss", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @NotNull
     @FutureOrPresent
     @Getter @Setter private LocalDateTime dhAppointment;
