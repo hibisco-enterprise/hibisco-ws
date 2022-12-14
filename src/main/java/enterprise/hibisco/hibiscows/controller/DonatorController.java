@@ -273,6 +273,7 @@ public class DonatorController {
 
     @PostMapping("/appointment")
     public ResponseEntity<Void> setAppointmentDay(@RequestBody AppointmentRequestDTO appointment) {
+        logger.info(appointment.toString());
         Optional<Hospital> hospital = hospitalRepository.findById(appointment.getFkHospital());
         Optional<Donator> donator = donatorRepository.findById(appointment.getFkDonator());
 
